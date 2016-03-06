@@ -2,18 +2,20 @@
 CUCKOO_OS_BIT=64
 CUCKOO_CPU_CORES=4
 CUCKOO_CURRENT_DIR="$(realpath $(readlink -f $(dirname $0)))"
-CUCKOO_TMP_DIR="${TMPDIR:=/tmp}"
+CUCKOO_TMP_DIR="${TMPDIR:=/tmp}/"
 
-QEMU_DIR="qemu-2.5.0"
-QEMU_RUN_DIR="${CUCKOO_CURRENT_DIR}/linux/${QEMU_DIR}"
+QEMU_DIR="qemu"
+QEMU_VERSION="2.5.0"
+QEMU_RUN_DIR="${CUCKOO_CURRENT_DIR}/${QEMU_DIR}/linux/${QEMU_VERSION}"
 QEMU_BIN_FILE="/bin/qemu-system-x86_64"
 
 
 ${QEMU_RUN_DIR}${QEMU_BIN_FILE} -version > /dev/null
 if [ ! $? -eq 0 ]
 then
-    cp -rf $QEMU_RUN_DIR $CUCKOO_TMP_DIR
-    QEMU_RUN_DIR="${CUCKOO_TMP_DIR}/${QEMU_DIR}"
+    mkdir -p ${CUCKOO_TMP_DIR}/${QEMU_DIR}
+    cp -rf $QEMU_RUN_DIR $CUCKOO_TMP_DIR/${QEMU_DIR}
+    QEMU_RUN_DIR="${CUCKOO_TMP_DIR}/${QEMU_DIR}/${QEMU_VERSION}"
     chmod -R 750 $QEMU_RUN_DIR
 fi
 
