@@ -24,7 +24,7 @@ tar xvjf $QEMU_TAR_FILE
 # Build
 cd ${TEMP_DIR}/qemu-${QEMU_VERSION}
 ./configure \
-    --prefix=${CURRENT_DIR}/qemu-${QEMU_VERSION} \
+    --prefix=${CURRENT_DIR}/${QEMU_VERSION} \
     --target-list=${QEMU_ARCH_LIST} \
     --python=/usr/bin/python2 \
     --enable-sdl \
