@@ -22,7 +22,7 @@ wget -c $QEMU_URL_FILE
 tar xvjf $QEMU_TAR_FILE
 
 # Build
-cd ${TEMP_DIR}/qemu-${QEMU_VERSION}
+cd ${TEMP_DIR}/${QEMU_VERSION}
 ./configure \
     --prefix=${CURRENT_DIR}/${QEMU_VERSION} \
     --target-list=${QEMU_ARCH_LIST} \

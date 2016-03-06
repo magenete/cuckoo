@@ -1,4 +1,5 @@
 
+CUCKOO_OS="linux"
 CUCKOO_OS_BIT=64
 CUCKOO_CPU_CORES=4
 CUCKOO_CURRENT_DIR="$(realpath $(readlink -f $(dirname $0)))"
@@ -22,14 +23,15 @@ fi
 ${QEMU_RUN_DIR}${QEMU_BIN_FILE} \
     -name " Cuckoo -- Linux [${CUCKOO_OS_BIT}] " \
     -boot order=c \
-    --drive media=disk,if=scsi,index=0,file=${CUCKOO_CURRENT_DIR}/hd/0 \
-    --drive media=disk,if=scsi,index=1,file=${CUCKOO_CURRENT_DIR}/hd/1 \
-    --drive media=disk,if=scsi,index=2,file=${CUCKOO_CURRENT_DIR}/hd/2 \
-    --drive media=disk,if=scsi,index=3,file=${CUCKOO_CURRENT_DIR}/hd/3 \
-    --drive media=disk,if=scsi,index=4,file=${CUCKOO_CURRENT_DIR}/hd/4 \
+    --drive media=disk,if=scsi,index=0,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/0 \
+    --drive media=disk,if=scsi,index=1,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/1 \
+    --drive media=disk,if=scsi,index=2,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/2 \
+    --drive media=disk,if=scsi,index=3,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/3 \
+    --drive media=disk,if=scsi,index=4,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/4 \
     -m 1G \
-    -cpu "qemu${CUCKOO_OS_BIT}" -smp ${CUCKOO_CPU_CORES},cores=${CUCKOO_CPU_CORES},maxcpus=${CUCKOO_CPU_CORES} \
+    -cpu "${QEMU_DIR}${CUCKOO_OS_BIT}" -smp ${CUCKOO_CPU_CORES},cores=${CUCKOO_CPU_CORES},maxcpus=${CUCKOO_CPU_CORES} \
     -vga std \
     -usb -usbdevice tablet \
     -enable-kvm \
     -daemonize
+#-cdrom ./linux/${CUCKOO_OS_BIT}/hd/debian-8.3.0-amd64-netinst.iso \

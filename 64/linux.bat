@@ -1,5 +1,6 @@
 @echo off
 
+set CUCKOO_OS=linux
 set CUCKOO_OS_BIT=64
 set CUCKOO_CPU_CORES=4
 set CUCKOO_CURRENT_DIR=%~dp0
@@ -21,11 +22,11 @@ if %ERRORLEVEL% == 0 (
 "%QEMU_RUN_DIR%%QEMU_BIN_FILE%" ^
     -name "Cuckoo -- Windows [%CUCKOO_OS_BIT%]" ^
     -boot order=c ^
-    -drive media=disk,index=0,file=%CUCKOO_CURRENT_DIR%hd\0 ^
-    -drive media=disk,index=1,file=%CUCKOO_CURRENT_DIR%hd\1 ^
-    -drive media=disk,index=2,file=%CUCKOO_CURRENT_DIR%hd\2 ^
-    -drive media=disk,index=3,file=%CUCKOO_CURRENT_DIR%hd\3 ^
-    -drive media=disk,index=4,file=%CUCKOO_CURRENT_DIR%hd\4 ^
+    -drive media=disk,index=0,file=%CUCKOO_CURRENT_DIR%hd\%CUCKOO_OS%\0 ^
+    -drive media=disk,index=1,file=%CUCKOO_CURRENT_DIR%hd\%CUCKOO_OS%\1 ^
+    -drive media=disk,index=2,file=%CUCKOO_CURRENT_DIR%hd\%CUCKOO_OS%\2 ^
+    -drive media=disk,index=3,file=%CUCKOO_CURRENT_DIR%hd\%CUCKOO_OS%\3 ^
+    -drive media=disk,index=4,file=%CUCKOO_CURRENT_DIR%hd\%CUCKOO_OS%\4 ^
     -m 1G ^
     -cpu "%QEMU_DIR%%CUCKOO_OS_BIT%" -smp %CUCKOO_CPU_CORES%,cores=%CUCKOO_CPU_CORES%,maxcpus=%CUCKOO_CPU_CORES% ^
-    -usb -usbdevice tablet > C:\Users\user\AppData\Local\Temp\qemu\q.txt
+    -usb -usbdevice tablet
