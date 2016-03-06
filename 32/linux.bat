@@ -1,6 +1,6 @@
 @echo off
 
-set CUCKOO_OS_BIT=64
+set CUCKOO_OS_BIT=32
 set CUCKOO_CPU_CORES=4
 set CUCKOO_CURRENT_DIR=%~dp0
 set CUCKOO_TMP_DIR=%TEMP%
@@ -8,7 +8,7 @@ set CUCKOO_TMP_DIR=%TEMP%
 set QEMU_VERSION=2.5.0
 set QEMU_DIR=qemu
 set QEMU_RUN_DIR=%CUCKOO_CURRENT_DIR%%QEMU_DIR%\windows\%QEMU_VERSION%
-set QEMU_BIN_FILE=\qemu-system-x86_64
+set QEMU_BIN_FILE=\qemu-system-i386
 
 
 "%QEMU_RUN_DIR%%QEMU_BIN_FILE%" -version > nul
