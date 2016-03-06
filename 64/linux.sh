@@ -33,4 +33,3 @@ ${QEMU_RUN_DIR}${QEMU_BIN_FILE} \
     -usb -usbdevice tablet \
     -enable-kvm \
     -daemonize
-#-cdrom ./linux/${CUCKOO_OS_BIT}/hd/debian-8.3.0-amd64-netinst.iso \
