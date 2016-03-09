@@ -8,13 +8,26 @@ QEMU_ARCH_LIST="x86_64-softmmu"  # What to emulate
 QEMU_TAR_FILE="${TEMP_DIR}/qemu-${QEMU_VERSION}.tar.bz2"
 QEMU_URL_FILE="http://wiki.qemu-project.org/download/$(basename $QEMU_TAR_FILE)"
 
+
 echo "QEMU ${QEMU_VERSION} will be installed into ${CURRENT_DIR} folder ..."
 
 # Preinstall
 rm -rf $TEMP_DIR
 mkdir -p $TEMP_DIR
-# for Debian
-sudo apt-get install -y libiscsi-dev libsdl-dev libcap2-dev libattr1-dev flex
+
+# System packages install
+. /etc/os-release
+case "$ID" in
+    debian | ubuntu)
+        sudo apt-get install -y libiscsi-dev libsdl2-dev libcap-dev libattr1-dev flex
+        ;;
+    arch)
+        sudo pacman -S --noconfirm libiscsi sdl libcap attr flex
+        ;;
+    *)
+        echo "WARNING: System packages were not installed for '${ID}'!"
+        ;;
+esac
 
 # Download
 cd $TEMP_DIR
