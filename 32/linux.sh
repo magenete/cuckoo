@@ -1,12 +1,12 @@
 
 CUCKOO_OS="linux"
 CUCKOO_OS_BIT=32
-CUCKOO_CPU_CORES=4
+CUCKOO_CPU_CORES=2
 CUCKOO_CURRENT_DIR="$(realpath $(readlink -f $(dirname $0)))"
 CUCKOO_TMP_DIR="${TMPDIR:=/tmp}/"
 
 QEMU_NAME="qemu"
-QEMU_VERSION="2.5.0"
+QEMU_VERSION="$(cat ${CUCKOO_CURRENT_DIR}/${QEMU_NAME}/${CUCKOO_OS}/VERSION)"
 QEMU_RUN_DIR="${CUCKOO_CURRENT_DIR}/${QEMU_NAME}/${CUCKOO_OS}/${QEMU_VERSION}"
 QEMU_BIN_FILE="/bin/${QEMU_NAME}-system-i386"
 
@@ -30,7 +30,7 @@ ${QEMU_RUN_DIR}${QEMU_BIN_FILE} \
     -m 1G \
     -cpu "${QEMU_NAME}${CUCKOO_OS_BIT}" -smp ${CUCKOO_CPU_CORES},cores=${CUCKOO_CPU_CORES},maxcpus=${CUCKOO_CPU_CORES} \
     -vga std \
-    -display sdl \
+    -sdl -display sdl \
     -machine mem-merge=off \
     -usb -usbdevice tablet \
     -enable-kvm \

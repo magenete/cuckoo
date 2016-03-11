@@ -42,7 +42,7 @@ QEMU_VERSION="$(cat --squeeze-blank ${QEMU_BUILD_DIR}/VERSION)"
 
 echo -e "\nQEMU ${QEMU_VERSION} will be builded into ${CURRENT_DIR} folder ...\n"
 
-# Build
+# QEMU Build
 cd ${QEMU_BUILD_DIR}
 ./configure \
     --prefix=${CURRENT_DIR}/${QEMU_VERSION} \
@@ -55,6 +55,9 @@ cd ${QEMU_BUILD_DIR}
     --enable-libiscsi \
     --enable-system
 make && make install
+
+# VERSION file create
+printf "${QEMU_VERSION}" > "${CURRENT_DIR}/VERSION"
 
 # Clean
 rm -rf $TEMP_DIR
