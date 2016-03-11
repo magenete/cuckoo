@@ -7,7 +7,7 @@ QEMU_NAME="qemu"
 QEMU_VERSION=""                  # We build all QEMU versions listed
 QEMU_BRANCH="master"             # Branch NAME in Git
 QEMU_ARCH_LIST="x86_64-softmmu"  # What to emulate
-QEMU_GIR_URL="https://github.com/${QEMU_NAME}/${QEMU_NAME}/archive/${QEMU_BRANCH}.tar.gz"
+QEMU_GIT_URL="https://github.com/${QEMU_NAME}/${QEMU_NAME}/archive/${QEMU_BRANCH}.tar.gz"
 QEMU_BUILD_DIR="${TEMP_DIR}/${QEMU_NAME}-${QEMU_BRANCH}"
 
 
@@ -35,7 +35,7 @@ echo -e "\nQEMU will be downloaded into ${QEMU_BUILD_DIR} folder ...\n"
 
 # Download
 cd $TEMP_DIR
-curl -L $QEMU_GIR_URL | tar xz
+curl -L $QEMU_GIT_URL | tar xz
 
 # QEMU version definition
 QEMU_VERSION="$(cat --squeeze-blank ${QEMU_BUILD_DIR}/VERSION)"
