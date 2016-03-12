@@ -17,15 +17,15 @@ rem ENV check
 if "%QEMU_VERSION%" == "" (
     echo ERROR: QEMU version was not defined.
     echo Please check file '%CUCKOO_CURRENT_DIR%%QEMU_NAME%\windows\VERSION'.
-    rem exit 1
+    exit 1
 )
 if not exist "%QEMU_RUN_DIR%\" (
     echo ERROR: Directory '%QEMU_RUN_DIR%' does not exist.
-    rem exit 1
+    exit 1
 )
 if not exist "%QEMU_RUN_DIR%%QEMU_BIN_FILE%" (
     echo ERROR: File '%QEMU_RUN_DIR%%QEMU_BIN_FILE%' does not exist.
-    rem exit 1
+    exit 1
 )
 
 rem Copy in TMP_DIR
