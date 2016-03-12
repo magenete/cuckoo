@@ -10,22 +10,52 @@ set QEMU_NAME=qemu
 set /P QEMU_VERSION=<%CUCKOO_CURRENT_DIR%%QEMU_NAME%\windows\VERSION
 set QEMU_RUN_DIR=%CUCKOO_CURRENT_DIR%%QEMU_NAME%\windows\%QEMU_VERSION%
 set QEMU_BIN_FILE=\%QEMU_NAME%-system-i386w.exe
+set QEMU_TMP_DIR=%CUCKOO_TMP_DIR%\%QEMU_NAME%\%QEMU_VERSION%
 
 
-"%QEMU_RUN_DIR%%QEMU_BIN_FILE%" -version > nul
-if %ERRORLEVEL% neq 0 (
-    mkdir "%CUCKOO_TMP_DIR%\%QEMU_NAME%\%QEMU_VERSION%" > nul
-    xcopy /E /C /I /R /Y "%QEMU_RUN_DIR%" "%CUCKOO_TMP_DIR%\%QEMU_NAME%\%QEMU_VERSION%"
-    set QEMU_RUN_DIR=%CUCKOO_TMP_DIR%\%QEMU_NAME%\%QEMU_VERSION%
+rem ENV check
+if "%QEMU_VERSION%" == "" (
+    echo ERROR: QEMU version was not defined.
+    echo Please check file '%CUCKOO_CURRENT_DIR%%QEMU_NAME%\windows\VERSION'.
+    rem exit 1
+)
+if not exist "%QEMU_RUN_DIR%\" (
+    echo ERROR: Directory '%QEMU_RUN_DIR%' does not exist.
+    rem exit 1
+)
+if not exist "%QEMU_RUN_DIR%%QEMU_BIN_FILE%" (
+    echo ERROR: File '%QEMU_RUN_DIR%%QEMU_BIN_FILE%' does not exist.
+    rem exit 1
 )
 
+rem Copy in TMP_DIR
+"%QEMU_RUN_DIR%%QEMU_BIN_FILE%" -version > nul
+if %ERRORLEVEL% neq 0 (
+    mkdir "%QEMU_TMP_DIR%" > nul
+
+    if exist "%QEMU_TMP_DIR%\" (
+        xcopy /E /C /I /R /Y "%QEMU_RUN_DIR%" "%QEMU_TMP_DIR%"
+
+        if exist "%QEMU_RUN_DIR%%QEMU_BIN_FILE%" (
+            set QEMU_RUN_DIR=%QEMU_TMP_DIR%
+        ) else (
+            echo File '%QEMU_RUN_DIR%%QEMU_BIN_FILE%' does not exist.
+            exit 1
+        )
+    ) else (
+        echo ERROR: Directory '%QEMU_TMP_DIR%' does not exist.
+        exit 1
+    )
+)
+
+rem QEMU run
 start /MAX %QEMU_RUN_DIR%%QEMU_BIN_FILE% ^
     -name " Cuckoo -- Linux [%CUCKOO_OS_BIT%] " ^
     -boot order=c ^
-    -drive if=scsi,index=0,file=%CUCKOO_CURRENT_DIR%hd\%CUCKOO_OS%\0 ^
-    -drive if=scsi,index=1,file=%CUCKOO_CURRENT_DIR%hd\%CUCKOO_OS%\1 ^
-    -drive if=scsi,index=2,file=%CUCKOO_CURRENT_DIR%hd\%CUCKOO_OS%\2 ^
-    -drive if=scsi,index=3,file=%CUCKOO_CURRENT_DIR%hd\%CUCKOO_OS%\3 ^
+    -drive media=disk,if=scsi,index=0,file=%CUCKOO_CURRENT_DIR%hd\%CUCKOO_OS%\0 ^
+    -drive media=disk,if=scsi,index=1,file=%CUCKOO_CURRENT_DIR%hd\%CUCKOO_OS%\1 ^
+    -drive media=disk,if=scsi,index=2,file=%CUCKOO_CURRENT_DIR%hd\%CUCKOO_OS%\2 ^
+    -drive media=disk,if=scsi,index=3,file=%CUCKOO_CURRENT_DIR%hd\%CUCKOO_OS%\3 ^
     -m 1G ^
     -cpu "%QEMU_NAME%%CUCKOO_OS_BIT%" -smp %CUCKOO_CPU_CORES%,cores=%CUCKOO_CPU_CORES%,maxcpus=%CUCKOO_CPU_CORES% ^
     -vga std ^
