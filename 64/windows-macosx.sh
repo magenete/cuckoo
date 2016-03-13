@@ -1,0 +1,16 @@
+
+CUCKOO_OS="linux"
+CUCKOO_OS_BIT=64
+CUCKOO_CPU_CORES=4
+CUCKOO_CURRENT_DIR="$(realpath $(readlink -f $(dirname $0)))"
+CUCKOO_TMP_DIR="${TMPDIR:=/tmp}/"
+
+QEMU_NAME="qemu"
+QEMU_VERSION="$(cat ${CUCKOO_CURRENT_DIR}/${QEMU_NAME}/${CUCKOO_OS}/VERSION 2> /dev/null)"
+QEMU_RUN_DIR="${CUCKOO_CURRENT_DIR}/${QEMU_NAME}/${CUCKOO_OS}/${QEMU_VERSION}"
+QEMU_BIN_FILE="/bin/${QEMU_NAME}-system-x86_64"
+QEMU_TMP_DIR="${CUCKOO_TMP_DIR}/${QEMU_NAME}"
+
+
+echo "ERROR: Not implemented"
+exit 1
