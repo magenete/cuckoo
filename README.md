@@ -1,1 +1,1 @@
-# cuckoo
+# Cuckoo - OS based on QEMU
