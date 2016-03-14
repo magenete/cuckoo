@@ -50,7 +50,7 @@ if %ERRORLEVEL% neq 0 (
 
 rem QEMU run
 start /MAX %QEMU_RUN_DIR%%QEMU_BIN_FILE% ^
-    -name " Cuckoo -- Linux [%CUCKOO_OS_BIT%] " ^
+    -name " Cuckoo [%CUCKOO_OS_BIT%] -- %CUCKOO_OS% on %QEMU_OS% " ^
     -boot order=c ^
     -drive media=disk,if=scsi,index=0,file=%CUCKOO_CURRENT_DIR%hd\%CUCKOO_OS%\0 ^
     -drive media=disk,if=scsi,index=1,file=%CUCKOO_CURRENT_DIR%hd\%CUCKOO_OS%\1 ^

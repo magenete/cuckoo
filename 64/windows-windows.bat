@@ -1,6 +1,6 @@
 @echo off
 
-set CUCKOO_OS=linux
+set CUCKOO_OS=windows
 set CUCKOO_OS_BIT=64
 set CUCKOO_CPU_CORES=4
 set CUCKOO_CURRENT_DIR=%~dp0

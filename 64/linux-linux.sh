@@ -5,9 +5,10 @@ CUCKOO_CPU_CORES=4
 CUCKOO_CURRENT_DIR="$(realpath $(readlink -f $(dirname $0)))"
 CUCKOO_TMP_DIR="${TMPDIR:=/tmp}/"
 
+QEMU_OS="linux"
 QEMU_NAME="qemu"
-QEMU_VERSION="$(cat ${CUCKOO_CURRENT_DIR}/${QEMU_NAME}/${CUCKOO_OS}/VERSION 2> /dev/null)"
-QEMU_RUN_DIR="${CUCKOO_CURRENT_DIR}/${QEMU_NAME}/${CUCKOO_OS}/${QEMU_VERSION}"
+QEMU_VERSION="$(cat ${CUCKOO_CURRENT_DIR}/${QEMU_NAME}/${QEMU_OS}/VERSION 2> /dev/null)"
+QEMU_RUN_DIR="${CUCKOO_CURRENT_DIR}/${QEMU_NAME}/${QEMU_OS}/${QEMU_VERSION}"
 QEMU_BIN_FILE="/bin/${QEMU_NAME}-system-x86_64"
 QEMU_TMP_DIR="${CUCKOO_TMP_DIR}/${QEMU_NAME}"
 
@@ -16,7 +17,7 @@ QEMU_TMP_DIR="${CUCKOO_TMP_DIR}/${QEMU_NAME}"
 if [ -z "$QEMU_VERSION" ]
 then
     echo "ERROR: QEMU version was not defined."
-    echo "Please check file '${CUCKOO_CURRENT_DIR}/${QEMU_NAME}/${CUCKOO_OS}/VERSION'."
+    echo "Please check file '${CUCKOO_CURRENT_DIR}/${QEMU_NAME}/${QEMU_OS}/VERSION'."
     exit 1
 fi
 if [ ! -d "$QEMU_RUN_DIR" ]
@@ -62,7 +63,7 @@ fi
 
 # QEMU run
 ${QEMU_RUN_DIR}${QEMU_BIN_FILE} \
-    -name " Cuckoo -- Linux [${CUCKOO_OS_BIT}] " \
+    -name " Cuckoo [${CUCKOO_OS_BIT}] -- ${CUCKOO_OS} on ${QEMU_OS} " \
     -boot order=c \
     -drive media=disk,if=scsi,index=0,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/0 \
     -drive media=disk,if=scsi,index=1,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/1 \
