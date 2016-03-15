@@ -61,5 +61,18 @@ then
     fi
 fi
 
-echo "ERROR: Not implemented"
-exit 1
+# QEMU run
+${QEMU_RUN_DIR}${QEMU_BIN_FILE} \
+    -name " Cuckoo [${CUCKOO_OS_BIT}] -- ${CUCKOO_OS} on ${QEMU_OS} " \
+    -boot order=c \
+    -drive media=disk,if=scsi,index=0,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/0 \
+    -drive media=disk,if=scsi,index=1,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/1 \
+    -drive media=disk,if=scsi,index=2,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/2 \
+    -drive media=disk,if=scsi,index=3,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/3 \
+    -m 1G \
+    -cpu "${QEMU_NAME}${CUCKOO_OS_BIT}" -smp ${CUCKOO_CPU_CORES},cores=${CUCKOO_CPU_CORES},maxcpus=${CUCKOO_CPU_CORES} \
+    -vga std \
+    -sdl -display sdl \
+    -usb -usbdevice tablet \
+    -enable-kvm \
+    -daemonize

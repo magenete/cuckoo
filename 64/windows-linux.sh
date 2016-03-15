@@ -79,7 +79,6 @@ ${QEMU_RUN_DIR}${QEMU_BIN_FILE} \
     -cpu "${QEMU_NAME}${CUCKOO_OS_BIT}" -smp ${CUCKOO_CPU_CORES},cores=${CUCKOO_CPU_CORES},maxcpus=${CUCKOO_CPU_CORES} \
     -vga std \
     -sdl -display sdl \
-    -machine mem-merge=off \
     -usb -usbdevice tablet \
     -enable-kvm \
     -daemonize
