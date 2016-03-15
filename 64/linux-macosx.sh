@@ -75,5 +75,4 @@ ${QEMU_RUN_DIR}${QEMU_BIN_FILE} \
     -sdl -display sdl \
     -machine mem-merge=off \
     -usb -usbdevice tablet \
-    -enable-kvm \
     -daemonize

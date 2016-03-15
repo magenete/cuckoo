@@ -41,7 +41,7 @@ then
     then
         cp -rf $QEMU_RUN_DIR $QEMU_TMP_DIR
 
-        if [ -d "${QEMU_TMP_DIR}/${QEMU_VERSION}" ]
+        if [ -d "${QEMU_RUN_DIR}/${QEMU_VERSION}" ]
         then
             QEMU_RUN_DIR="${QEMU_TMP_DIR}/${QEMU_VERSION}"
             chmod -R 750 $QEMU_RUN_DIR

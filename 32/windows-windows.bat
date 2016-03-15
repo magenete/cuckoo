@@ -1,14 +1,15 @@
 @echo off
 
-set CUCKOO_OS=linux
+set CUCKOO_OS=windows
 set CUCKOO_OS_BIT=32
 set CUCKOO_CPU_CORES=2
 set CUCKOO_CURRENT_DIR=%~dp0
 set CUCKOO_TMP_DIR=%TEMP%
 
+set QEMU_OS=windows
 set QEMU_NAME=qemu
-set /P QEMU_VERSION=<%CUCKOO_CURRENT_DIR%%QEMU_NAME%\windows\VERSION
-set QEMU_RUN_DIR=%CUCKOO_CURRENT_DIR%%QEMU_NAME%\windows\%QEMU_VERSION%
+set /P QEMU_VERSION=<%CUCKOO_CURRENT_DIR%%QEMU_NAME%\%QEMU_OS%\VERSION
+set QEMU_RUN_DIR=%CUCKOO_CURRENT_DIR%%QEMU_NAME%\%QEMU_OS%\%QEMU_VERSION%
 set QEMU_BIN_FILE=\%QEMU_NAME%-system-i386w.exe
 set QEMU_TMP_DIR=%CUCKOO_TMP_DIR%\%QEMU_NAME%\%QEMU_VERSION%
 
@@ -16,7 +17,7 @@ set QEMU_TMP_DIR=%CUCKOO_TMP_DIR%\%QEMU_NAME%\%QEMU_VERSION%
 rem ENV check
 if "%QEMU_VERSION%" == "" (
     echo ERROR: QEMU version was not defined.
-    echo Please check file '%CUCKOO_CURRENT_DIR%%QEMU_NAME%\windows\VERSION'.
+    echo Please check file '%CUCKOO_CURRENT_DIR%%QEMU_NAME%\%QEMU_OS%\VERSION'.
     exit 1
 )
 if not exist "%QEMU_RUN_DIR%\" (
@@ -50,12 +51,16 @@ if %ERRORLEVEL% neq 0 (
 
 rem QEMU run
 start /MAX %QEMU_RUN_DIR%%QEMU_BIN_FILE% ^
-    -name " Cuckoo -- Linux [%CUCKOO_OS_BIT%] " ^
+    -name " Cuckoo [%CUCKOO_OS_BIT%] -- %CUCKOO_OS% on %QEMU_OS% " ^
     -boot order=c ^
     -drive media=disk,if=scsi,index=0,file=%CUCKOO_CURRENT_DIR%hd\%CUCKOO_OS%\0 ^
     -drive media=disk,if=scsi,index=1,file=%CUCKOO_CURRENT_DIR%hd\%CUCKOO_OS%\1 ^
     -drive media=disk,if=scsi,index=2,file=%CUCKOO_CURRENT_DIR%hd\%CUCKOO_OS%\2 ^
     -drive media=disk,if=scsi,index=3,file=%CUCKOO_CURRENT_DIR%hd\%CUCKOO_OS%\3 ^
+    -drive media=disk,if=scsi,index=4,file=%CUCKOO_CURRENT_DIR%hd\%CUCKOO_OS%\4 ^
+    -drive media=disk,if=scsi,index=5,file=%CUCKOO_CURRENT_DIR%hd\%CUCKOO_OS%\5 ^
+    -drive media=disk,if=scsi,index=6,file=%CUCKOO_CURRENT_DIR%hd\%CUCKOO_OS%\6 ^
+    -drive media=disk,if=scsi,index=7,file=%CUCKOO_CURRENT_DIR%hd\%CUCKOO_OS%\7 ^
     -m 1G ^
     -cpu "%QEMU_NAME%%CUCKOO_OS_BIT%" -smp %CUCKOO_CPU_CORES%,cores=%CUCKOO_CPU_CORES%,maxcpus=%CUCKOO_CPU_CORES% ^
     -vga std ^
