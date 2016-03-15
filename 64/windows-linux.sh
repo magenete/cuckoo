@@ -41,7 +41,7 @@ then
     then
         cp -rf $QEMU_RUN_DIR $QEMU_TMP_DIR
 
-        if [ -d "${QEMU_RUN_DIR}/${QEMU_VERSION}" ]
+        if [ -d "${QEMU_TMP_DIR}/${QEMU_VERSION}" ]
         then
             QEMU_RUN_DIR="${QEMU_TMP_DIR}/${QEMU_VERSION}"
             chmod -R 750 $QEMU_RUN_DIR
@@ -52,7 +52,7 @@ then
                 exit 1
             fi
         else
-            echo "ERROR: Directory '${QEMU_RUN_DIR}' does not exist."
+            echo "ERROR: Directory '${QEMU_TMP_DIR}/${QEMU_VERSION}' does not exist."
             exit 1
         fi
     else

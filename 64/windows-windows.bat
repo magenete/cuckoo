@@ -37,10 +37,10 @@ if %ERRORLEVEL% neq 0 (
     if exist "%QEMU_TMP_DIR%\" (
         xcopy /E /C /I /R /Y "%QEMU_RUN_DIR%" "%QEMU_TMP_DIR%"
 
-        if exist "%QEMU_RUN_DIR%%QEMU_BIN_FILE%" (
+        if exist "%QEMU_TMP_DIR%%QEMU_BIN_FILE%" (
             set QEMU_RUN_DIR=%QEMU_TMP_DIR%
         ) else (
-            echo File '%QEMU_RUN_DIR%%QEMU_BIN_FILE%' does not exist.
+            echo File '%QEMU_TMP_DIR%%QEMU_BIN_FILE%' does not exist.
             exit 1
         )
     ) else (
