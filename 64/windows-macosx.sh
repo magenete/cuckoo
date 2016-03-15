@@ -2,7 +2,7 @@
 CUCKOO_OS="windows"
 CUCKOO_OS_BIT=64
 CUCKOO_CPU_CORES=4
-CUCKOO_CURRENT_DIR="$(realpath $(readlink -f $(dirname $0)))"
+CUCKOO_CURRENT_DIR="$(realpath $(greadlink -f $(dirname $0)))"
 CUCKOO_TMP_DIR="${TMPDIR:=/tmp}/"
 
 QEMU_OS="macosx"
