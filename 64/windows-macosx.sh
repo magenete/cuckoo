@@ -67,17 +67,17 @@ fi
 ${QEMU_RUN_DIR}${QEMU_BIN_FILE} \
     -name " Cuckoo [${CUCKOO_OS_BIT}] -- ${CUCKOO_OS} on ${QEMU_OS} " \
     -boot order=c \
-    -drive media=disk,if=scsi,index=0,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/0 \
-    -drive media=disk,if=scsi,index=1,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/1 \
-    -drive media=disk,if=scsi,index=2,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/2 \
-    -drive media=disk,if=scsi,index=3,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/3 \
-    -drive media=disk,if=scsi,index=4,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/4 \
-    -drive media=disk,if=scsi,index=5,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/5 \
-    -drive media=disk,if=scsi,index=6,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/6 \
-    -drive media=disk,if=scsi,index=7,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/7 \
-    -drive media=disk,if=scsi,index=8,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/8 \
-    -drive media=disk,if=scsi,index=9,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/9 \
-    -m 1G \
+    -drive media=disk,if=virtio,index=0,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/0 \
+    -drive media=disk,if=virtio,index=1,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/1 \
+    -drive media=disk,if=virtio,index=2,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/2 \
+    -drive media=disk,if=virtio,index=3,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/3 \
+    -drive media=disk,if=virtio,index=4,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/4 \
+    -drive media=disk,if=virtio,index=5,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/5 \
+    -drive media=disk,if=virtio,index=6,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/6 \
+    -drive media=disk,if=virtio,index=7,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/7 \
+    -drive media=disk,if=virtio,index=8,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/8 \
+    -drive media=disk,if=virtio,index=9,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/9 \
+    -m 1G -balloon virtio \
     -cpu "${QEMU_NAME}${CUCKOO_OS_BIT}" -smp $[${CUCKOO_CPU_CORES}*${CUCKOO_CPU_THREADS}*${CUCKOO_CPU_SOCKETS}],cores=${CUCKOO_CPU_CORES},threads=${CUCKOO_CPU_THREADS},sockets=${CUCKOO_CPU_SOCKETS} \
     -vga std \
     -sdl -display sdl \

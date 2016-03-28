@@ -71,7 +71,7 @@ ${QEMU_RUN_DIR}${QEMU_BIN_FILE} \
     -drive media=disk,if=scsi,index=1,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/1 \
     -drive media=disk,if=scsi,index=2,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/2 \
     -drive media=disk,if=scsi,index=3,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/3 \
-    -m 1G \
+    -m 1G -balloon virtio \
     -cpu "${QEMU_NAME}${CUCKOO_OS_BIT}" -smp $[${CUCKOO_CPU_CORES}*${CUCKOO_CPU_THREADS}*${CUCKOO_CPU_SOCKETS}],cores=${CUCKOO_CPU_CORES},threads=${CUCKOO_CPU_THREADS},sockets=${CUCKOO_CPU_SOCKETS} \
     -vga std \
     -sdl -display sdl \
