@@ -2,6 +2,8 @@
 CUCKOO_OS="windows"
 CUCKOO_OS_BIT=64
 CUCKOO_CPU_CORES=4
+CUCKOO_CPU_THREADS=2
+CUCKOO_CPU_SOCKETS=1
 CUCKOO_CURRENT_DIR="$(realpath $(greadlink -f $(dirname $0)))"
 CUCKOO_TMP_DIR="${TMPDIR:=/tmp}/"
 
@@ -76,8 +78,8 @@ ${QEMU_RUN_DIR}${QEMU_BIN_FILE} \
     -drive media=disk,if=scsi,index=8,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/8 \
     -drive media=disk,if=scsi,index=9,file=${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/9 \
     -m 1G \
-    -cpu "${QEMU_NAME}${CUCKOO_OS_BIT}" -smp ${CUCKOO_CPU_CORES},cores=${CUCKOO_CPU_CORES},maxcpus=${CUCKOO_CPU_CORES} \
+    -cpu "${QEMU_NAME}${CUCKOO_OS_BIT}" -smp $[${CUCKOO_CPU_CORES}*${CUCKOO_CPU_THREADS}*${CUCKOO_CPU_SOCKETS}],cores=${CUCKOO_CPU_CORES},threads=${CUCKOO_CPU_THREADS},sockets=${CUCKOO_CPU_SOCKETS} \
     -vga std \
     -sdl -display sdl \
-    -usb -usbdevice tablet \
+    -usbdevice tablet -device piix3-usb-uhci \
     -daemonize
