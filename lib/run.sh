@@ -5,18 +5,18 @@ CUCKOO_CPU_CORES=${CUCKOO_CPU_CORES:=4}
 CUCKOO_CPU_THREADS=${CUCKOO_CPU_THREADS:=2}
 CUCKOO_CPU_SOCKETS=${CUCKOO_CPU_SOCKETS:=1}
 CUCKOO_TMP_DIR="${TMPDIR:=/tmp}/"
-CUCKOO_CURRENT_DIR="$(realpath $(readlink -f $(dirname $0)))"
+CUCKOO_CURRENT_DIR="$(realpath $(readlink -f $(dirname $0)))/"
 
 QEMU_NAME="qemu"
 QEMU_OS="${QEMU_OS:=linux}"
 QEMU_ARCH="${QEMU_ARCH:=x86_64}"
 QEMU_CDROM="${QEMU_CDROM:=}"
 QEMU_MEMORY_SIZE="${QEMU_MEMORY_SIZE:=1G}"
-QEMU_VERSION="$(cat ${CUCKOO_CURRENT_DIR}/${QEMU_NAME}/${QEMU_OS}/VERSION 2> /dev/null)"
-QEMU_RUN_DIR="${CUCKOO_CURRENT_DIR}/${QEMU_NAME}/${QEMU_OS}/${QEMU_VERSION}"
-QEMU_BIN_FILE="/bin/${QEMU_NAME}-system-${QEMU_ARCH}"
-QEMU_TMP_DIR="${CUCKOO_TMP_DIR}/${QEMU_NAME}"
-QEMU_HD_DIR="${CUCKOO_CURRENT_DIR}/hd/${CUCKOO_OS}/"
+QEMU_VERSION="$(cat ${CUCKOO_CURRENT_DIR}${QEMU_NAME}/${QEMU_OS}/VERSION 2> /dev/null)"
+QEMU_RUN_DIR="${CUCKOO_CURRENT_DIR}${QEMU_NAME}/${QEMU_OS}/${QEMU_VERSION}/"
+QEMU_BIN_FILE="bin/${QEMU_NAME}-system-${QEMU_ARCH}"
+QEMU_TMP_DIR="${CUCKOO_TMP_DIR}${QEMU_NAME}/"
+QEMU_HD_DIR="${CUCKOO_CURRENT_DIR}hd/${CUCKOO_OS}/"
 QEMU_OPTS="${QEMU_OPTS:=}"
 
 
@@ -26,7 +26,7 @@ cuckoo_qemu_check_env()
     if [ -z "$QEMU_VERSION" ]
     then
         echo "ERROR: QEMU version was not defined"
-        echo "Please check file '${CUCKOO_CURRENT_DIR}/${QEMU_NAME}/${QEMU_OS}/VERSION'"
+        echo "Please check file '${CUCKOO_CURRENT_DIR}${QEMU_NAME}/${QEMU_OS}/VERSION'"
         exit 1
     fi
 
@@ -55,9 +55,9 @@ cuckoo_qemu_copy_to_tmp()
         then
             cp -rf $QEMU_RUN_DIR $QEMU_TMP_DIR
 
-            if [ -d "${QEMU_TMP_DIR}/${QEMU_VERSION}" ]
+            if [ -d "${QEMU_TMP_DIR}${QEMU_VERSION}/" ]
             then
-                QEMU_RUN_DIR="${QEMU_TMP_DIR}/${QEMU_VERSION}"
+                QEMU_RUN_DIR="${QEMU_TMP_DIR}${QEMU_VERSION}/"
                 chmod -R 750 $QEMU_RUN_DIR
 
                 if [ ! -x "${QEMU_RUN_DIR}${QEMU_BIN_FILE}" ]
@@ -66,7 +66,7 @@ cuckoo_qemu_copy_to_tmp()
                     exit 1
                 fi
             else
-                echo "ERROR: Directory '${QEMU_TMP_DIR}/${QEMU_VERSION}' does not exist"
+                echo "ERROR: Directory '${QEMU_TMP_DIR}${QEMU_VERSION}/' does not exist"
                 exit 1
             fi
         else
@@ -115,4 +115,10 @@ cuckoo_qemu_run()
     QEMU_OPTS="${QEMU_OPTS} -daemonize"
 
     ${QEMU_RUN_DIR}${QEMU_BIN_FILE} -name " Cuckoo [${CUCKOO_OS_BIT}] -- ${CUCKOO_OS} on ${QEMU_OS} " ${QEMU_OPTS}
+}
+
+cuckoo_manufacturer_not_supported()
+{
+    echo "ERROR: This feature is not supported by the manufacturer"
+    exit 1
 }
