@@ -79,7 +79,7 @@ cuckoo_qemu_copy_to_tmp()
 # QEMU run
 cuckoo_qemu_run()
 {
-    # Title
+    # Bootloading and CDROM
     if [ -z $QEMU_CDROM ]
     then
         QEMU_OPTS="${QEMU_OPTS} -boot order=c"
