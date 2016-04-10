@@ -111,7 +111,7 @@ cuckoo_qemu_run()
     # KVM
     QEMU_OPTS="${QEMU_OPTS} -enable-kvm"
 
-    # Daeminize
+    # Daemonize
     QEMU_OPTS="${QEMU_OPTS} -daemonize"
 
     ${QEMU_RUN_DIR}${QEMU_BIN_FILE} -name " Cuckoo [${CUCKOO_OS_BIT}] -- ${CUCKOO_OS} on ${QEMU_OS} " ${QEMU_OPTS}
