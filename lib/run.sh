@@ -5,7 +5,7 @@ CUCKOO_CPU_CORES=${CUCKOO_CPU_CORES:=4}
 CUCKOO_CPU_THREADS=${CUCKOO_CPU_THREADS:=2}
 CUCKOO_CPU_SOCKETS=${CUCKOO_CPU_SOCKETS:=1}
 CUCKOO_TMP_DIR="${TMPDIR:=/tmp}/"
-CUCKOO_CURRENT_DIR="$(realpath $(readlink -f $(dirname $0)))/"
+CUCKOO_CURRENT_DIR="$(cd "$(dirname "$0")" && pwd -P)/"
 
 QEMU_NAME="qemu"
 QEMU_OS="${QEMU_OS:=linux}"
@@ -46,19 +46,19 @@ cuckoo_qemu_check_env()
 # Copy in TMP_DIR
 cuckoo_qemu_copy_to_tmp()
 {
-    ${QEMU_RUN_DIR}${QEMU_BIN_FILE} -version > /dev/null
+    "${QEMU_RUN_DIR}${QEMU_BIN_FILE}" -version > /dev/null
     if [ ! $? -eq 0 ]
     then
-        mkdir -p $QEMU_TMP_DIR
+        mkdir -p "$QEMU_TMP_DIR"
 
         if [ -d "$QEMU_TMP_DIR" ]
         then
-            cp -rf $QEMU_RUN_DIR $QEMU_TMP_DIR
+            cp -rf "$QEMU_RUN_DIR" "$QEMU_TMP_DIR"
 
             if [ -d "${QEMU_TMP_DIR}${QEMU_VERSION}/" ]
             then
                 QEMU_RUN_DIR="${QEMU_TMP_DIR}${QEMU_VERSION}/"
-                chmod -R 750 $QEMU_RUN_DIR
+                chmod -R 750 "$QEMU_RUN_DIR"
 
                 if [ ! -x "${QEMU_RUN_DIR}${QEMU_BIN_FILE}" ]
                 then
@@ -80,7 +80,7 @@ cuckoo_qemu_copy_to_tmp()
 cuckoo_qemu_run()
 {
     # Bootloading and CDROM
-    if [ -z $QEMU_CDROM ]
+    if [ -z "$QEMU_CDROM" ]
     then
         QEMU_OPTS="${QEMU_OPTS} -boot order=c"
     else
@@ -96,7 +96,7 @@ cuckoo_qemu_run()
     # Dirve
     for qemu_disk in $(ls $QEMU_HD_DIR)
     do
-        if [ -f ${QEMU_HD_DIR}${qemu_disk} ]
+        if [ -f "${QEMU_HD_DIR}${qemu_disk}" ]
         then
             QEMU_OPTS="${QEMU_OPTS} -drive media=disk,if=virtio,index=${qemu_disk},file=${QEMU_HD_DIR}${qemu_disk}"
         fi
@@ -114,7 +114,7 @@ cuckoo_qemu_run()
     # Daemonize
     QEMU_OPTS="${QEMU_OPTS} -daemonize"
 
-    ${QEMU_RUN_DIR}${QEMU_BIN_FILE} -name " Cuckoo [${CUCKOO_OS_BIT}] -- ${CUCKOO_OS} on ${QEMU_OS} " ${QEMU_OPTS}
+    "${QEMU_RUN_DIR}${QEMU_BIN_FILE}" -name " Cuckoo [${CUCKOO_OS_BIT}] -- ${CUCKOO_OS} on ${QEMU_OS} " ${QEMU_OPTS}
 }
 
 cuckoo_manufacturer_not_supported()
