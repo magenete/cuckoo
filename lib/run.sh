@@ -10,6 +10,7 @@ CUCKOO_CURRENT_DIR="$(cd "$(dirname "$0")" && pwd -P)/"
 QEMU_NAME="qemu"
 QEMU_OS="${QEMU_OS:=linux}"
 QEMU_ARCH="${QEMU_ARCH:=x86_64}"
+QEMU_HD="${QEMU_HD:=virtio}"
 QEMU_CDROM="${QEMU_CDROM:=}"
 QEMU_MEMORY_SIZE="${QEMU_MEMORY_SIZE:=1G}"
 QEMU_VERSION="$(cat ${CUCKOO_CURRENT_DIR}${QEMU_NAME}/${QEMU_OS}/VERSION 2> /dev/null)"
@@ -42,6 +43,7 @@ cuckoo_qemu_check_env()
         exit 1
     fi
 }
+
 
 # Copy in TMP_DIR
 cuckoo_qemu_copy_to_tmp()
@@ -76,6 +78,7 @@ cuckoo_qemu_copy_to_tmp()
     fi
 }
 
+
 # QEMU run
 cuckoo_qemu_run()
 {
@@ -98,7 +101,7 @@ cuckoo_qemu_run()
     do
         if [ -f "${QEMU_HD_DIR}${qemu_disk}" ]
         then
-            QEMU_OPTS="${QEMU_OPTS} -drive media=disk,if=virtio,index=${qemu_disk},file=${QEMU_HD_DIR}${qemu_disk}"
+            QEMU_OPTS="${QEMU_OPTS} -drive media=disk,if=${QEMU_HD},index=${qemu_disk},file=${QEMU_HD_DIR}${qemu_disk}"
         fi
     done
 
@@ -116,6 +119,7 @@ cuckoo_qemu_run()
 
     "${QEMU_RUN_DIR}${QEMU_BIN_FILE}" -name " Cuckoo [${CUCKOO_OS_BIT}] -- ${CUCKOO_OS} on ${QEMU_OS} " ${QEMU_OPTS}
 }
+
 
 cuckoo_manufacturer_not_supported()
 {

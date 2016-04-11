@@ -1,7 +1,7 @@
 
 CUCKOO_OS="macosx"
 
-. $(realpath $(readlink -f $(dirname $0)))/../lib/run.sh
+. "$(realpath $(readlink -f $(dirname $0)))/../lib/run.sh"
 
 cuckoo_qemu_check_env
 cuckoo_qemu_copy_to_tmp
