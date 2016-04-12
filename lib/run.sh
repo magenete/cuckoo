@@ -13,12 +13,13 @@ QEMU_ARCH="${QEMU_ARCH:=x86_64}"
 QEMU_HD="${QEMU_HD:=virtio}"
 QEMU_CDROM="${QEMU_CDROM:=}"
 QEMU_NO_USB="${QEMU_NO_USB:=}"
+QEMU_NO_DAEMONIZE="${QEMU_NO_DAEMONIZE:=}"
 QEMU_MEMORY_SIZE="${QEMU_MEMORY_SIZE:=1G}"
 QEMU_VERSION="$(cat ${CUCKOO_CURRENT_DIR}${QEMU_NAME}/${QEMU_OS}/VERSION 2> /dev/null)"
 QEMU_RUN_DIR="${CUCKOO_CURRENT_DIR}${QEMU_NAME}/${QEMU_OS}/${QEMU_VERSION}/"
-QEMU_BIN_FILE="bin/${QEMU_NAME}-system-${QEMU_ARCH}"
 QEMU_TMP_DIR="${CUCKOO_TMP_DIR}${QEMU_NAME}/"
 QEMU_HD_DIR="${CUCKOO_CURRENT_DIR}hd/${CUCKOO_OS}/"
+QEMU_BIN_FILE="bin/${QEMU_NAME}-system-${QEMU_ARCH}"
 QEMU_OPTS="${QEMU_OPTS:=}"
 
 
@@ -79,11 +80,12 @@ fi
 ### QEMU run
 
 # Bootloading and CDROM
+QEMU_OPTS="${QEMU_OPTS} -boot order="
 if [ -z "$QEMU_CDROM" ]
 then
-    QEMU_OPTS="${QEMU_OPTS} -boot order=c"
+    QEMU_OPTS="${QEMU_OPTS}c"
 else
-    QEMU_OPTS="${QEMU_OPTS} -boot order=d -cdrom ${QEMU_CDROM}"
+    QEMU_OPTS="${QEMU_OPTS}d -cdrom ${QEMU_CDROM}"
 fi
 
 # Memory
@@ -114,6 +116,9 @@ fi
 QEMU_OPTS="${QEMU_OPTS} -enable-kvm"
 
 # Daemonize
-QEMU_OPTS="${QEMU_OPTS} -daemonize"
+if [ -z "$QEMU_NO_DAEMONIZE" ]
+then
+    QEMU_OPTS="${QEMU_OPTS} -daemonize"
+fi
 
 "${QEMU_RUN_DIR}${QEMU_BIN_FILE}" -name " Cuckoo [${CUCKOO_OS_BIT}] -- ${CUCKOO_OS} on ${QEMU_OS} " ${QEMU_OPTS}
