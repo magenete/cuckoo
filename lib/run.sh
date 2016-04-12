@@ -12,6 +12,7 @@ QEMU_OS="${QEMU_OS:=linux}"
 QEMU_ARCH="${QEMU_ARCH:=x86_64}"
 QEMU_HD="${QEMU_HD:=virtio}"
 QEMU_CDROM="${QEMU_CDROM:=}"
+QEMU_NO_USB="${QEMU_NO_USB:=}"
 QEMU_MEMORY_SIZE="${QEMU_MEMORY_SIZE:=1G}"
 QEMU_VERSION="$(cat ${CUCKOO_CURRENT_DIR}${QEMU_NAME}/${QEMU_OS}/VERSION 2> /dev/null)"
 QEMU_RUN_DIR="${CUCKOO_CURRENT_DIR}${QEMU_NAME}/${QEMU_OS}/${QEMU_VERSION}/"
@@ -91,7 +92,7 @@ QEMU_OPTS="${QEMU_OPTS} -m ${QEMU_MEMORY_SIZE} -balloon virtio"
 # CPU
 QEMU_OPTS="${QEMU_OPTS} -cpu ${QEMU_NAME}${CUCKOO_OS_BIT} -smp cpus=$((${CUCKOO_CPU_CORES}*${CUCKOO_CPU_THREADS}*${CUCKOO_CPU_SOCKETS})),cores=${CUCKOO_CPU_CORES},threads=${CUCKOO_CPU_THREADS},sockets=${CUCKOO_CPU_SOCKETS}"
 
-# Dirve
+# Drive
 for qemu_disk in $(ls $QEMU_HD_DIR)
 do
     if [ -f "${QEMU_HD_DIR}${qemu_disk}" ]
@@ -104,7 +105,10 @@ done
 QEMU_OPTS="${QEMU_OPTS} -vga std -sdl -display sdl"
 
 # USB
-QEMU_OPTS="${QEMU_OPTS} -usb -usbdevice tablet -device piix3-usb-uhci"
+if [ -z "$QEMU_NO_USB" ]
+then
+    QEMU_OPTS="${QEMU_OPTS} -usb -usbdevice tablet -device piix3-usb-uhci"
+fi
 
 # KVM
 QEMU_OPTS="${QEMU_OPTS} -enable-kvm"
