@@ -1,4 +1,4 @@
 @echo off
 @cls
 
-@call "%~dp0lib\unsupported.bat"
+@call "%~dp0..\lib\unsupported.bat"
