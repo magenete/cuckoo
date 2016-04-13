@@ -23,7 +23,7 @@ QEMU_BIN_FILE="bin/${QEMU_NAME}-system-${QEMU_ARCH}"
 QEMU_OPTS="${QEMU_OPTS:=}"
 
 
-### ENV check
+##  ENV check
 
 if [ -z "$QEMU_VERSION" ]
 then
@@ -45,7 +45,7 @@ then
 fi
 
 
-### Copy in TMP_DIR
+##  Copy in TMP_DIR
 
 "${QEMU_RUN_DIR}${QEMU_BIN_FILE}" -version > /dev/null
 if [ ! $? -eq 0 ]
@@ -77,7 +77,7 @@ then
 fi
 
 
-### QEMU run
+##  QEMU run
 
 # Bootloading and CDROM
 QEMU_OPTS="${QEMU_OPTS} -boot order="
