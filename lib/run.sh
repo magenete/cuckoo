@@ -19,8 +19,9 @@ QEMU_NAME="qemu"
 QEMU_OS="${QEMU_OS:=linux}"
 QEMU_ARCH="${QEMU_ARCH:=x86_64}"
 QEMU_HD="${QEMU_HD:=virtio}"
-QEMU_ISO="${QEMU_ISO:=}"
-QEMU_CDROM="${QEMU_CDROM:=}"
+QEMU_ISO_FILE="${QEMU_ISO_FILE:=}"
+QEMU_CDROM_FILE="${QEMU_CDROM_FILE:=}"
+QEMU_SMB_DIR="${QEMU_SMB_DIR:=}"
 QEMU_NO_USB="${QEMU_NO_USB:=}"
 QEMU_NO_DAEMONIZE="${QEMU_NO_DAEMONIZE:=}"
 QEMU_MEMORY_SIZE="${QEMU_MEMORY_SIZE:=1G}"
@@ -91,15 +92,15 @@ fi
 
 # Bootloading and CDROM
 QEMU_OPTS="${QEMU_OPTS} -boot order="
-if [ -z "$QEMU_CDROM" ] && [ -z "$QEMU_ISO" ]
+if [ -z "$QEMU_CDROM_FILE" ] && [ -z "$QEMU_ISO_FILE" ]
 then
     QEMU_OPTS="${QEMU_OPTS}c"
 else
-    if [ ! -z "$QEMU_ISO" ]
+    if [ ! -z "$QEMU_ISO_FILE" ]
     then
-        QEMU_OPTS="${QEMU_OPTS}d -cdrom ${QEMU_ISO_DIR}${QEMU_ISO}"
+        QEMU_OPTS="${QEMU_OPTS}d -cdrom ${QEMU_ISO_DIR}${QEMU_ISO_FILE}"
     else
-        QEMU_OPTS="${QEMU_OPTS}d -cdrom ${QEMU_CDROM}"
+        QEMU_OPTS="${QEMU_OPTS}d -cdrom ${QEMU_CDROM_FILE}"
     fi
 fi
 
@@ -125,6 +126,12 @@ QEMU_OPTS="${QEMU_OPTS} -vga std -sdl -display sdl"
 if [ -z "$QEMU_NO_USB" ]
 then
     QEMU_OPTS="${QEMU_OPTS} -usb -usbdevice tablet -device piix3-usb-uhci"
+fi
+
+# SMB directory
+if [ ! -z "$QEMU_SMB_DIR" ]
+then
+    QEMU_OPTS="${QEMU_OPTS} -net nic -net user,smb=${QEMU_SMB_DIR}"
 fi
 
 # KVM
