@@ -2,6 +2,17 @@
 CUCKOO_OS=""
 CUCKOO_ARCH=""
 CUCKOO_DIR=""
+CUCKOO_ACTION=""
+
+
+case $1 in
+    -i | --install )
+        CUCKOO_ACTION="install"
+    ;;
+    -r | --run | * )
+        CUCKOO_ACTION="run"
+    ;;
+esac
 
 
 case $(uname -m) in
@@ -56,4 +67,4 @@ then
 fi
 
 
-sh "${CUCKOO_DIR}/${CUCKOO_ARCH}/run/${CUCKOO_OS}-$(basename "$0")"
+sh "${CUCKOO_DIR}/${CUCKOO_ARCH}/${CUCKOO_ACTION}/${CUCKOO_OS}-$(basename "$0")"
