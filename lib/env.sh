@@ -1,19 +1,19 @@
 
 CUCKOO_OS=""
-CUCKOO_OS_BIT=""
+CUCKOO_ARCH=""
 CUCKOO_DIR=""
 
 
 case $(uname -m) in
     x86_64 | amd64 )
-        CUCKOO_OS_BIT=64
+        CUCKOO_ARCH="x86_64"
     ;;
-    i386 )
-        CUCKOO_OS_BIT=32
+    x86 | i386 | i686 )
+        CUCKOO_ARCH="x86"
     ;;
 esac
 
-if [ -z "$CUCKOO_OS_BIT" ]
+if [ -z "$CUCKOO_ARCH" ]
 then
     echo "ERROR: Current system architecture has not been supported"
     exit 1
@@ -56,4 +56,4 @@ then
 fi
 
 
-sh "${CUCKOO_DIR}/${CUCKOO_OS_BIT}/${CUCKOO_OS}-$(basename "$0")"
+sh "${CUCKOO_DIR}/${CUCKOO_ARCH}/run/${CUCKOO_OS}-$(basename "$0")"
