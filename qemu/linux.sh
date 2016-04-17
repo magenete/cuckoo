@@ -1,2 +1,2 @@
 
-. "$(cd "$(dirname "$0")" && pwd -P)/../lib/env.sh"
+. "$(cd "$(dirname "$0")/.." && pwd -P)/lib/env.sh"
