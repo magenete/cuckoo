@@ -57,7 +57,7 @@ set QEMU_BIN_FILE=%QEMU_NAME%-system-%QEMU_ARCH%%QEMU_NO_DAEMONIZE%.exe
 if "%QEMU_OPTS%" == "" set QEMU_OPTS=
 
 
-rem  ENV check
+::  ENV check
 
 if "%QEMU_VERSION%" == "" (
     @echo ERROR: QEMU version was not defined.
@@ -77,7 +77,7 @@ if not exist "%QEMU_BIN_DIR%%QEMU_BIN_FILE%" (
 )
 
 
-rem  Copy in TMP_DIR
+::  Copy in TMP_DIR
 
 "%QEMU_BIN_DIR%%QEMU_BIN_FILE%" -version > nul
 if %ERRORLEVEL% neq 0 (
@@ -101,9 +101,9 @@ if %ERRORLEVEL% neq 0 (
 )
 
 
-rem  QEMU run
+::  QEMU run
 
-rem Bootloading and CDROM
+:: Bootloading and CDROM
 set QEMU_OPTS=%QEMU_OPTS% -boot order=
 if "%QEMU_CDROM_FILE%" == "" (
     if "%CUCKOO_ISO_FILE%" == "" set QEMU_OPTS=%QEMU_OPTS%c
@@ -115,28 +115,28 @@ if not "%CUCKOO_ISO_FILE%" == "" (
     set QEMU_OPTS=%QEMU_OPTS%d -cdrom %CUCKOO_ISO_DIR%%CUCKOO_ISO_FILE%
 )
 
-rem Memory
-rem set QEMU_OPTS=%QEMU_OPTS% -m %QEMU_MEMORY_SIZE% -balloon virtio
+:: Memory
+set QEMU_OPTS=%QEMU_OPTS% -m %QEMU_MEMORY_SIZE% -balloon virtio
 
-rem CPU
+:: CPU
 set /A cpus=%CUCKOO_CPU_CORES%*%CUCKOO_CPU_THREADS%*%CUCKOO_CPU_SOCKETS%
 set QEMU_OPTS=%QEMU_OPTS% -cpu %QEMU_NAME%%CUCKOO_OS_BIT% -smp cpus=%cpus%,cores=%CUCKOO_CPU_CORES%,threads=%CUCKOO_CPU_THREADS%,sockets=%CUCKOO_CPU_SOCKETS%
 
-rem Drive
+:: Drive
 setlocal EnableDelayedExpansion
 for /F "usebackq" %%f in (`dir /A-D /O /B "%QEMU_HD_DIR%"`) do (
    set QEMU_OPTS=!QEMU_OPTS! -drive media=disk,if=%QEMU_HD%,index=%%f,file=%QEMU_HD_DIR%%%f
 )
 
-rem Screen
+:: Screen
 set QEMU_OPTS=%QEMU_OPTS% -vga std -sdl -display sdl
 
-rem USB
+:: USB
 if "%QEMU_NO_USB%" == "" (
     set QEMU_OPTS=%QEMU_OPTS% -usb -usbdevice tablet
 )
 
-rem SMB directory
+:: SMB directory
 if not "%QEMU_SMB_DIR%" == "" (
     set QEMU_OPTS=%QEMU_OPTS% -net nic -net user,smb=%QEMU_SMB_DIR%
 )
