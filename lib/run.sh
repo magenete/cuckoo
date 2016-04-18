@@ -115,7 +115,9 @@ else
     if [ ! -z "$QEMU_ISO_FILE" ]
     then
         QEMU_OPTS="${QEMU_OPTS}d -cdrom ${QEMU_ISO_DIR}${QEMU_ISO_FILE}"
-    else
+    fi
+    if [ ! -z "$QEMU_CDROM_FILE" ]
+    then
         QEMU_OPTS="${QEMU_OPTS}d -cdrom ${QEMU_CDROM_FILE}"
     fi
 fi

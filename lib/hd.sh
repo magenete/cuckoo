@@ -18,6 +18,12 @@ then
 fi
 
 
+if [ ! -d "$CUCKOO_HD_CLEAN_DIR" ]
+then
+    echo "ERROR: Directory '${CUCKOO_HD_CLEAN_DIR}' does not exist"
+    exit 1
+fi
+
 if [ -z "$CUCKOO_DIST_VERSION" ]
 then
     for hd_file in $(ls "$CUCKOO_HD_DIR")
