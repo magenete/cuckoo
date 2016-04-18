@@ -1,6 +1,16 @@
 
 CUCKOO_OS="${CUCKOO_OS:=linux}"
 CUCKOO_ARCH="${CUCKOO_ARCH:=x86_64}"
+CUCKOO_ISO_FILE="${CUCKOO_ISO_FILE:=}"
+if [ ! -z "$CUCKOO_ISO_FILE" ]
+then
+    if [ -z "$CUCKOO_DIST_VERSION" ]
+    then
+        CUCKOO_DIST_VERSION="$CUCKOO_ISO_FILE"
+        CUCKOO_DIST_VERSION_DIR="${CUCKOO_DIST_VERSION}/"
+    fi
+    CUCKOO_ISO_FILE="${CUCKOO_ISO_FILE}.iso"
+fi
 CUCKOO_DIST_VERSION="${CUCKOO_DIST_VERSION:=}"
 if [ -z "$CUCKOO_DIST_VERSION" ]
 then
@@ -21,21 +31,12 @@ case $CUCKOO_ARCH in
         CUCKOO_OS_BIT=32
     ;;
 esac
+CUCKOO_ISO_DIR="${CUCKOO_CURRENT_DIR}../../install/iso/${CUCKOO_ARCH}/${CUCKOO_OS}/"
 
 QEMU_NAME="qemu"
 QEMU_OS="${QEMU_OS:=linux}"
 QEMU_ARCH="${QEMU_ARCH:=x86_64}"
 QEMU_HD="${QEMU_HD:=virtio}"
-QEMU_ISO_FILE="${QEMU_ISO_FILE:=}"
-if [ ! -z "$QEMU_ISO_FILE" ]
-then
-    if [ -z "$CUCKOO_DIST_VERSION" ]
-    then
-        CUCKOO_DIST_VERSION="$QEMU_ISO_FILE"
-        CUCKOO_DIST_VERSION_DIR="${CUCKOO_DIST_VERSION}/"
-    fi
-    QEMU_ISO_FILE="${QEMU_ISO_FILE}.iso"
-fi
 QEMU_CDROM_FILE="${QEMU_CDROM_FILE:=}"
 QEMU_SMB_DIR="${QEMU_SMB_DIR:=}"
 QEMU_NO_USB="${QEMU_NO_USB:=}"
@@ -44,7 +45,6 @@ QEMU_MEMORY_SIZE="${QEMU_MEMORY_SIZE:=1G}"
 QEMU_VERSION="$(cat ${CUCKOO_CURRENT_DIR}bin/${QEMU_OS}/VERSION 2> /dev/null)"
 QEMU_BIN_DIR="${CUCKOO_CURRENT_DIR}bin/${QEMU_OS}/${QEMU_VERSION}/"
 QEMU_TMP_DIR="${CUCKOO_TMP_DIR}${QEMU_NAME}/"
-QEMU_ISO_DIR="${CUCKOO_CURRENT_DIR}../../install/iso/${CUCKOO_ARCH}/${CUCKOO_OS}/"
 QEMU_HD_DIR="${CUCKOO_CURRENT_DIR}hd/${CUCKOO_OS}/${CUCKOO_DIST_VERSION_DIR}"
 QEMU_BIN_FILE="bin/${QEMU_NAME}-system-${QEMU_ARCH}"
 QEMU_OPTS="${QEMU_OPTS:=}"
@@ -108,13 +108,13 @@ fi
 
 # Bootloading and CDROM
 QEMU_OPTS="${QEMU_OPTS} -boot order="
-if [ -z "$QEMU_CDROM_FILE" ] && [ -z "$QEMU_ISO_FILE" ]
+if [ -z "$QEMU_CDROM_FILE" ] && [ -z "$CUCKOO_ISO_FILE" ]
 then
     QEMU_OPTS="${QEMU_OPTS}c"
 else
-    if [ ! -z "$QEMU_ISO_FILE" ]
+    if [ ! -z "$CUCKOO_ISO_FILE" ]
     then
-        QEMU_OPTS="${QEMU_OPTS}d -cdrom ${QEMU_ISO_DIR}${QEMU_ISO_FILE}"
+        QEMU_OPTS="${QEMU_OPTS}d -cdrom ${CUCKOO_ISO_DIR}${CUCKOO_ISO_FILE}"
     fi
     if [ ! -z "$QEMU_CDROM_FILE" ]
     then
