@@ -35,7 +35,7 @@ then
     done
 else
     rm -rf "${QEMU_HD_DIR}${CUCKOO_DIST_VERSION_DIR}"
-    mkdir "${QEMU_HD_DIR}${CUCKOO_DIST_VERSION_DIR}"
+    mkdir -p "${QEMU_HD_DIR}${CUCKOO_DIST_VERSION_DIR}"
 fi
 
 
