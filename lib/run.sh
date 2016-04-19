@@ -40,6 +40,7 @@ QEMU_HD="${QEMU_HD:=virtio}"
 QEMU_CDROM_FILE="${QEMU_CDROM_FILE:=}"
 QEMU_SMB_DIR="${QEMU_SMB_DIR:=}"
 QEMU_NO_USB="${QEMU_NO_USB:=}"
+QEMU_FULL_SCREEN="${QEMU_FULL_SCREEN:=}"
 QEMU_NO_DAEMONIZE="${QEMU_NO_DAEMONIZE:=}"
 QEMU_MEMORY_SIZE="${QEMU_MEMORY_SIZE:=1G}"
 QEMU_VERSION="$(cat ${CUCKOO_CURRENT_DIR}bin/${QEMU_OS}/VERSION 2> /dev/null)"
@@ -150,6 +151,12 @@ fi
 if [ ! -z "$QEMU_SMB_DIR" ]
 then
     QEMU_OPTS="${QEMU_OPTS} -net nic -net user,smb=${QEMU_SMB_DIR}"
+fi
+
+# Full screen
+if [ ! -z "$QEMU_FULL_SCREEN" ]
+then
+    QEMU_OPTS="${QEMU_OPTS} -full-screen"
 fi
 
 # KVM
