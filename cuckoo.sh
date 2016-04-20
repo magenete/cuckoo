@@ -1,21 +1,33 @@
 
 CUCKOO_DIR="${CUCKOO_DIR:=$(cd "$(dirname "$0")" && pwd -P)}/"
+CUCKOO_OS_LIST="linux, netbsd, freebsd, openbsd, macosx, windows"
+CUCKOO_ARCH_LIST="x86, x86_64"
 CUCKOO_SETUP_DIR=""
 CUCKOO_ACTION=""
 CUCKOO_ACTION_DEFAULT="run"
 CUCKOO_OS=""
 CUCKOO_OS_DEFAULT="linux"
 CUCKOO_ARCH=""
-CUCKOO_ARCH_DEFAULT="x86_64"
-CUCKOO_ISO_FILE=""
-CUCKOO_ISO_FILE_DEFAULT="debian/8.4"
 CUCKOO_DIST_VERSION=""
-CUCKOO_DIST_VERSION_DEFAULT="$CUCKOO_ISO_FILE_DEFAULT"
+CUCKOO_DIST_VERSION_DEFAULT="debian/8.4"
 
+QEMU_OS_LIST="linux, macosx, windows"
+QEMU_ARCH_LIST="x86, x86_64"
 QEMU_MEMORY_SIZE=""
 QEMU_MEMORY_SIZE_DEFAULT="1G"
+QEMU_HD_TYPE_LIST="ide, scsi, virtio"
 QEMU_HD_TYPE=""
 QEMU_HD_TYPE_DEFAULT="virtio"
+QEMU_CPU_MIN=1
+QEMU_CPU_CORES=
+QEMU_CPU_CORES_DEFAULT=4
+QEMU_CPU_CORES_MAX=16
+QEMU_CPU_THREADS=
+QEMU_CPU_THREADS_DEFAULT=2
+QEMU_CPU_THREADS_MAX=16
+QEMU_CPU_SOCKETS=
+QEMU_CPU_SOCKETS_DEFAULT=$QEMU_CPU_MIN
+QEMU_CPU_SOCKETS_MAX=4
 QEMU_CDROM_FILE=""
 QEMU_SMB_DIR=""
 
@@ -29,17 +41,23 @@ Usage: $(basename $0) [options]
 Options:
     -s, --setup         Set directory with full path and setup Cuckoo.
     -i, --install       Install on QEMU image(s).
-    -r, --run           Run QEMU(by default).
-    -a, --arch          Set OS architecture (by default: x86_64).
-    -o, --os-name       Set OS name (by default: linux).
-                          OS: linux, netbsd, freebsd, openbsd, macosx, windows.
-    -f, --iso-file      Set ISO file name only.
-    -d, --dist-version  Set dist and(or) version(by default: debian/8.4).
-    -m, --memory-size   Set memory size (by default: 1G).
+    -r, --run           Run QEMU (by default).
+    -a, --arch          Set OS architecture (by default: definition by OS).
+                          OS architecture: ${CUCKOO_ARCH_LIST}.
+    -o, --os-name       Set OS name (by default: ${CUCKOO_OS_DEFAULT}).
+                          OS: ${CUCKOO_OS_LIST}.
+    -d, --dist-version  Set dist and(or) version (by default: ${CUCKOO_DIST_VERSION_DEFAULT}).
+    -m, --memory-size   Set memory size (by default: ${QEMU_MEMORY_SIZE_DEFAULT}).
     -c, --cdrom         Set file with full path for CDROM.
     -b, --smb-dir       Set directory with full path for SMB share.
-    -t, --hd-type       Set hard drive type (by default: virtio).
-                          HD type: ide, scsi, virtio.
+    -t, --hd-type       Set hard drive type (by default: ${QEMU_HD_TYPE_DEFAULT}).
+                          HD type: ${QEMU_HD_TYPE_LIST}.
+    -A, --qemu-arch     Set QEMU architecture (by default: definition on OS).
+                          QEMU architecture: ${QEMU_ARCH_LIST}.
+                          QEMU OS: ${QEMU_OS_LIST}.
+    -C, --cpu-cores     Set CPU cores (by default: ${QEMU_CPU_CORES_DEFAULT}, min: ${QEMU_CPU_MIN}, max: ${QEMU_CPU_CORES_MAX}).
+    -T, --cpu-threads   Set CPU threads (by default: ${QEMU_CPU_THREADS_DEFAULT}, min: ${QEMU_CPU_MIN}, max: ${QEMU_CPU_THREADS_MAX}).
+    -S, --cpu-sockets   Set CPU sockets (by default: ${QEMU_CPU_SOCKETS_DEFAULT}, min: ${QEMU_CPU_MIN}, max: ${QEMU_CPU_SOCKETS_MAX}).
     -v, --version       Print the current version.
     -h, --help          Show this message.
 
@@ -60,13 +78,14 @@ error_message()
 # Setup
 cuckoo_setup()
 {
-    echo 0
+    echo "Cuckoo has been installed in '${CUCKOO_SETUP_DIR}'"
+    exit 0
 }
 
 
 # Options definition
-ARGS_SHORT="s:ira:o:f:d:m:c:b:t:vh"
-ARGS_LONG="setup:,install,run,arch:,os-name:,iso-file:,dist-version:,memory-size:,cdrom:,smb-dir:,hd-type:,version,help"
+ARGS_SHORT="s:ira:o:d:m:c:b:t:A:C:T:S:vh"
+ARGS_LONG="setup:,install,run,arch:,os-name:,dist-version:,memory-size:,cdrom:,smb-dir:,hd-type:,qemu-arch:,cpu-cores:,cpu-threads:,cpu-sockets:,version,help"
 OPTS="$(getopt -o "${ARGS_SHORT}" -l "${ARGS_LONG}" -a -- "$@" 2>/dev/null)"
 if [ "$?" != "0" ]
 then
@@ -121,10 +140,6 @@ do
         esac
         shift 2
     ;;
-    --iso-file | -f )
-        CUCKOO_ISO_FILE="$2"
-        shift 2
-    ;;
     --dist-version | -d )
         CUCKOO_DIST_VERSION="$2"
         shift 2
@@ -162,6 +177,44 @@ do
         esac
         shift 2
     ;;
+    --qemu-arch | -A )
+        case $2 in
+            x86 | x86_64 )
+                QEMU_ARCH="$2"
+            ;;
+            * )
+                error_message "QEMU architecture '$2' does not supported"
+            ;;
+        esac
+        shift 2
+    ;;
+    --cpu-cores | -C )
+        if [ $2 -ge $QEMU_CPU_MIN ] && [ $2 -le $QEMU_CPU_CORES_MAX ]
+        then
+            QEMU_CPU_CORES=$2
+        else
+            error_message "Invalid value CPU cores '$2'"
+        fi
+        shift 2
+    ;;
+    --cpu-threads | -T )
+        if [ $2 -ge $QEMU_CPU_MIN ] && [ $2 -le $QEMU_CPU_THREADS_MAX ]
+        then
+            QEMU_CPU_THREADS=$2
+        else
+            error_message "Invalid value CPU threads '$2'"
+        fi
+        shift 2
+    ;;
+    --cpu-sockets | -S )
+        if [ $2 -ge $QEMU_CPU_MIN ] && [ $2 -le $QEMU_CPU_SOCKETS_MAX ]
+        then
+            QEMU_CPU_SOCKETS=$2
+        else
+            error_message "Invalid value CPU sockets '$2'"
+        fi
+        shift 2
+    ;;
     --version | -v )
         echo "Version: 0.1.0"
         exit 0
@@ -190,11 +243,6 @@ then
         CUCKOO_OS="$CUCKOO_OS_DEFAULT"
     fi
 
-    if [ -z "$CUCKOO_ARCH" ]
-    then
-        CUCKOO_ARCH="$CUCKOO_ARCH_DEFAULT"
-    fi
-
     if [ -z "$CUCKOO_DIST_VERSION" ]
     then
         CUCKOO_DIST_VERSION="$CUCKOO_DIST_VERSION_DEFAULT"
@@ -209,6 +257,21 @@ fi
 if [ -z "$QEMU_HD_TYPE" ]
 then
     QEMU_HD_TYPE="$QEMU_HD_TYPE_DEFAULT"
+fi
+
+if [ -z "$QEMU_CPU_CORES" ]
+then
+    QEMU_CPU_CORES=$QEMU_CPU_CORES_DEFAULT
+fi
+
+if [ -z "$QEMU_CPU_THREADS" ]
+then
+    QEMU_CPU_THREAD=$QEMU_CPU_THREADS_DEFAULT
+fi
+
+if [ -z "$QEMU_CPU_SOCKETS" ]
+then
+    QEMU_CPU_SOCKETS=$QEMU_CPU_SOCKETS_DEFAULT
 fi
 
 

@@ -1,6 +1,11 @@
 
 . "${CUCKOO_DIR}lib/default.sh"
 
+if [ "$CUCKOO_ACTION" = "install" ]
+then
+    . "${CUCKOO_DIR}lib/hd.sh"
+fi
+
 
 ##  ENV check
 
@@ -23,15 +28,10 @@ then
     exit 1
 fi
 
-if [ "$QEMU_ARCH" = "x86" ] && [ "$QEMU_ARCH" = "$CUCKOO_ARCH" ]
+if [ "$QEMU_ARCH" = "x86" ] && [ "$QEMU_ARCH" != "$CUCKOO_ARCH" ]
 then
     echo "ERROR: Can not run OS '${CUCKOO_ARCH}' on QEMU '${QEMU_ARCH}'"
     exit 1
-fi
-
-if [ "$CUCKOO_ACTION" = "install" ]
-then
-    . "${CUCKOO_DIR}lib/hd.sh"
 fi
 
 if [ ! -e "$QEMU_HD_DIR" ] || [ ! -d "$QEMU_HD_DIR" ]
@@ -95,7 +95,7 @@ fi
 QEMU_OPTS="${QEMU_OPTS} -m ${QEMU_MEMORY_SIZE} -balloon virtio"
 
 # CPU
-QEMU_OPTS="${QEMU_OPTS} -cpu ${QEMU_CPU_MODEL} -smp cpus=$((${CUCKOO_CPU_CORES}*${CUCKOO_CPU_THREADS}*${CUCKOO_CPU_SOCKETS})),cores=${CUCKOO_CPU_CORES},threads=${CUCKOO_CPU_THREADS},sockets=${CUCKOO_CPU_SOCKETS}"
+QEMU_OPTS="${QEMU_OPTS} -cpu ${QEMU_CPU_MODEL} -smp cpus=$((${QEMU_CPU_CORES}*${QEMU_CPU_THREADS}*${QEMU_CPU_SOCKETS})),cores=${QEMU_CPU_CORES},threads=${QEMU_CPU_THREADS},sockets=${QEMU_CPU_SOCKETS}"
 
 # Drive
 for qemu_disk in $(ls $QEMU_HD_DIR)
