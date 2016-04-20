@@ -16,7 +16,7 @@ case $(uname -m) in
     x86_64 | amd64 )
         QEMU_ARCH="x86_64"
     ;;
-    x86 | i386 | i686 )
+    x86 | i386 | i486 | i586 | i686 )
         QEMU_ARCH="x86"
     ;;
     * )

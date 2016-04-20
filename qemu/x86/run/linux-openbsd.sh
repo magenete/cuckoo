@@ -7,6 +7,5 @@ CUCKOO_DIST_VERSION="${CUCKOO_DIST_VERSION:=5.9}"
 CUCKOO_DIR="${CUCKOO_DIR:=$(realpath "$(readlink -f "$(dirname "$0")")/../../..")/}"
 
 QEMU_NO_USB="true"
-QEMU_ARCH="x86"
 
 . "${CUCKOO_DIR}lib/run.sh"
