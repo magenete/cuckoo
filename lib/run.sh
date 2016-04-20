@@ -1,15 +1,6 @@
 
 . "${CUCKOO_DIR}lib/default.sh"
 
-CUCKOO_ISO_DIR="${CUCKOO_DIR}install/iso/${CUCKOO_ARCH}/${CUCKOO_OS}/"
-
-QEMU_VERSION_FILE="${CUCKOO_DIR}qemu/${QEMU_ARCH}/bin/${QEMU_OS}/VERSION"
-QEMU_VERSION="$(cat "$QEMU_VERSION_FILE" 2> /dev/null)"
-QEMU_BIN_DIR="${CUCKOO_DIR}qemu/${QEMU_ARCH}/bin/${QEMU_OS}/${QEMU_VERSION}/"
-QEMU_TMP_DIR="${CUCKOO_TMP_DIR}qemu/"
-QEMU_HD_DIR="${CUCKOO_DIR}qemu/${CUCKOO_ARCH}/hd/${CUCKOO_OS}/${CUCKOO_DIST_VERSION_DIR}"
-QEMU_BIN_FILE="bin/qemu-system-${QEMU_ARCH_BIN_FILE}"
-
 
 ##  ENV check
 
@@ -29,6 +20,23 @@ fi
 if [ ! -f "${QEMU_BIN_DIR}${QEMU_BIN_FILE}" ]
 then
     echo "ERROR: File '${QEMU_BIN_DIR}${QEMU_BIN_FILE}' does not exist"
+    exit 1
+fi
+
+if [ "$QEMU_ARCH" = "x86" ] && [ "$QEMU_ARCH" = "$CUCKOO_ARCH" ]
+then
+    echo "ERROR: Can not run OS '${CUCKOO_ARCH}' on QEMU '${QEMU_ARCH}'"
+    exit 1
+fi
+
+if [ "$CUCKOO_ACTION" = "install" ]
+then
+    . "${CUCKOO_DIR}lib/hd.sh"
+fi
+
+if [ ! -e "$QEMU_HD_DIR" ] || [ ! -d "$QEMU_HD_DIR" ]
+then
+    echo "ERROR: Directory '${QEMU_HD_DIR}' does not exist for HD-s"
     exit 1
 fi
 
@@ -68,12 +76,12 @@ fi
 ##  QEMU run
 
 # Bootloading and CDROM
-QEMU_OPTS="${QEMU_OPTS} -boot order="
-if [ -z "$QEMU_CDROM_FILE" ] && [ -z "$CUCKOO_ISO_FILE" ]
+QEMU_OPTS="-boot order="
+if [ -z "$QEMU_CDROM_FILE" ] && [ "$CUCKOO_ACTION" = "run" ]
 then
     QEMU_OPTS="${QEMU_OPTS}c"
 else
-    if [ ! -z "$CUCKOO_ISO_FILE" ]
+    if [ "$CUCKOO_ACTION" = "install" ] && [ ! -z "$CUCKOO_ISO_FILE" ]
     then
         QEMU_OPTS="${QEMU_OPTS}d -cdrom ${CUCKOO_ISO_DIR}${CUCKOO_ISO_FILE}"
     fi

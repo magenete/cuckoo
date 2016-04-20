@@ -60,7 +60,7 @@ error_message()
 # Setup
 cuckoo_setup()
 {
-
+    echo 0
 }
 
 
@@ -184,6 +184,7 @@ then
 fi
 
 if [ -z "$CUCKOO_SETUP_DIR" ]
+then
     if [ -z "$CUCKOO_OS" ]
     then
         CUCKOO_OS="$CUCKOO_OS_DEFAULT"
@@ -213,7 +214,7 @@ fi
 
 # Running
 if [ -z "$CUCKOO_SETUP_DIR" ]
-    . "${CUCKOO_DIR}lib/env.sh"
+then
     . "${CUCKOO_DIR}lib/run.sh"
 else
     cuckoo_setup
