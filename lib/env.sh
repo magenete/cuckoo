@@ -1,70 +1,52 @@
 
-CUCKOO_OS=""
-CUCKOO_ARCH=""
-CUCKOO_DIR=""
-CUCKOO_ACTION=""
+CUCKOO_ACTION="${CUCKOO_ACTION:=run}"
+
+QEMU_ARCH=""
+QEMU_OS=""
 
 
-case $1 in
-    -i | --install )
-        CUCKOO_ACTION="install"
-    ;;
-    -r | --run | * )
-        CUCKOO_ACTION="run"
-    ;;
-esac
+if [ -z "$CUCKOO_DIR" ]
+then
+    echo "ERROR: Cuckoo directory (variable CUCKOO_DIR) has not been defined"
+    exit 1
+fi
 
 
 case $(uname -m) in
     x86_64 | amd64 )
-        CUCKOO_ARCH="x86_64"
+        QEMU_ARCH="x86_64"
     ;;
     x86 | i386 | i686 )
-        CUCKOO_ARCH="x86"
+        QEMU_ARCH="x86"
+    ;;
+    * )
+        echo "ERROR: Current system architecture has not been supported"
+        exit 1
     ;;
 esac
-
-if [ -z "$CUCKOO_ARCH" ]
-then
-    echo "ERROR: Current system architecture has not been supported"
-    exit 1
-fi
 
 
 case $(uname -s) in
     Linux )
-        CUCKOO_OS="linux"
-        CUCKOO_DIR="$(realpath "$(readlink -f "$(dirname "$0")")")"
+        QEMU_OS="linux"
     ;;
     Darwin )
-        CUCKOO_OS="macosx"
-        CUCKOO_DIR="$(cd "$(dirname "$0")" && pwd -P)"
+        QEMU_OS="macosx"
     ;;
     NetBSD )
-        CUCKOO_OS="netbsd"
-        CUCKOO_DIR="$(readlink -f "$(dirname "$0")")"
+        QEMU_OS="netbsd"
     ;;
     OpenBSD )
-        CUCKOO_OS="openbsd"
-        CUCKOO_DIR="$(readlink -f "$(dirname "$0")")"
+        QEMU_OS="openbsd"
     ;;
     FreeBSD )
-        CUCKOO_OS="freebsd"
-        CUCKOO_DIR="$(readlink -f "$(dirname "$0")")"
+        QEMU_OS="freebsd"
+    ;;
+    * )
+        echo "ERROR: Current system does not supported"
+        exit 1
     ;;
 esac
 
-if [ -z "$CUCKOO_OS" ]
-then
-    echo "ERROR: Current system does not supported"
-    exit 1
-fi
 
-if [ -z "$CUCKOO_DIR" ]
-then
-    echo "ERROR: Current directory has not been defined"
-    exit 1
-fi
-
-
-sh "${CUCKOO_DIR}/${CUCKOO_ARCH}/${CUCKOO_ACTION}/${CUCKOO_OS}-$(basename "$0")"
+CUCKOO_ACTION_FILE="${CUCKOO_DIR}qemu/${QEMU_ARCH}/${CUCKOO_ACTION}/${QEMU_OS}-$(basename "$0")"
