@@ -1,5 +1,5 @@
 
-. "${CUCKOO_DIR}lib/default.sh"
+. "${CUCKOO_DIR}lib/var.sh"
 
 
 if [ ! -d "$QEMU_HD_CLEAN_DIR" ]

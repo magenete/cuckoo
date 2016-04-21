@@ -1,5 +1,5 @@
 
-. "${CUCKOO_DIR}lib/default.sh"
+. "${CUCKOO_DIR}lib/var.sh"
 
 if [ "$CUCKOO_ACTION" = "install" ]
 then
@@ -44,7 +44,7 @@ fi
 ##  Copy in TMP_DIR
 
 "${QEMU_BIN_DIR}${QEMU_BIN_FILE}" -version > /dev/null
-if [ ! $? -eq 0 ]
+if [ $? -nq 0 ]
 then
     mkdir -p "$QEMU_TMP_DIR"
 
@@ -55,7 +55,7 @@ then
         if [ -d "${QEMU_TMP_DIR}${QEMU_VERSION}/" ]
         then
             QEMU_BIN_DIR="${QEMU_TMP_DIR}${QEMU_VERSION}/"
-            chmod -R 750 "$QEMU_BIN_DIR"
+            chmod -R 755 "$QEMU_BIN_DIR"
 
             if [ ! -x "${QEMU_BIN_DIR}${QEMU_BIN_FILE}" ]
             then
