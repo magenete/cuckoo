@@ -136,5 +136,11 @@ then
     QEMU_OPTS="${QEMU_OPTS} -daemonize"
 fi
 
+# External(other) options
+if [ ! -z "$QEMU_OPTS_EXT" ]
+then
+    QEMU_OPTS="${QEMU_OPTS} ${QEMU_OPTS_EXT}"
+fi
+
 
 "${QEMU_BIN_DIR}${QEMU_BIN_FILE}" -name " Cuckoo -- ${CUCKOO_OS}[${CUCKOO_ARCH}] on ${QEMU_OS}[${QEMU_ARCH}] " ${QEMU_OPTS}

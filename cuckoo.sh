@@ -68,6 +68,7 @@ Usage: $(basename $0) [actions] [argumets]
     -C, --cpu-cores     Set CPU cores (by default: ${QEMU_CPU_CORES_DEFAULT}, min: ${QEMU_CPU_MIN}, max: ${QEMU_CPU_CORES_MAX}).
     -T, --cpu-threads   Set CPU threads (by default: ${QEMU_CPU_THREADS_DEFAULT}, min: ${QEMU_CPU_MIN}, max: ${QEMU_CPU_THREADS_MAX}).
     -S, --cpu-sockets   Set CPU sockets (by default: ${QEMU_CPU_SOCKETS_DEFAULT}, min: ${QEMU_CPU_MIN}, max: ${QEMU_CPU_SOCKETS_MAX}).
+    -O, --qemu-opts     Set other QEMU options.
 
 H_E_L_P
 }
@@ -139,8 +140,8 @@ cuckoo_qemu_build()
 
 
 # Options definition
-ARGS_SHORT="s:irb:a:o:d:m:c:e:t:A:C:T:S:vh"
-ARGS_LONG="setup:,install,run,build:,arch:,os-name:,dist-version:,memory-size:,cdrom:,smb-dir:,hd-type:,qemu-arch:,cpu-cores:,cpu-threads:,cpu-sockets:,version,help"
+ARGS_SHORT="s:irb:a:o:d:m:c:e:t:A:C:T:S:O:vh"
+ARGS_LONG="setup:,install,run,build:,arch:,os-name:,dist-version:,memory-size:,cdrom:,smb-dir:,hd-type:,qemu-arch:,cpu-cores:,cpu-threads:,cpu-sockets:,qemu-opts:,version,help"
 OPTS="$(getopt -o "${ARGS_SHORT}" -l "${ARGS_LONG}" -a -- "$@" 2>/dev/null)"
 if [ $? -ne 0 ]
 then
@@ -280,6 +281,10 @@ do
         else
             error_message "Invalid value CPU sockets '$2'"
         fi
+        shift 2
+    ;;
+    --qemu-opts | -O )
+        QEMU_OPTS_EXT="$2"
         shift 2
     ;;
     --version | -v )
