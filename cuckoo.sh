@@ -10,6 +10,9 @@ CUCKOO_OS_DEFAULT="linux"
 CUCKOO_ARCH=""
 CUCKOO_DIST_VERSION=""
 CUCKOO_DIST_VERSION_DEFAULT="debian/8.4"
+CUCKOO_ISO_FILE=""
+CUCKOO_ISO_FILE_NET=""
+CUCKOO_ISO_FILE_PATH=""
 
 QEMU_OS=""
 QEMU_OS_LIST="linux, macosx, windows"
@@ -46,6 +49,8 @@ Usage: $(basename $0) [actions] [argumets]
     -i, --install       Install OS on QEMU image(s).
     -r, --run           Run QEMU (by default).
     -b, --build         Set and build QEMU OS: ${QEMU_OS_LIST}.
+    -u, --iso-url       Download  ISO file and setting in Cuckoo.
+    -f, --iso-file      Copy file in Cuckoo.
 
     -v, --version       Print the current version.
     -h, --help          Show this message.
@@ -134,14 +139,36 @@ cuckoo_qemu_build()
     . "${QEMU_ARCH_BUILD_DIR}${CUCKOO_OS}.sh"
 
     echo ""
-    echo "QEMU has been builded in '${CUCKOO_DIR}'"
+    echo "QEMU has been builded in '${QEMU_ARCH_BIN_OS_DIR}${QEMU_VERSION}'"
+    echo ""
+}
+
+
+# ISO file setup
+cuckoo_iso_setup()
+{
+    CUCKOO_ISO_FILE_SYS_PATH="${CUCKOO_ISO_DIR}${CUCKOO_DIST_VERSION}.iso"
+    CUCKOO_ISO_FILE_DIR="$(dirname "$CUCKOO_ISO_FILE_SYS_PATH")/"
+    CUCKOO_ISO_FILE="$(basename "$CUCKOO_ISO_FILE_SYS_PATH")"
+
+    mkdir -p "${CUCKOO_ISO_FILE_DIR}"
+
+    if [ -z "$CUCKOO_ISO_FILE_NET" ]
+    then
+        mv -f "$CUCKOO_ISO_FILE_PATH" "$CUCKOO_ISO_FILE_SYS_PATH"
+    else
+        curl -o "$CUCKOO_ISO_FILE_SYS_PATH" "$CUCKOO_ISO_FILE_PATH"
+    fi
+
+    echo ""
+    echo "ISO file has been setuped as '${CUCKOO_ISO_FILE_SYS_PATH}'"
     echo ""
 }
 
 
 # Options definition
-ARGS_SHORT="s:irb:a:o:d:m:c:e:t:A:C:T:S:O:vh"
-ARGS_LONG="setup:,install,run,build:,arch:,os-name:,dist-version:,memory-size:,cdrom:,smb-dir:,hd-type:,qemu-arch:,cpu-cores:,cpu-threads:,cpu-sockets:,qemu-opts:,version,help"
+ARGS_SHORT="s:irb:u:f:a:o:d:m:c:e:t:A:C:T:S:O:vh"
+ARGS_LONG="setup:,install,run,build:,iso-url:,iso-file:,arch:,os-name:,dist-version:,memory-size:,cdrom:,smb-dir:,hd-type:,qemu-arch:,cpu-cores:,cpu-threads:,cpu-sockets:,qemu-opts:,version,help"
 OPTS="$(getopt -o "${ARGS_SHORT}" -l "${ARGS_LONG}" -a -- "$@" 2>/dev/null)"
 if [ $? -gt 0 ]
 then
@@ -184,6 +211,23 @@ do
                 error_message "QEMU OS '$2' does not supported for build"
             ;;
         esac
+        shift 2
+    ;;
+    --iso-url | -u )
+        CUCKOO_ACTION="iso"
+        CUCKOO_ISO_FILE_PATH="$2"
+        CUCKOO_ISO_FILE_NET="yes"
+        shift 2
+    ;;
+    --iso-file | -f )
+        CUCKOO_ACTION="iso"
+        if [ -e "$2" ] && [ -f "$2" ]
+        then
+            CUCKOO_ISO_FILE_PATH="$2"
+            CUCKOO_ISO_FILE_NET=""
+        else
+            error_message "File ISO '$2' does not exist"
+        fi
         shift 2
     ;;
     --os-name | -o )
@@ -356,6 +400,10 @@ case "$CUCKOO_ACTION" in
     setup )
         . "${CUCKOO_DIR}lib/var.sh"
         cuckoo_setup
+    ;;
+    iso )
+        . "${CUCKOO_DIR}lib/var.sh"
+        cuckoo_iso_setup
     ;;
     * )
         error_message "Cuckoo action '${CUCKOO_ACTION}' does not supported"
