@@ -143,7 +143,7 @@ cuckoo_qemu_build()
 ARGS_SHORT="s:irb:a:o:d:m:c:e:t:A:C:T:S:O:vh"
 ARGS_LONG="setup:,install,run,build:,arch:,os-name:,dist-version:,memory-size:,cdrom:,smb-dir:,hd-type:,qemu-arch:,cpu-cores:,cpu-threads:,cpu-sockets:,qemu-opts:,version,help"
 OPTS="$(getopt -o "${ARGS_SHORT}" -l "${ARGS_LONG}" -a -- "$@" 2>/dev/null)"
-if [ $? -ne 0 ]
+if [ $? -gt 0 ]
 then
     error_message "Invalid option(s) value"
 fi

@@ -44,8 +44,9 @@ fi
 ##  Copy in TMP_DIR
 
 "${QEMU_BIN_DIR}${QEMU_BIN_FILE}" -version > /dev/null
-if [ $? -nq 0 ]
+if [ $? -gt 0 ]
 then
+echo 123
     mkdir -p "$QEMU_TMP_DIR"
 
     if [ -d "$QEMU_TMP_DIR" ]
