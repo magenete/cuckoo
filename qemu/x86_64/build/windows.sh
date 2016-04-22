@@ -8,7 +8,7 @@ fi
 
 QEMU_VERSION=""                                         # We build all QEMU versions listed
 QEMU_BRANCH="master"                                    # Branch NAME in Git
-QEMU_ARCH_LIST="${QEMU_ARCH_BIN_FILE}-softmmu"          # What to emulate
+QEMU_ARCH_BUILD_TARGET="${QEMU_ARCH_BIN_FILE}-softmmu"  # What to emulate
 QEMU_GIT_URL="https://github.com/qemu/qemu/archive/${QEMU_BRANCH}.tar.gz"
 QEMU_ARCH_BIN_OS_TMP_DIR="${QEMU_ARCH_BIN_OS_DIR}tmp/"  # By default emulators are built in /tmp
 QEMU_ARCH_BIN_OS_BRANCH_TMP_DIR="${QEMU_ARCH_BIN_OS_TMP_DIR}qemu-${QEMU_BRANCH}/"
@@ -58,7 +58,7 @@ echo ""
 cd "${QEMU_ARCH_BIN_OS_BRANCH_TMP_DIR}"
 ./configure \
     --prefix=${QEMU_ARCH_BIN_OS_DIR}${QEMU_VERSION} \
-    --target-list=${QEMU_ARCH_LIST} \
+    --target-list=${QEMU_ARCH_BUILD_TARGET} \
     --python=/usr/bin/python2 \
     --enable-sdl \
     --enable-kvm \

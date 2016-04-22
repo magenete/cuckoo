@@ -11,8 +11,6 @@ else
 fi
 
 
-echo -n "Screen size setting...  "
-
 for screen_size in $HD_SCREEN_SIZE_LIST
 do
     xrandr | grep $screen_size > /dev/null
@@ -25,12 +23,12 @@ do
         then
             xrandr --newmode "$screen_size" $GTF_DATA
             xrandr --addmode $(xrandr | grep " connected" | cut -d\  -f1) $screen_size
+            echo "Screen size '$screen_size' has been defined"
         fi
+    else
+        echo "Screen size '$screen_size' already was defined"
     fi
 done
-
-echo -n "  ...are completed!"
-echo ""
 
 
 exit 0
