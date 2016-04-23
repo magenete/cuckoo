@@ -5,7 +5,7 @@ VIRT_EMULATOR=""
 
 CUCKOO_ACTION=""
 CUCKOO_ACTION_DEFAULT="run"
-CUCKOO_DIR="${CUCKOO_DIR:=$(cd "$(dirname "$0")" && pwd -P)}/cuckoo/"
+CUCKOO_DIR="${CUCKOO_DIR:=$(cd "$(dirname "$0")" && pwd -P)/cuckoo/}"
 CUCKOO_OS_LIST="linux netbsd freebsd openbsd macosx windows"
 CUCKOO_OS_DEFAULT="linux"
 CUCKOO_OS=""
@@ -25,7 +25,7 @@ CUCKOO_BOOT_FLOPPY_FILE=""
 
 QEMU_ACTION=""
 QEMU_ACTION_DEFAULT="run"
-QEMU_DIR="${QEMU_DIR:=$(cd "$(dirname "$0")" && pwd -P)}/qemu/"
+QEMU_DIR="${QEMU_DIR:=$(cd "$(dirname "$0")" && pwd -P)/qemu/}"
 QEMU_OS_LIST="linux macosx windows"
 QEMU_OS=""
 ACTION_QEMU_OS_LIST=""
@@ -652,6 +652,7 @@ fi
 # QEMU
 case "$QEMU_ACTION" in
     run )
+        . "${QEMU_DIR}lib/env.sh"
     ;;
     build )
         qemu_build
