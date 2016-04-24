@@ -15,10 +15,20 @@ esac
 
 case $(uname -s) in
     Linux )
-        QEMU_OS="${QEMU_OS:=linux}"
+        if [ -z "$QEMU_OS_REAL" ]
+        then
+            QEMU_OS="${QEMU_OS:=linux}"
+        else
+            QEMU_OS="linux"
+        fi
     ;;
     Darwin )
-        QEMU_OS="${QEMU_OS:=macosx}"
+        if [ -z "$QEMU_OS_REAL" ]
+        then
+            QEMU_OS="${QEMU_OS:=macosx}"
+        else
+            QEMU_OS="macosx"
+        fi
     ;;
 #    NetBSD )
 #        QEMU_OS="netbsd"

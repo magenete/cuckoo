@@ -1,5 +1,5 @@
 
 CUCKOO_DIST_VERSION="${CUCKOO_DIST_VERSION:=debian/8.4}"
-CUCKOO_DIR="$(cd "$(dirname "$0")/../../.." && pwd -P)/"
+CUCKOO_DIR="${CUCKOO_DIR:=$(realpath "$(readlink -f "$(dirname "$0")")/../../..")}"
 
-cd "${CUCKOO_DIR}../" && . "${CUCKOO_DIR}../cuckoo.sh" --run --os-name linux --dist-version $CUCKOO_DIST_VERSION
+"${CUCKOO_DIR}/manage.sh" --run --arch x86_64 --os-name linux --dist-version $CUCKOO_DIST_VERSION

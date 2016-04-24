@@ -1,4 +1,5 @@
 
-CUCKOO_ACTION="install"
+CUCKOO_DIST_VERSION="${CUCKOO_DIST_VERSION:=10/en}"
+CUCKOO_DIR="${CUCKOO_DIR:=$(realpath "$(readlink -f "$(dirname "$0")")/../../..")}"
 
-. "$(realpath "$(readlink -f "$(dirname "$0")")/..")/run/$(basename "$0")"
+"${CUCKOO_DIR}/manage.sh" --install --arch x86_64 --os-name windows --dist-version $CUCKOO_DIST_VERSION

@@ -108,18 +108,22 @@ for qemu_disk in $(ls $QEMU_HD_DIR)
 do
     if [ -f "${QEMU_HD_DIR}${qemu_disk}" ]
     then
-        QEMU_OPTS="${QEMU_OPTS} -drive media=disk,if=${QEMU_HD_TYPE},index=${qemu_disk},file=${QEMU_HD_DIR}${qemu_disk}"
+        QEMU_OPTS="${QEMU_OPTS} -drive media=disk,if=${QEMU_HD_TYPE},id=hd${qemu_disk},index=${qemu_disk},file=${QEMU_HD_DIR}${qemu_disk}"
     fi
 done
+
+# CDROM add
+if [ ! -z "$QEMU_ADD_CDROM_FILE" ]
+then
+    QEMU_OPTS="${QEMU_OPTS} -drive media=cdrom,if=${QEMU_HD_TYPE},id=cdrom-1,index=-1,file=${QEMU_ADD_CDROM_FILE}"
+fi
 
 # Screen
 QEMU_OPTS="${QEMU_OPTS} -vga std -sdl -display sdl"
 
 # USB
-if [ -z "$QEMU_NO_USB" ]
-then
-    QEMU_OPTS="${QEMU_OPTS} -usb -usbdevice tablet -device piix3-usb-uhci"
-fi
+QEMU_OPTS="${QEMU_OPTS} -usb -usbdevice tablet"
+# -device piix3-usb-uhci"
 
 # SMB directory
 if [ ! -z "$QEMU_SMB_DIR" ]
