@@ -1,4 +1,5 @@
 
+CUCKOO_VIRT_EMULATOR_SYSTEM=""
 VIRT_EMULATOR_LIST="qemu"
 VIRT_EMULATOR_DEFAULT="qemu"
 VIRT_EMULATOR=""
@@ -61,7 +62,7 @@ Usage: $(basename $0) [actions] [argumets]
   Actions:
 
     -s, --setup         Set directory with full path and setup Cuckoo.
-    -b, --qemu-build    Build QEMU for OS: $(from_arr_to_str "$QEMU_OS_LIST").
+    -b, --qemu-build    Build(only on Linux) QEMU for OS: $(from_arr_to_str "$QEMU_OS_LIST").
     -q, --qemu-remove   Remove QEMU file(s).
     -u, --iso-url       Download ISO file and setup in Cuckoo.
     -f, --iso-file      Local copy ISO file and setup in Cuckoo.
@@ -75,6 +76,7 @@ Usage: $(basename $0) [actions] [argumets]
 
   Arguments:
 
+    -Q, --qemu-system   Run system QEMU.
     -A, --qemu-arch     Set QEMU architecture (by default: definition by OS).
                           QEMU architecture: $(from_arr_to_str "$QEMU_ARCH_LIST").
     -O, --qemu-os-name  Set QEMU OS (by default: definition by OS).
@@ -86,7 +88,7 @@ Usage: $(basename $0) [actions] [argumets]
     -d, --dist-version  Set dist and(or) version (by default: ${CUCKOO_DIST_VERSION_DEFAULT}).
     -c, --boot-cdrom    Set file with full path for CDROM(IDE device).
     -p, --boot-floppy   Set file with full path for Floppy Disk.
-    -D, --add-cdrom     Set file with full path for CDROM(iSCI device).
+    -D, --cdrom-add     Set file with full path for CDROM(iSCI device).
     -C, --cpu-cores     Set CPU cores (by default: ${CUCKOO_CPU_CORES_DEFAULT}, min: ${CUCKOO_CPU_MIN}, max: ${CUCKOO_CPU_CORES_MAX}).
     -T, --cpu-threads   Set CPU threads (by default: ${CUCKOO_CPU_THREADS_DEFAULT}, min: ${CUCKOO_CPU_MIN}, max: ${CUCKOO_CPU_THREADS_MAX}).
     -S, --cpu-sockets   Set CPU sockets (by default: ${CUCKOO_CPU_SOCKETS_DEFAULT}, min: ${CUCKOO_CPU_MIN}, max: ${CUCKOO_CPU_SOCKETS_MAX}).
@@ -96,7 +98,7 @@ Usage: $(basename $0) [actions] [argumets]
     -N, --no-daemonize  Running no daemonize.
     -t, --hd-type       Set hard drive type (by default: ${CUCKOO_HD_TYPE_DEFAULT}).
                           HD type: ${CUCKOO_HD_TYPE_LIST}.
-    -P, --add-opts      Add other QEMU options.
+    -P, --opts-add      Add other QEMU options.
 
 H_E_L_P
 }
@@ -473,8 +475,8 @@ checking_and_default_values()
 
 
 # Options definition
-ARGS_SHORT="s:bqu:f:IHirA:O:a:o:d:c:p:D:C:T:S:m:e:FNt:P:vh"
-ARGS_LONG="setup:,qemu-build,qemu-remove,iso-url:,iso-file:,iso-remove,hd-remove,install,run,qemu-arch,qemu-os-name:,arch:,os-name:,dist-version:,boot-cdrom:,boot-floppy:,add-cdrom:,cpu-cores:,cpu-threads:,cpu-sockets:,memory-size:,smb-dir:,full-screen,no-daemonize,hd-type:,add-opts:,version,help"
+ARGS_SHORT="s:bqu:f:IHirQA:O:a:o:d:c:p:D:C:T:S:m:e:FNt:P:vh"
+ARGS_LONG="setup:,qemu-build,qemu-remove,iso-url:,iso-file:,iso-remove,hd-remove,install,run,qemu-system,qemu-arch,qemu-os-name:,arch:,os-name:,dist-version:,boot-cdrom:,boot-floppy:,cdrom-add:,cpu-cores:,cpu-threads:,cpu-sockets:,memory-size:,smb-dir:,full-screen,no-daemonize,hd-type:,opts-add:,version,help"
 OPTS="$(getopt -o "${ARGS_SHORT}" -l "${ARGS_LONG}" -a -- "$@" 2>/dev/null)"
 if [ $? -gt 0 ]
 then
@@ -538,6 +540,10 @@ do
     ;;
     --run | -r )
         CUCKOO_ACTION="run"
+        shift 1
+    ;;
+    --qemu-system | -Q )
+        QEMU_ACTION="run-system"
         shift 1
     ;;
     --qemu-arch | -A )
@@ -606,7 +612,7 @@ do
         fi
         shift 2
     ;;
-    --add-cdrom | -D )
+    --cdrom-add | -D )
         if [ -e "$2" ] && [ -f "$2" ]
         then
             CUCKOO_ADD_CDROM_FILE="$2"
@@ -674,7 +680,7 @@ do
         esac
         shift 2
     ;;
-    --add-opts | -P )
+    --opts-add | -P )
         CUCKOO_OPTS_EXT="$2"
         shift 2
     ;;
@@ -709,6 +715,9 @@ case "$QEMU_ACTION" in
         QEMU_OS_REAL="yes"
         . "${QEMU_DIR}lib/env.sh"
     ;;
+    run-system )
+        CUCKOO_VIRT_EMULATOR_SYSTEM="yes"
+    ;;
     build )
         qemu_build
     ;;
@@ -725,7 +734,7 @@ case "$CUCKOO_ACTION" in
     run | install )
         case "$VIRT_EMULATOR" in
             qemu )
-                if [ "$QEMU_ACTION" = "run" ]
+                if [ "$QEMU_ACTION" = "run" ] || [ "$QEMU_ACTION" = "run-system" ]
                 then
                     QEMU_ENV_NO="yes"
                     . "${CUCKOO_DIR}lib/var.sh"

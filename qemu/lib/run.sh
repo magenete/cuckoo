@@ -1,7 +1,13 @@
 
 . "${QEMU_DIR}lib/var.sh"
 
-QEMU_RUN_DIR="$QEMU_BIN_ARCH_OS_VERSION_DIR"
+
+if [ -z "$QEMU_SYSTEM" ]
+then
+    QEMU_RUN_DIR="$QEMU_BIN_ARCH_OS_VERSION_DIR"
+else
+    QEMU_RUN_DIR="$QEMU_BIN_DIR"
+fi
 
 
 ##  ENV check
