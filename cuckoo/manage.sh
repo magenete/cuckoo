@@ -1,5 +1,5 @@
 
-CUCKOO_VIRT_EMULATOR_SYSTEM=""
+VIRT_EMULATOR_SYSTEM=""
 VIRT_EMULATOR_LIST="qemu"
 VIRT_EMULATOR_DEFAULT="qemu"
 VIRT_EMULATOR=""
@@ -39,6 +39,8 @@ CUCKOO_NO_DAEMONIZE=""
 CUCKOO_HD_TYPE_LIST="ide, scsi, virtio"
 CUCKOO_HD_TYPE=""
 CUCKOO_HD_TYPE_DEFAULT="virtio"
+CUCKOO_DIST_VERSION_CONFIG=""
+CUCKOO_DIST_VERSION_CONFIG_FILE=""
 
 
 QEMU_ACTION=""
@@ -55,52 +57,55 @@ ACTION_QEMU_ARCH_LIST=""
 # Help message definition
 help_message()
 {
-    cat <<H_E_L_P
+    cat << _H_E_L_P
 
 Usage: $(basename $0) [actions] [argumets]
 
   Actions:
 
-    -s, --setup         Set directory with full path and setup Cuckoo.
-    -b, --qemu-build    Build(only on Linux) QEMU for OS: $(from_arr_to_str "$QEMU_OS_LIST").
-    -q, --qemu-remove   Remove QEMU file(s).
-    -u, --iso-url       Download ISO file and setup in Cuckoo.
-    -f, --iso-file      Local copy ISO file and setup in Cuckoo.
-    -I, --iso-remove    Remove ISO file(s).
-    -H, --hd-remove     Remove QEMU HD(s).
-    -i, --install       Install OS on QEMU image(s).
-    -r, --run           Run QEMU (by default).
+    -s, --setup          Set directory with full path and setup Cuckoo.
+    -b, --qemu-build     Build(only on Linux) QEMU for OS: $(from_arr_to_str "$QEMU_OS_LIST").
+    -q, --qemu-remove    Remove QEMU file(s).
+    -u, --iso-url        Download ISO file and setup in Cuckoo.
+    -f, --iso-file       Local copy ISO file and setup in Cuckoo.
+    -I, --iso-remove     Remove ISO file(s).
+    -H, --hd-remove      Remove QEMU HD(s).
+    -i, --install        Install OS on QEMU image(s).
+    -r, --run            Run QEMU (by default).
 
-    -v, --version       Print the current version.
-    -h, --help          Show this message.
+    -v, --version        Print the current version.
+    -h, --help           Show this message.
 
   Arguments:
 
-    -Q, --qemu-system   Run system QEMU.
-    -A, --qemu-arch     Set QEMU architecture (by default: definition by OS).
-                          QEMU architecture: $(from_arr_to_str "$QEMU_ARCH_LIST").
-    -O, --qemu-os-name  Set QEMU OS (by default: definition by OS).
-                          QEMU OS: $(from_arr_to_str "$QEMU_OS_LIST").
-    -a, --arch          Set OS architecture (by default: definition by OS).
-                          OS architecture: $(from_arr_to_str "$CUCKOO_ARCH_LIST").
-    -o, --os-name       Set OS name (by default: ${CUCKOO_OS_DEFAULT}).
-                          OS: $(from_arr_to_str "$CUCKOO_OS_LIST").
-    -d, --dist-version  Set dist and(or) version (by default: ${CUCKOO_DIST_VERSION_DEFAULT}).
-    -c, --boot-cdrom    Set file with full path for CDROM(IDE device).
-    -p, --boot-floppy   Set file with full path for Floppy Disk.
-    -D, --cdrom-add     Set file with full path for CDROM(iSCI device).
-    -C, --cpu-cores     Set CPU cores (by default: ${CUCKOO_CPU_CORES_DEFAULT}, min: ${CUCKOO_CPU_MIN}, max: ${CUCKOO_CPU_CORES_MAX}).
-    -T, --cpu-threads   Set CPU threads (by default: ${CUCKOO_CPU_THREADS_DEFAULT}, min: ${CUCKOO_CPU_MIN}, max: ${CUCKOO_CPU_THREADS_MAX}).
-    -S, --cpu-sockets   Set CPU sockets (by default: ${CUCKOO_CPU_SOCKETS_DEFAULT}, min: ${CUCKOO_CPU_MIN}, max: ${CUCKOO_CPU_SOCKETS_MAX}).
-    -m, --memory-size   Set memory size (by default: ${CUCKOO_MEMORY_SIZE_DEFAULT}).
-    -e, --smb-dir       Set directory with full path for SMB share.
-    -F, --full-screen   Set full screen.
-    -N, --no-daemonize  Running no daemonize.
-    -t, --hd-type       Set hard drive type (by default: ${CUCKOO_HD_TYPE_DEFAULT}).
-                          HD type: ${CUCKOO_HD_TYPE_LIST}.
-    -P, --opts-add      Add other QEMU options.
+    -Q, --qemu-system    Run system QEMU.
+    -A, --qemu-arch      Set QEMU architecture (by default: definition by OS).
+                           QEMU architecture: $(from_arr_to_str "$QEMU_ARCH_LIST").
+    -O, --qemu-os-name   Set QEMU OS (by default: definition by OS).
+                           QEMU OS: $(from_arr_to_str "$QEMU_OS_LIST").
+    -a, --arch           Set OS architecture (by default: definition by OS).
+                           OS architecture: $(from_arr_to_str "$CUCKOO_ARCH_LIST").
+    -o, --os-name        Set OS name (by default: ${CUCKOO_OS_DEFAULT}).
+                           OS: $(from_arr_to_str "$CUCKOO_OS_LIST").
+    -d, --dist-version   Set dist and(or) version (by default: ${CUCKOO_DIST_VERSION_DEFAULT}).
+    -E, --config-set     Create and write config file if --dist-version defined.
+    -U, --config-update  Update config file if config file exists.
+    -R, --config-remove  Remove config file if config file exists.
+    -c, --boot-cdrom     Set file with full path for CDROM(IDE device).
+    -p, --boot-floppy    Set file with full path for Floppy Disk.
+    -D, --cdrom-add      Set file with full path for CDROM(iSCI device).
+    -C, --cpu-cores      Set CPU cores (by default: ${CUCKOO_CPU_CORES_DEFAULT}, min: ${CUCKOO_CPU_MIN}, max: ${CUCKOO_CPU_CORES_MAX}).
+    -T, --cpu-threads    Set CPU threads (by default: ${CUCKOO_CPU_THREADS_DEFAULT}, min: ${CUCKOO_CPU_MIN}, max: ${CUCKOO_CPU_THREADS_MAX}).
+    -S, --cpu-sockets    Set CPU sockets (by default: ${CUCKOO_CPU_SOCKETS_DEFAULT}, min: ${CUCKOO_CPU_MIN}, max: ${CUCKOO_CPU_SOCKETS_MAX}).
+    -m, --memory-size    Set memory size (by default: ${CUCKOO_MEMORY_SIZE_DEFAULT}).
+    -e, --smb-dir        Set directory with full path for SMB share.
+    -F, --full-screen    Set full screen.
+    -N, --no-daemonize   Running no daemonize.
+    -t, --hd-type        Set hard drive type (by default: ${CUCKOO_HD_TYPE_DEFAULT}).
+                           HD type: ${CUCKOO_HD_TYPE_LIST}.
+    -P, --opts-add       Add other QEMU options.
 
-H_E_L_P
+_H_E_L_P
 }
 
 
@@ -445,6 +450,16 @@ checking_and_default_values()
         then
             CUCKOO_CPU_SOCKETS=$CUCKOO_CPU_SOCKETS_DEFAULT
         fi
+
+        if [ -z "$CUCKOO_HD_TYPE" ]
+        then
+            CUCKOO_HD_TYPE="$CUCKOO_HD_TYPE_DEFAULT"
+        fi
+
+        if [ -z "$CUCKOO_MEMORY_SIZE" ]
+        then
+            CUCKOO_MEMORY_SIZE="$CUCKOO_MEMORY_SIZE_DEFAULT"
+        fi
     else
         if [ -z "$CUCKOO_OS" ]
         then
@@ -474,9 +489,113 @@ checking_and_default_values()
 }
 
 
-# Options definition
-ARGS_SHORT="s:bqu:f:IHirQA:O:a:o:d:c:p:D:C:T:S:m:e:FNt:P:vh"
-ARGS_LONG="setup:,qemu-build,qemu-remove,iso-url:,iso-file:,iso-remove,hd-remove,install,run,qemu-system,qemu-arch,qemu-os-name:,arch:,os-name:,dist-version:,boot-cdrom:,boot-floppy:,cdrom-add:,cpu-cores:,cpu-threads:,cpu-sockets:,memory-size:,smb-dir:,full-screen,no-daemonize,hd-type:,opts-add:,version,help"
+## Config management for distributive/version
+
+# Create
+cuckoo_dist_version_config_create()
+{
+    cat > "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}" << _C_O_F_I_G
+CUCKOO_OS="$CUCKOO_OS"
+CUCKOO_ARCH="$CUCKOO_ARCH"
+CUCKOO_DIST_VERSION="$CUCKOO_DIST_VERSION"
+CUCKOO_DIST_VERSION_DIR="$CUCKOO_DIST_VERSION_DIR"
+CUCKOO_ISO_FILE="$CUCKOO_ISO_FILE"
+
+CUCKOO_MEMORY_SIZE="$CUCKOO_MEMORY_SIZE"
+CUCKOO_CPU_CORES=$CUCKOO_CPU_CORES
+CUCKOO_CPU_THREADS=$CUCKOO_CPU_THREADS
+CUCKOO_CPU_SOCKETS=$CUCKOO_CPU_SOCKETS
+CUCKOO_HD_TYPE="$CUCKOO_HD_TYPE"
+CUCKOO_FULL_SCREEN="$CUCKOO_FULL_SCREEN"
+CUCKOO_NO_DAEMONIZE="$CUCKOO_NO_DAEMONIZE"
+CUCKOO_SMB_DIR="$CUCKOO_SMB_DIR"
+
+CUCKOO_ADD_CDROM_FILE="$CUCKOO_ADD_CDROM_FILE"
+CUCKOO_OPTS_EXT="$CUCKOO_OPTS_EXT"
+_C_O_F_I_G
+}
+
+# Load
+cuckoo_dist_version_config_load()
+{
+    if [ -e "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}" ] && [ -f "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}" ]
+    then
+        . "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}"
+    fi
+}
+
+# Merge
+cuckoo_dist_version_config_merge_var()
+{
+    CUCKOO_OS__C_O_N_F_I_G="$CUCKOO_OS"
+    CUCKOO_ARCH__C_O_N_F_I_G="$CUCKOO_ARCH"
+    CUCKOO_DIST_VERSION__C_O_N_F_I_G="$CUCKOO_DIST_VERSION"
+    CUCKOO_DIST_VERSION_DIR__C_O_N_F_I_G="$CUCKOO_DIST_VERSION_DIR"
+    CUCKOO_ISO_FILE__C_O_N_F_I_G="$CUCKOO_ISO_FILE"
+
+    CUCKOO_MEMORY_SIZE__C_O_N_F_I_G="$CUCKOO_MEMORY_SIZE"
+    CUCKOO_CPU_CORES__C_O_N_F_I_G=$CUCKOO_CPU_CORES
+    CUCKOO_CPU_THREADS__C_O_N_F_I_G=$CUCKOO_CPU_THREADS
+    CUCKOO_CPU_SOCKETS__C_O_N_F_I_G=$CUCKOO_CPU_SOCKETS
+    CUCKOO_HD_TYPE__C_O_N_F_I_G="$CUCKOO_HD_TYPE"
+    CUCKOO_FULL_SCREEN__C_O_N_F_I_G="$CUCKOO_FULL_SCREEN"
+    CUCKOO_NO_DAEMONIZE__C_O_N_F_I_G="$CUCKOO_NO_DAEMONIZE"
+    CUCKOO_SMB_DIR__C_O_N_F_I_G="$CUCKOO_SMB_DIR"
+
+    CUCKOO_ADD_CDROM_FILE__C_O_N_F_I_G="$CUCKOO_ADD_CDROM_FILE"
+    CUCKOO_OPTS_EXT__C_O_N_F_I_G="$CUCKOO_OPTS_EXT"
+
+    cuckoo_dist_version_config_load
+
+    [ "$CUCKOO_OS" != "$CUCKOO_OS__C_O_N_F_I_G" ] && CUCKOO_OS="$CUCKOO_OS__C_O_N_F_I_G"
+    [ "$CUCKOO_ARCH" != "$CUCKOO_ARCH_CONFIG_TMP" ] && CUCKOO_ARCH="$CUCKOO_ARCH__C_O_N_F_I_G"
+    [ "$CUCKOO_DIST_VERSION" != "$CUCKOO_DIST_VERSION__C_O_N_F_I_G" ] && CUCKOO_DIST_VERSION="$CUCKOO_DIST_VERSION__C_O_N_F_I_G"
+    [ "$CUCKOO_DIST_VERSION_DIR" != "$CUCKOO_DIST_VERSION_DIR__C_O_N_F_I_G" ] && CUCKOO_DIST_VERSION_DIR="$CUCKOO_DIST_VERSION_DIR__C_O_N_F_I_G"
+    [ "$CUCKOO_ISO_FILE" != "$CUCKOO_ISO_FILE__C_O_N_F_I_G" ] && CUCKOO_ISO_FILE="$CUCKOO_ISO_FILE__C_O_N_F_I_G"
+
+    [ "$CUCKOO_MEMORY_SIZE" != "$CUCKOO_MEMORY_SIZE__C_O_N_F_I_G" ] && CUCKOO_MEMORY_SIZE="$CUCKOO_MEMORY_SIZE__C_O_N_F_I_G"
+    [ "$CUCKOO_CPU_CORES" != "$CUCKOO_CPU_CORES__C_O_N_F_I_G" ] && CUCKOO_CPU_CORES="$CUCKOO_CPU_CORES__C_O_N_F_I_G"
+    [ "$CUCKOO_CPU_THREADS" != "$CUCKOO_CPU_THREADS__C_O_N_F_I_G" ] && CUCKOO_CPU_THREADS="$CUCKOO_CPU_THREADS__C_O_N_F_I_G"
+    [ "$CUCKOO_CPU_SOCKETS" != "$CUCKOO_CPU_SOCKETS__C_O_N_F_I_G" ] && CUCKOO_CPU_SOCKETS="$CUCKOO_CPU_SOCKETS__C_O_N_F_I_G"
+    [ "$CUCKOO_HD_TYPE" != "$CUCKOO_HD_TYPE__C_O_N_F_I_G" ] && CUCKOO_HD_TYPE="$CUCKOO_HD_TYPE__C_O_N_F_I_G"
+    [ "$CUCKOO_FULL_SCREEN" != "$CUCKOO_FULL_SCREEN__C_O_N_F_I_G" ] && CUCKOO_FULL_SCREEN="$CUCKOO_FULL_SCREEN__C_O_N_F_I_G"
+    [ "$CUCKOO_NO_DAEMONIZE" != "$CUCKOO_NO_DAEMONIZE__C_O_N_F_I_G" ] && ="$CUCKOO_NO_DAEMONIZE__C_O_N_F_I_G"
+    [ "$CUCKOO_SMB_DIR" != "$CUCKOO_SMB_DIR__C_O_N_F_I_G" ] && CUCKOO_SMB_DIR="$CUCKOO_SMB_DIR__C_O_N_F_I_G"
+
+    [ "$CUCKOO_ADD_CDROM_FILE" != "$CUCKOO_ADD_CDROM_FILE__C_O_N_F_I_G" ] && CUCKOO_ADD_CDROM_FILE="$CUCKOO_ADD_CDROM_FILE__C_O_N_F_I_G"
+    [ "$CUCKOO_OPTS_EXT" != "$CUCKOO_OPTS_EXT__C_O_N_F_I_G" ] && CUCKOO_OPTS_EXT="$CUCKOO_OPTS_EXT__C_O_N_F_I_G"
+}
+
+# Manage
+cuckoo_dist_version_config()
+{
+    case "$CUCKOO_DIST_VERSION_CONFIG" in
+        set )
+            cuckoo_dist_version_config_create
+        ;;
+        update )
+            if [ -e "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}" ] && [ -f "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}" ]
+            then
+                cuckoo_dist_version_config_merge_var
+                cuckoo_dist_version_config_create
+            fi
+        ;;
+        remove )
+            if [ -e "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}" ] && [ -f "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}" ]
+            then
+                rm -f "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}"
+            fi
+        ;;
+        * )
+            cuckoo_dist_version_config_load
+        ;;
+    esac
+}
+
+
+##  Options definition
+ARGS_SHORT="s:bqu:f:IHirQA:O:a:o:d:EURc:p:D:C:T:S:m:e:FNt:P:vh"
+ARGS_LONG="setup:,qemu-build,qemu-remove,iso-url:,iso-file:,iso-remove,hd-remove,install,run,qemu-system,qemu-arch,qemu-os-name:,arch:,os-name:,dist-version:,config-set,config-update,config-remove,boot-cdrom:,boot-floppy:,cdrom-add:,cpu-cores:,cpu-threads:,cpu-sockets:,memory-size:,smb-dir:,full-screen,no-daemonize,hd-type:,opts-add:,version,help"
 OPTS="$(getopt -o "${ARGS_SHORT}" -l "${ARGS_LONG}" -a -- "$@" 2>/dev/null)"
 if [ $? -gt 0 ]
 then
@@ -593,6 +712,18 @@ do
     --dist-version | -d )
         CUCKOO_DIST_VERSION="$2"
         shift 2
+    ;;
+    --config-set | -E )
+        CUCKOO_DIST_VERSION_CONFIG="set"
+        shift 1
+    ;;
+    --config-update | -U )
+        CUCKOO_DIST_VERSION_CONFIG="update"
+        shift 1
+    ;;
+    --config-remove | -R )
+        CUCKOO_DIST_VERSION_CONFIG="remove"
+        shift 1
     ;;
     --boot-cdrom | -c )
         if [ -e "$2" ] && [ -f "$2" ]
@@ -716,7 +847,7 @@ case "$QEMU_ACTION" in
         . "${QEMU_DIR}lib/env.sh"
     ;;
     run-system )
-        CUCKOO_VIRT_EMULATOR_SYSTEM="yes"
+        VIRT_EMULATOR_SYSTEM="yes"
     ;;
     build )
         qemu_build
@@ -739,10 +870,18 @@ case "$CUCKOO_ACTION" in
                     QEMU_ENV_NO="yes"
                     . "${CUCKOO_DIR}lib/var.sh"
 
+                    cuckoo_dist_version_config
+
                     if [ "$CUCKOO_ACTION" = "install" ]
                     then
-                        . "${CUCKOO_DIR}lib/hd.sh"
                         CUCKOO_BOOT_CDROM_FILE="${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}"
+
+                        if [ -e "$CUCKOO_BOOT_CDROM_FILE" ] && [ -f "$CUCKOO_BOOT_CDROM_FILE" ]
+                        then
+                            . "${CUCKOO_DIR}lib/hd.sh"
+                        else
+                            error_message "ISO file '$2' does not exist for installation"
+                        fi
                     fi
 
                     . "${CUCKOO_DIR}lib/qemu.sh"
