@@ -248,7 +248,34 @@ cuckoo_hd_setup_copying()
     fi
 }
 
-# ISO setup
+# QEMU copy
+cuckoo_qemu_copy()
+{
+    QEMU_ENV_NO="yes"
+
+    for qemu_arch in $ACTION_QEMU_ARCH_LIST
+    do
+        for qemu_os in $ACTION_QEMU_OS_LIST
+        do
+            QEMU_OS="$qemu_os"
+            QEMU_ARCH="$qemu_arch"
+
+            . "${QEMU_DIR}lib/var.sh"
+
+            if [ ! -z "$QEMU_BIN_ARCH_OS_DIR" ] && [ -e "$QEMU_BIN_ARCH_OS_DIR" ] && [ -d "$QEMU_BIN_ARCH_OS_DIR" ]
+            then
+                mkdir "${CUCKOO_SETUP_DIR}qemu/bin/${QEMU_ARCH}/"
+                cp -rv "$QEMU_BIN_ARCH_OS_DIR" "${CUCKOO_SETUP_DIR}qemu/bin/${QEMU_ARCH}/"
+
+                echo "      ...from '${QEMU_BIN_ARCH_OS_DIR}'"
+            else
+                echo "WARNING: QEMU has not been copyed for OS: ${qemu_os}, arch: ${qemu_arch}"
+            fi
+        done
+    done
+}
+
+##  Setup
 cuckoo_setup()
 {
     CUCKOO_SETUP_DIR="${CUCKOO_SETUP_DIR}cuckoo/"
@@ -313,6 +340,11 @@ cuckoo_setup()
     echo ""
     echo "    Directory build/: copying..."
     cp -rv "${QEMU_DIR}build/" "${CUCKOO_SETUP_DIR}qemu/"
+
+    echo ""
+    echo "    Directory bin/: copying..."
+    mkdir "${CUCKOO_SETUP_DIR}qemu/bin/"
+    cuckoo_qemu_copy
 
     echo ""
 
@@ -609,7 +641,7 @@ checking_and_default_qemu_values()
 {
     [ -z "$QEMU_ACTION" ] && QEMU_ACTION="$QEMU_ACTION_DEFAULT"
 
-    if [ "$QEMU_ACTION" = "build" ] || [ "$QEMU_ACTION" = "remove" ]
+    if [ "$QEMU_ACTION" = "build" ] || [ "$QEMU_ACTION" = "remove" ] || [ "$QEMU_ACTION" = "copy" ]
     then
         if [ -z "$QEMU_OS" ]
         then
@@ -824,6 +856,7 @@ do
         if [ -e "$2" ] && [ -d "$2" ]
         then
             CUCKOO_SETUP_DIR="${2}/"
+            QEMU_ACTION="copy"
         else
             error_message "Directory '$2' does not exist for setup"
         fi
@@ -1071,6 +1104,9 @@ case "$QEMU_ACTION" in
     ;;
     remove )
         qemu_remove
+    ;;
+    copy )
+        # See coomon method cuckoo_setup()
     ;;
     * )
         error_message "QEMU action '${QEMU_ACTION}' does not supported"
