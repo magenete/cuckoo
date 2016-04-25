@@ -72,7 +72,8 @@ Usage: $(basename $0) [actions] [argumets]
     -H, --hd-remove      Remove QEMU HD(s).
     -i, --install        Install OS on QEMU image(s).
     -r, --run            Run QEMU (by default).
-    -l, --iso-list       Get list of existing ISO file(s).
+    -l, --iso-list       Get list of existing ISO files.
+    -L, --hd-list        Get list of existing HD files.
 
     -v, --version        Print the current version.
     -h, --help           Show this message.
@@ -422,6 +423,48 @@ cuckoo_iso_list()
 }
 
 
+## HD list
+cuckoo_hd_list()
+{
+    CUCKOO_ENV_NO="yes"
+
+    echo ""
+    for cuckoo_arch in $ACTION_CUCKOO_ARCH_LIST
+    do
+        for cuckoo_os in $ACTION_CUCKOO_OS_LIST
+        do
+            CUCKOO_OS="$cuckoo_os"
+            CUCKOO_ARCH="$cuckoo_arch"
+
+            cuckoo_dist_version="$CUCKOO_DIST_VERSION"
+
+            . "${CUCKOO_DIR}lib/var.sh"
+
+            if [ -z "$cuckoo_dist_version" ]
+            then
+                CUCKOO_DIST_VERSION=""
+                CUCKOO_DIST_VERSION_DIR=""
+            fi
+
+            if [ -e "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ] && [ -d "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
+            then
+                echo "HD file(s) has been found in '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}':"
+
+                for hd_file in $(ls -R -h -x --file-type "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" 2> /dev/null)
+                do
+                    echo "    $hd_file"
+                done
+
+                echo ""
+            else
+                echo "WARNING: HD file(s) has not been found for OS: ${CUCKOO_OS}, arch: ${CUCKOO_ARCH}"
+                echo ""
+            fi
+        done
+    done
+}
+
+
 ## Checking and default values
 
 # QEMU
@@ -617,8 +660,8 @@ cuckoo_dist_version_config()
 
 
 ##  Options definition
-ARGS_SHORT="s:bqu:f:IHirlQA:O:a:o:d:EURc:p:D:C:T:S:m:e:FNt:P:vh"
-ARGS_LONG="setup:,qemu-build,qemu-remove,iso-url:,iso-file:,iso-remove,hd-remove,install,run,iso-list,qemu-system,qemu-arch,qemu-os-name:,arch:,os-name:,dist-version:,config-set,config-update,config-remove,boot-cdrom:,boot-floppy:,cdrom-add:,cpu-cores:,cpu-threads:,cpu-sockets:,memory-size:,smb-dir:,full-screen,no-daemonize,hd-type:,opts-add:,version,help"
+ARGS_SHORT="s:bqu:f:IHirlLQA:O:a:o:d:EURc:p:D:C:T:S:m:e:FNt:P:vh"
+ARGS_LONG="setup:,qemu-build,qemu-remove,iso-url:,iso-file:,iso-remove,hd-remove,install,run,iso-list,hd-list,qemu-system,qemu-arch,qemu-os-name:,arch:,os-name:,dist-version:,config-set,config-update,config-remove,boot-cdrom:,boot-floppy:,cdrom-add:,cpu-cores:,cpu-threads:,cpu-sockets:,memory-size:,smb-dir:,full-screen,no-daemonize,hd-type:,opts-add:,version,help"
 OPTS="$(getopt -o "${ARGS_SHORT}" -l "${ARGS_LONG}" -a -- "$@" 2>/dev/null)"
 if [ $? -gt 0 ]
 then
@@ -686,6 +729,10 @@ do
     ;;
     --iso-list | -l )
         CUCKOO_ACTION="iso-list"
+        shift 1
+    ;;
+    --hd-list | -L )
+        CUCKOO_ACTION="hd-list"
         shift 1
     ;;
     --qemu-system | -Q )
@@ -935,6 +982,9 @@ case "$CUCKOO_ACTION" in
     ;;
     iso-list )
         cuckoo_iso_list
+    ;;
+    hd-list )
+        cuckoo_hd_list
     ;;
     * )
         error_message "Cuckoo action '${CUCKOO_ACTION}' does not supported"
