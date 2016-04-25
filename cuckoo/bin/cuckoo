@@ -1,0 +1,5 @@
+#!/bin/sh
+
+CUCKOO_DIR="$(cd "$(dirname "$0")/.." && pwd -P)"
+
+. "${CUCKOO_DIR}/manage.sh" $@
