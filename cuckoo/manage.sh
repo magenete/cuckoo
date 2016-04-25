@@ -72,6 +72,7 @@ Usage: $(basename $0) [actions] [argumets]
     -H, --hd-remove      Remove QEMU HD(s).
     -i, --install        Install OS on QEMU image(s).
     -r, --run            Run QEMU (by default).
+    -l, --iso-list       Get list of existing ISO file(s).
 
     -v, --version        Print the current version.
     -h, --help           Show this message.
@@ -113,9 +114,11 @@ _H_E_L_P
 error_message()
 {
     help_message
+
     echo ""
     echo "ERROR: $1"
     echo ""
+
     exit 1
 }
 
@@ -124,6 +127,7 @@ error_message()
 from_arr_to_str()
 {
     str=""
+
     for char in $1
     do
         if [ -z "$str" ]
@@ -133,6 +137,7 @@ from_arr_to_str()
             str="${str}, ${char}"
         fi
     done
+
     echo "$str"
 }
 
@@ -375,20 +380,54 @@ cuckoo_hd_remove()
 }
 
 
-# Checking and default values
-checking_and_default_values()
+## ISO list
+cuckoo_iso_list()
 {
-    # Emulator
-    if [ -z "$VIRT_EMULATOR" ]
-    then
-        VIRT_EMULATOR="$VIRT_EMULATOR_DEFAULT"
-    fi
+    CUCKOO_ENV_NO="yes"
 
-    # QEMU
-    if [ -z "$QEMU_ACTION" ]
-    then
-        QEMU_ACTION="$QEMU_ACTION_DEFAULT"
-    fi
+    echo ""
+    for cuckoo_arch in $ACTION_CUCKOO_ARCH_LIST
+    do
+        for cuckoo_os in $ACTION_CUCKOO_OS_LIST
+        do
+            CUCKOO_OS="$cuckoo_os"
+            CUCKOO_ARCH="$cuckoo_arch"
+
+            cuckoo_dist_version="$CUCKOO_DIST_VERSION"
+
+            . "${CUCKOO_DIR}lib/var.sh"
+
+            if [ -z "$cuckoo_dist_version" ]
+            then
+                CUCKOO_DIST_VERSION=""
+                CUCKOO_DIST_VERSION_DIR=""
+            fi
+
+            if [ -e "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ] && [ -d "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
+            then
+                echo "ISO file(s) has been found in '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}':"
+
+                for iso_file in $(ls -R -h -x --file-type "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" 2> /dev/null)
+                do
+                    echo "    $iso_file"
+                done
+
+                echo ""
+            else
+                echo "WARNING: ISO file(s) has not been found for OS: ${CUCKOO_OS}, arch: ${CUCKOO_ARCH}"
+                echo ""
+            fi
+        done
+    done
+}
+
+
+## Checking and default values
+
+# QEMU
+checking_and_default_qemu_values()
+{
+    [ -z "$QEMU_ACTION" ] && QEMU_ACTION="$QEMU_ACTION_DEFAULT"
 
     if [ "$QEMU_ACTION" = "build" ] || [ "$QEMU_ACTION" = "remove" ]
     then
@@ -406,24 +445,23 @@ checking_and_default_values()
             ACTION_QEMU_ARCH_LIST="$QEMU_ARCH"
         fi
     fi
+}
+
+# All
+checking_and_default_values()
+{
+    # Emulator
+    [ -z "$VIRT_EMULATOR" ] && VIRT_EMULATOR="$VIRT_EMULATOR_DEFAULT"
+
+    checking_and_default_qemu_values
 
     # Cuckoo
-    if [ -z "$CUCKOO_ACTION" ]
-    then
-        CUCKOO_ACTION="$CUCKOO_ACTION_DEFAULT"
-    fi
+    [ -z "$CUCKOO_ACTION" ] && CUCKOO_ACTION="$CUCKOO_ACTION_DEFAULT"
 
     if [ "$CUCKOO_ACTION" = "run" ] || [ "$CUCKOO_ACTION" = "install" ]
     then
-        if [ -z "$CUCKOO_OS" ]
-        then
-            CUCKOO_OS="$CUCKOO_OS_DEFAULT"
-        fi
-
-        if [ -z "$CUCKOO_DIST_VERSION" ]
-        then
-            CUCKOO_DIST_VERSION="$CUCKOO_DIST_VERSION_DEFAULT"
-        fi
+        [ -z "$CUCKOO_OS" ] && CUCKOO_OS="$CUCKOO_OS_DEFAULT"
+        [ -z "$CUCKOO_DIST_VERSION" ] && CUCKOO_DIST_VERSION="$CUCKOO_DIST_VERSION_DEFAULT"
 
         if [ -z "$CUCKOO_ARCH" ]
         then
@@ -441,25 +479,10 @@ checking_and_default_values()
             fi
         fi
 
-        if [ -z "$CUCKOO_CPU_THREADS" ]
-        then
-            CUCKOO_CPU_THREADS=$CUCKOO_CPU_THREADS_DEFAULT
-        fi
-
-        if [ -z "$CUCKOO_CPU_SOCKETS" ]
-        then
-            CUCKOO_CPU_SOCKETS=$CUCKOO_CPU_SOCKETS_DEFAULT
-        fi
-
-        if [ -z "$CUCKOO_HD_TYPE" ]
-        then
-            CUCKOO_HD_TYPE="$CUCKOO_HD_TYPE_DEFAULT"
-        fi
-
-        if [ -z "$CUCKOO_MEMORY_SIZE" ]
-        then
-            CUCKOO_MEMORY_SIZE="$CUCKOO_MEMORY_SIZE_DEFAULT"
-        fi
+        [ -z "$CUCKOO_CPU_THREADS" ] && CUCKOO_CPU_THREADS=$CUCKOO_CPU_THREADS_DEFAULT
+        [ -z "$CUCKOO_CPU_SOCKETS" ] && CUCKOO_CPU_SOCKETS=$CUCKOO_CPU_SOCKETS_DEFAULT
+        [ -z "$CUCKOO_HD_TYPE" ] && CUCKOO_HD_TYPE="$CUCKOO_HD_TYPE_DEFAULT"
+        [ -z "$CUCKOO_MEMORY_SIZE" ] && CUCKOO_MEMORY_SIZE="$CUCKOO_MEMORY_SIZE_DEFAULT"
     else
         if [ -z "$CUCKOO_OS" ]
         then
@@ -594,8 +617,8 @@ cuckoo_dist_version_config()
 
 
 ##  Options definition
-ARGS_SHORT="s:bqu:f:IHirQA:O:a:o:d:EURc:p:D:C:T:S:m:e:FNt:P:vh"
-ARGS_LONG="setup:,qemu-build,qemu-remove,iso-url:,iso-file:,iso-remove,hd-remove,install,run,qemu-system,qemu-arch,qemu-os-name:,arch:,os-name:,dist-version:,config-set,config-update,config-remove,boot-cdrom:,boot-floppy:,cdrom-add:,cpu-cores:,cpu-threads:,cpu-sockets:,memory-size:,smb-dir:,full-screen,no-daemonize,hd-type:,opts-add:,version,help"
+ARGS_SHORT="s:bqu:f:IHirlQA:O:a:o:d:EURc:p:D:C:T:S:m:e:FNt:P:vh"
+ARGS_LONG="setup:,qemu-build,qemu-remove,iso-url:,iso-file:,iso-remove,hd-remove,install,run,iso-list,qemu-system,qemu-arch,qemu-os-name:,arch:,os-name:,dist-version:,config-set,config-update,config-remove,boot-cdrom:,boot-floppy:,cdrom-add:,cpu-cores:,cpu-threads:,cpu-sockets:,memory-size:,smb-dir:,full-screen,no-daemonize,hd-type:,opts-add:,version,help"
 OPTS="$(getopt -o "${ARGS_SHORT}" -l "${ARGS_LONG}" -a -- "$@" 2>/dev/null)"
 if [ $? -gt 0 ]
 then
@@ -659,6 +682,10 @@ do
     ;;
     --run | -r )
         CUCKOO_ACTION="run"
+        shift 1
+    ;;
+    --iso-list | -l )
+        CUCKOO_ACTION="iso-list"
         shift 1
     ;;
     --qemu-system | -Q )
@@ -905,6 +932,9 @@ case "$CUCKOO_ACTION" in
     ;;
     hd-remove )
         cuckoo_hd_remove
+    ;;
+    iso-list )
+        cuckoo_iso_list
     ;;
     * )
         error_message "Cuckoo action '${CUCKOO_ACTION}' does not supported"
