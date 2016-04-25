@@ -29,7 +29,7 @@ echo ""
 . /etc/os-release
 case "$ID" in
     debian | ubuntu )
-        sudo apt-get install -y libiscsi-dev libsdl2-dev libcap-dev libattr1-dev libpixman-1-dev flex
+        sudo apt-get install -y libiscsi-dev libsdl2-dev libcap-dev libattr1-dev libpixman-1-dev flex curl tar
     ;;
     arch )
         sudo pacman -S --noconfirm libiscsi sdl libcap attr pixman flex
@@ -47,7 +47,7 @@ echo ""
 
 # Download
 cd "$QEMU_BIN_ARCH_OS_TMP_DIR"
-curl -L "$QEMU_GIT_URL" | tar xz
+curl -SL "$QEMU_GIT_URL" | tar xz
 
 
 # QEMU version definition
