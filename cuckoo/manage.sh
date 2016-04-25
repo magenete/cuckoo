@@ -431,7 +431,7 @@ cuckoo_iso_setup()
     then
         cp -f "$CUCKOO_ISO_FILE_PATH" "$CUCKOO_ISO_FILE_SYS_PATH"
     else
-        curl -o "$CUCKOO_ISO_FILE_SYS_PATH" "$CUCKOO_ISO_FILE_PATH"
+        curl -SL -o "$CUCKOO_ISO_FILE_SYS_PATH" "$CUCKOO_ISO_FILE_PATH"
     fi
 
     echo ""
@@ -494,7 +494,7 @@ cuckoo_iso_remove()
 }
 
 
-# QEMU HD(c) remove
+# QEMU HD(s) remove
 cuckoo_hd_remove()
 {
     CUCKOO_ENV_NO="yes"
@@ -1105,8 +1105,7 @@ case "$QEMU_ACTION" in
     remove )
         qemu_remove
     ;;
-    copy )
-        # See coomon method cuckoo_setup()
+    copy )  # See common method cuckoo_setup()
     ;;
     * )
         error_message "QEMU action '${QEMU_ACTION}' does not supported"
