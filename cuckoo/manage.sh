@@ -73,7 +73,7 @@ Usage: $(basename $0) [actions] [argumets]
     -i, --install        Install OS on QEMU image(s).
     -r, --run            Run QEMU (by default).
     -l, --iso-list       Get list of existing ISO files.
-    -L, --hd-list        Get list of existing HD files.
+    -L, --hd-list        Get list of existing HD(s) files.
 
     -v, --version        Print the current version.
     -h, --help           Show this message.
@@ -93,9 +93,9 @@ Usage: $(basename $0) [actions] [argumets]
     -E, --config-set     Create and write config file if --dist-version defined.
     -U, --config-update  Update config file if config file exists.
     -R, --config-remove  Remove config file if config file exists.
-    -c, --boot-cdrom     Set file with full path for CDROM(IDE device).
+    -c, --boot-cdrom     Set file with full path for CDROM (IDE device).
     -p, --boot-floppy    Set file with full path for Floppy Disk.
-    -D, --cdrom-add      Set file with full path for CDROM(iSCI device).
+    -D, --cdrom-add      Set file with full path for CDROM (by default: ${CUCKOO_HD_TYPE_DEFAULT}).
     -C, --cpu-cores      Set CPU cores (by default: ${CUCKOO_CPU_CORES_DEFAULT}, min: ${CUCKOO_CPU_MIN}, max: ${CUCKOO_CPU_CORES_MAX}).
     -T, --cpu-threads    Set CPU threads (by default: ${CUCKOO_CPU_THREADS_DEFAULT}, min: ${CUCKOO_CPU_MIN}, max: ${CUCKOO_CPU_THREADS_MAX}).
     -S, --cpu-sockets    Set CPU sockets (by default: ${CUCKOO_CPU_SOCKETS_DEFAULT}, min: ${CUCKOO_CPU_MIN}, max: ${CUCKOO_CPU_SOCKETS_MAX}).
@@ -143,43 +143,178 @@ from_arr_to_str()
 }
 
 
-# Setup
+##  Setup
+
+# ISO files copying
+cuckoo_iso_setup_copying()
+{
+    CUCKOO_ENV_NO="yes"
+
+    if [ -z "$CUCKOO_DIST_VERSION" ]
+    then
+        for cuckoo_arch in $ACTION_CUCKOO_ARCH_LIST
+        do
+            for cuckoo_os in $ACTION_CUCKOO_OS_LIST
+            do
+                CUCKOO_OS="$cuckoo_os"
+                CUCKOO_ARCH="$cuckoo_arch"
+
+                . "${CUCKOO_DIR}lib/var.sh"
+
+                if [ -e "$CUCKOO_ISO_ARCH_OS_DIR" ] && [ -d "$CUCKOO_ISO_ARCH_OS_DIR" ]
+                then
+                    mkdir -p "${CUCKOO_SETUP_DIR}cuckoo/iso/${CUCKOO_ARCH}/"
+                    cp -rv "$CUCKOO_ISO_ARCH_OS_DIR" "${CUCKOO_SETUP_DIR}cuckoo/iso/${CUCKOO_ARCH}/"
+
+                    echo "      ...from '${CUCKOO_ISO_ARCH_OS_DIR}'"
+                else
+                    echo "      WARNING: ISO file(s) has not been copyed for OS: ${CUCKOO_OS}, arch: ${CUCKOO_ARCH}"
+                fi
+            done
+        done
+    else
+        CUCKOO_OS="$ACTION_CUCKOO_OS_LIST"
+        CUCKOO_ARCH="$ACTION_CUCKOO_ARCH_LIST"
+
+        . "${CUCKOO_DIR}lib/var.sh"
+
+        if [ -e "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ] && [ -d "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
+        then
+            mkdir -p "${CUCKOO_SETUP_DIR}cuckoo/iso/${CUCKOO_ARCH}/${CUCKOO_OS}/"
+            cp -rv "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" "${CUCKOO_SETUP_DIR}cuckoo/iso/${CUCKOO_ARCH}/${CUCKOO_OS}/${CUCKOO_DIST_VERSION_DIR}"
+
+            echo "      ...from '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}'"
+        else
+            if [ -e "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}" ] && [ -f "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}" ]
+            then
+                mkdir -p "${CUCKOO_SETUP_DIR}cuckoo/iso/${CUCKOO_ARCH}/${CUCKOO_OS}/${CUCKOO_DIST_VERSION_DIR}"
+                cp -v "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}" "${CUCKOO_SETUP_DIR}cuckoo/iso/${CUCKOO_ARCH}/${CUCKOO_OS}/${CUCKOO_ISO_FILE}"
+
+                echo "      ...from '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}'"
+            else
+                echo "      WARNING: ISO file '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}' has not been copyed"
+            fi
+        fi
+    fi
+}
+
+# HD(s) files copying
+cuckoo_hd_setup_copying()
+{
+    CUCKOO_ENV_NO="yes"
+
+    if [ -z "$CUCKOO_DIST_VERSION" ]
+    then
+        for cuckoo_arch in $ACTION_CUCKOO_ARCH_LIST
+        do
+            for cuckoo_os in $ACTION_CUCKOO_OS_LIST
+            do
+                CUCKOO_OS="$cuckoo_os"
+                CUCKOO_ARCH="$cuckoo_arch"
+
+                . "${CUCKOO_DIR}lib/var.sh"
+
+                if [ -e "$CUCKOO_HD_ARCH_OS_DIR" ] && [ -d "$CUCKOO_HD_ARCH_OS_DIR" ]
+                then
+                    mkdir -p "${CUCKOO_SETUP_DIR}cuckoo/hd/${CUCKOO_ARCH}/"
+                    cp -rv "$CUCKOO_HD_ARCH_OS_DIR" "${CUCKOO_SETUP_DIR}cuckoo/hd/${CUCKOO_ARCH}/"
+
+                    echo "      ...from '${CUCKOO_HD_ARCH_OS_DIR}'"
+                else
+                    echo "      WARNING: HD(s) has not been copyed for OS: ${CUCKOO_OS}, arch: ${CUCKOO_ARCH}"
+                fi
+            done
+        done
+    else
+        CUCKOO_OS="$ACTION_CUCKOO_OS_LIST"
+        CUCKOO_ARCH="$ACTION_CUCKOO_ARCH_LIST"
+
+        . "${CUCKOO_DIR}lib/var.sh"
+
+        if [ -e "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ] && [ -d "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
+        then
+            mkdir -p "${CUCKOO_SETUP_DIR}cuckoo/hd/${CUCKOO_ARCH}/${CUCKOO_OS}/${CUCKOO_DIST_VERSION_DIR}"
+            cp -rv "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" "${CUCKOO_SETUP_DIR}cuckoo/hd/${CUCKOO_ARCH}/${CUCKOO_OS}/$(dirname ${CUCKOO_DIST_VERSION_DIR})"
+
+            if [ -e "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}" ] && [ -f "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}" ]
+            then
+                cp -v "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}" "$(dirname "${CUCKOO_SETUP_DIR}cuckoo/hd/${CUCKOO_ARCH}/${CUCKOO_OS}/${CUCKOO_DIST_VERSION_DIR}")"
+            fi
+
+            echo "      ...from '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}'"
+        else
+            echo "      WARNING: HD(s) has not been copyed for OS: ${CUCKOO_OS}, arch: ${CUCKOO_ARCH}"
+        fi
+    fi
+}
+
+# ISO setup
 cuckoo_setup()
 {
     CUCKOO_SETUP_DIR="${CUCKOO_SETUP_DIR}cuckoo/"
+    CUCKOO_ENV_NO="yes"
 
     mkdir -p "$CUCKOO_SETUP_DIR"
+    echo ""
 
     echo "  Main file: copying..."
-#    cp "${CUCKOO_DIR}cuckoo.sh" "$CUCKOO_SETUP_DIR"
-#    cp "${CUCKOO_DIR}VERSION" "$CUCKOO_SETUP_DIR"
+    cp -v "${CUCKOO_DIR}../cuckoo.sh" "$CUCKOO_SETUP_DIR"
+    cp -v "${CUCKOO_DIR}../cuckoo.bat" "$CUCKOO_SETUP_DIR"
+    cp -v "${CUCKOO_DIR}../README.md" "$CUCKOO_SETUP_DIR"
 
-#    echo "  Lib files: copying..."
-#    cp -r "${CUCKOO_DIR}lib/" "$CUCKOO_SETUP_DIR"
+    echo ""
 
-#    mkdir "${CUCKOO_SETUP_DIR}install/"
-#    cp -r "${CUCKOO_DIR}install/etc/" "${CUCKOO_SETUP_DIR}install/"
-#    cp -r "${CUCKOO_DIR}install/bin/" "${CUCKOO_SETUP_DIR}install/"
+    # Cuckoo
+    echo "  Directory cuckoo/: copying..."
+    mkdir "${CUCKOO_SETUP_DIR}cuckoo/"
 
-#    echo "  Main launch files: copying..."
-#    mkdir "${CUCKOO_SETUP_DIR}qemu/"
-#    cp $(ls "${CUCKOO_DIR}qemu/"*.bat) "${CUCKOO_SETUP_DIR}qemu/"
-#    cp $(ls "${CUCKOO_DIR}qemu/"*.sh) "${CUCKOO_SETUP_DIR}qemu/"
+    echo ""
+    echo "    Directory bin/: copying..."
+    cp -rv "${CUCKOO_DIR}bin/" "${CUCKOO_SETUP_DIR}cuckoo/"
 
-#    mkdir "${CUCKOO_SETUP_DIR}qemu/${CUCKOO_ARCH}/"
-#    cp -r "$QEMU_ARCH_BUILD_DIR" "${CUCKOO_SETUP_DIR}qemu/${CUCKOO_ARCH}/"
-#    cp -r "${QEMU_ARCH_DIR}install/" "${CUCKOO_SETUP_DIR}qemu/${CUCKOO_ARCH}/"
-#    cp -r "${QEMU_ARCH_DIR}run/" "${CUCKOO_SETUP_DIR}qemu/${CUCKOO_ARCH}/"
+    echo ""
+    echo "    Directory etc/: copying..."
+    cp -rv "${CUCKOO_DIR}etc/" "${CUCKOO_SETUP_DIR}cuckoo/"
 
-#    echo "  QEMU: copying..."
-#    mkdir "${CUCKOO_SETUP_DIR}qemu/${CUCKOO_ARCH}/bin/"
-#    cp -r "${QEMU_ARCH_BIN_DIR}${CUCKOO_OS}" "${CUCKOO_SETUP_DIR}qemu/${CUCKOO_ARCH}/bin/"
+    echo ""
+    echo "    Directory lib/: copying..."
+    cp -rv "${CUCKOO_DIR}lib/" "${CUCKOO_SETUP_DIR}cuckoo/"
 
-#    echo "  HDs: copying..."
-#    mkdir -p "${CUCKOO_SETUP_DIR}qemu/${CUCKOO_ARCH}/hd/${CUCKOO_OS}/"
-#    cp -r "$QEMU_HD_CLEAN_DIR" "${CUCKOO_SETUP_DIR}qemu/${CUCKOO_ARCH}/hd/${CUCKOO_OS}/"
-#    mkdir -p "${CUCKOO_SETUP_DIR}qemu/${CUCKOO_ARCH}/hd/${CUCKOO_OS}/${CUCKOO_DIST_VERSION_DIR}"
-#    cp -r "$QEMU_HD_DIR" "${CUCKOO_SETUP_DIR}qemu/${CUCKOO_ARCH}/hd/${CUCKOO_OS}/${CUCKOO_DIST_VERSION_DIR}../"
+    echo ""
+    echo "    Directory os/: copying..."
+    cp -rv "${CUCKOO_DIR}os/" "${CUCKOO_SETUP_DIR}cuckoo/"
+
+    echo ""
+    echo "    ISO structure from iso/: copying..."
+    mkdir "${CUCKOO_SETUP_DIR}cuckoo/iso/"
+    cuckoo_iso_setup_copying
+
+    echo ""
+    echo "    HD(s) structure from hd/: copying..."
+    mkdir "${CUCKOO_SETUP_DIR}cuckoo/hd/"
+    cuckoo_hd_setup_copying
+
+    echo ""
+    echo "    Management and installation files: copying..."
+    cp -v $(ls "${CUCKOO_DIR}"*.bat) "${CUCKOO_SETUP_DIR}cuckoo/"
+    cp -v $(ls "${CUCKOO_DIR}"*.sh) "${CUCKOO_SETUP_DIR}cuckoo/"
+
+    echo ""
+
+    # QEMU
+    echo ""
+    echo "  Directory qemu/: copying..."
+    mkdir "${CUCKOO_SETUP_DIR}qemu/"
+
+    echo ""
+    echo "    Directory lib/: copying..."
+    cp -rv "${QEMU_DIR}lib/" "${CUCKOO_SETUP_DIR}qemu/"
+
+    echo ""
+    echo "    Directory build/: copying..."
+    cp -rv "${QEMU_DIR}build/" "${CUCKOO_SETUP_DIR}qemu/"
+
+    echo ""
 
     echo ""
     echo "Cuckoo has been setuped in '${CUCKOO_SETUP_DIR}'"
@@ -327,7 +462,7 @@ cuckoo_iso_remove()
 }
 
 
-# QEMU HDs remove
+# QEMU HD(c) remove
 cuckoo_hd_remove()
 {
     CUCKOO_ENV_NO="yes"
@@ -364,12 +499,14 @@ cuckoo_hd_remove()
         if [ -e "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ] && [ -d "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
         then
             rm -rf "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}"
+            cuckoo_dist_version_config_remove
 
             echo "HD(s) has been removed in directory '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}'"
         else
             if [ -e "${CUCKOO_HD_ARCH_OS_DIR}" ] && [ -f "${CUCKOO_HD_ARCH_OS_DIR}" ]
             then
                 rm -f "${CUCKOO_HD_ARCH_OS_DIR}"
+                cuckoo_dist_version_config_remove
 
                 echo "HD(s) directory '${CUCKOO_HD_ARCH_OS_DIR}' has been removed"
             else
@@ -423,7 +560,7 @@ cuckoo_iso_list()
 }
 
 
-## HD list
+## HD(s) list
 cuckoo_hd_list()
 {
     CUCKOO_ENV_NO="yes"
@@ -632,6 +769,15 @@ cuckoo_dist_version_config_merge_var()
     [ "$CUCKOO_OPTS_EXT" != "$CUCKOO_OPTS_EXT__C_O_N_F_I_G" ] && CUCKOO_OPTS_EXT="$CUCKOO_OPTS_EXT__C_O_N_F_I_G"
 }
 
+# Remove
+cuckoo_dist_version_config_remove()
+{
+    if [ -e "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}" ] && [ -f "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}" ]
+    then
+        rm -f "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}"
+    fi
+}
+
 # Manage
 cuckoo_dist_version_config()
 {
@@ -647,10 +793,7 @@ cuckoo_dist_version_config()
             fi
         ;;
         remove )
-            if [ -e "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}" ] && [ -f "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}" ]
-            then
-                rm -f "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}"
-            fi
+            cuckoo_dist_version_config_remove
         ;;
         * )
             cuckoo_dist_version_config_load
@@ -968,8 +1111,7 @@ case "$CUCKOO_ACTION" in
         esac
     ;;
     setup )
-#        . "${CUCKOO_DIR}lib/var.sh"
-#        cuckoo_setup
+        cuckoo_setup
     ;;
     iso-setup )
         cuckoo_iso_setup
