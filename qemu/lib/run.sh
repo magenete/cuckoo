@@ -41,7 +41,7 @@ fi
 
 if [ ! -d "$QEMU_HD_DIR" ]
 then
-    echo "ERROR: Directory '${QEMU_HD_DIR}' does not exist for HD-s"
+    echo "ERROR: Directory '${QEMU_HD_DIR}' does not exist for HD"
     exit 1
 fi
 
@@ -149,10 +149,13 @@ then
 fi
 
 # KVM
-QEMU_OPTS="${QEMU_OPTS} -enable-kvm"
+if [ -z "$QEMU_ENABLE_KVM_NO" ]
+then
+    QEMU_OPTS="${QEMU_OPTS} -enable-kvm"
+fi
 
 # Daemonize
-if [ -z "$QEMU_NO_DAEMONIZE" ]
+if [ -z "$QEMU_DAEMONIZE_NO" ]
 then
     QEMU_OPTS="${QEMU_OPTS} -daemonize"
 fi
