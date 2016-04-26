@@ -16,6 +16,8 @@ VIRT_EMULATOR=""
 
 CUCKOO_ACTION=""
 CUCKOO_ACTION_DEFAULT="run"
+CUCKOO_ACTION_ARCH_LIST=""
+CUCKOO_ACTION_OS_LIST=""
 CUCKOO_DIR="${CUCKOO_DIR:=$(cd "$(dirname "$0")" && pwd -P)}/"
 CUCKOO_OS_LIST="linux netbsd freebsd openbsd macosx windows"
 CUCKOO_OS_DEFAULT="linux"
@@ -54,13 +56,13 @@ CUCKOO_DIST_VERSION_CONFIG_FILE=""
 
 QEMU_ACTION=""
 QEMU_ACTION_DEFAULT="run"
+QEMU_ACTION_ARCH_LIST=""
+QEMU_ACTION_OS_LIST=""
 QEMU_DIR="${QEMU_DIR:=${CUCKOO_DIR}../qemu}/"
 QEMU_OS_LIST="linux macosx windows"
 QEMU_OS=""
-ACTION_QEMU_OS_LIST=""
 QEMU_ARCH_LIST="x86 x86_64"
 QEMU_ARCH=""
-ACTION_QEMU_ARCH_LIST=""
 
 
 # Help message definition
@@ -161,12 +163,12 @@ cuckoo_iso_setup_copying()
 
     if [ -z "$CUCKOO_DIST_VERSION" ]
     then
-        for cuckoo_arch in $ACTION_CUCKOO_ARCH_LIST
+        for cuckoo_arch in $CUCKOO_ACTION_ARCH_LIST
         do
-            for cuckoo_os in $ACTION_CUCKOO_OS_LIST
+            for cuckoo_os in $CUCKOO_ACTION_OS_LIST
             do
-                CUCKOO_OS="$cuckoo_os"
                 CUCKOO_ARCH="$cuckoo_arch"
+                CUCKOO_OS="$cuckoo_os"
 
                 . "${CUCKOO_DIR}lib/var.sh"
 
@@ -182,8 +184,8 @@ cuckoo_iso_setup_copying()
             done
         done
     else
-        CUCKOO_OS="$ACTION_CUCKOO_OS_LIST"
-        CUCKOO_ARCH="$ACTION_CUCKOO_ARCH_LIST"
+        CUCKOO_ARCH="$CUCKOO_ACTION_ARCH_LIST"
+        CUCKOO_OS="$CUCKOO_ACTION_OS_LIST"
 
         . "${CUCKOO_DIR}lib/var.sh"
 
@@ -214,12 +216,12 @@ cuckoo_hd_setup_copying()
 
     if [ -z "$CUCKOO_DIST_VERSION" ]
     then
-        for cuckoo_arch in $ACTION_CUCKOO_ARCH_LIST
+        for cuckoo_arch in $CUCKOO_ACTION_ARCH_LIST
         do
-            for cuckoo_os in $ACTION_CUCKOO_OS_LIST
+            for cuckoo_os in $CUCKOO_ACTION_OS_LIST
             do
-                CUCKOO_OS="$cuckoo_os"
                 CUCKOO_ARCH="$cuckoo_arch"
+                CUCKOO_OS="$cuckoo_os"
 
                 . "${CUCKOO_DIR}lib/var.sh"
 
@@ -235,8 +237,8 @@ cuckoo_hd_setup_copying()
             done
         done
     else
-        CUCKOO_OS="$ACTION_CUCKOO_OS_LIST"
-        CUCKOO_ARCH="$ACTION_CUCKOO_ARCH_LIST"
+        CUCKOO_ARCH="$CUCKOO_ACTION_ARCH_LIST"
+        CUCKOO_OS="$CUCKOO_ACTION_OS_LIST"
 
         . "${CUCKOO_DIR}lib/var.sh"
 
@@ -262,9 +264,9 @@ cuckoo_qemu_copy()
 {
     QEMU_ENV_NO="yes"
 
-    for qemu_arch in $ACTION_QEMU_ARCH_LIST
+    for qemu_arch in $QEMU_ACTION_ARCH_LIST
     do
-        for qemu_os in $ACTION_QEMU_OS_LIST
+        for qemu_os in $QEMU_ACTION_OS_LIST
         do
             QEMU_OS="$qemu_os"
             QEMU_ARCH="$qemu_arch"
@@ -368,12 +370,12 @@ qemu_build()
 {
     QEMU_ENV_NO="yes"
 
-    for qemu_arch in $ACTION_QEMU_ARCH_LIST
+    for qemu_arch in $QEMU_ACTION_ARCH_LIST
     do
-        for qemu_os in $ACTION_QEMU_OS_LIST
+        for qemu_os in $QEMU_ACTION_OS_LIST
         do
-            QEMU_OS="$qemu_os"
             QEMU_ARCH="$qemu_arch"
+            QEMU_OS="$qemu_os"
 
             . "${QEMU_DIR}lib/var.sh"
 
@@ -400,12 +402,12 @@ qemu_remove()
     QEMU_ENV_NO="yes"
 
     echo ""
-    for qemu_arch in $ACTION_QEMU_ARCH_LIST
+    for qemu_arch in $QEMU_ACTION_ARCH_LIST
     do
-        for qemu_os in $ACTION_QEMU_OS_LIST
+        for qemu_os in $QEMU_ACTION_OS_LIST
         do
-            QEMU_OS="$qemu_os"
             QEMU_ARCH="$qemu_arch"
+            QEMU_OS="$qemu_os"
 
             . "${QEMU_DIR}lib/var.sh"
 
@@ -457,9 +459,9 @@ cuckoo_iso_remove()
     echo ""
     if [ -z "$CUCKOO_DIST_VERSION" ]
     then
-        for cuckoo_arch in $ACTION_CUCKOO_ARCH_LIST
+        for cuckoo_arch in $CUCKOO_ACTION_ARCH_LIST
         do
-            for cuckoo_os in $ACTION_CUCKOO_OS_LIST
+            for cuckoo_os in $CUCKOO_ACTION_OS_LIST
             do
                 CUCKOO_OS="$cuckoo_os"
                 CUCKOO_ARCH="$cuckoo_arch"
@@ -478,8 +480,8 @@ cuckoo_iso_remove()
             done
         done
     else
-        CUCKOO_OS="$ACTION_CUCKOO_OS_LIST"
-        CUCKOO_ARCH="$ACTION_CUCKOO_ARCH_LIST"
+        CUCKOO_ARCH="$CUCKOO_ACTION_ARCH_LIST"
+        CUCKOO_OS="$CUCKOO_ACTION_OS_LIST"
 
         . "${CUCKOO_DIR}lib/var.sh"
 
@@ -511,9 +513,9 @@ cuckoo_hd_remove()
     echo ""
     if [ -z "$CUCKOO_DIST_VERSION" ]
     then
-        for cuckoo_arch in $ACTION_CUCKOO_ARCH_LIST
+        for cuckoo_arch in $CUCKOO_ACTION_ARCH_LIST
         do
-            for cuckoo_os in $ACTION_CUCKOO_OS_LIST
+            for cuckoo_os in $CUCKOO_ACTION_OS_LIST
             do
                 CUCKOO_OS="$cuckoo_os"
                 CUCKOO_ARCH="$cuckoo_arch"
@@ -532,8 +534,8 @@ cuckoo_hd_remove()
             done
         done
     else
-        CUCKOO_OS="$ACTION_CUCKOO_OS_LIST"
-        CUCKOO_ARCH="$ACTION_CUCKOO_ARCH_LIST"
+        CUCKOO_ARCH="$CUCKOO_ACTION_ARCH_LIST"
+        CUCKOO_OS="$CUCKOO_ACTION_OS_LIST"
 
         . "${CUCKOO_DIR}lib/var.sh"
 
@@ -565,9 +567,9 @@ cuckoo_iso_list()
     CUCKOO_ENV_NO="yes"
 
     echo ""
-    for cuckoo_arch in $ACTION_CUCKOO_ARCH_LIST
+    for cuckoo_arch in $CUCKOO_ACTION_ARCH_LIST
     do
-        for cuckoo_os in $ACTION_CUCKOO_OS_LIST
+        for cuckoo_os in $CUCKOO_ACTION_OS_LIST
         do
             CUCKOO_OS="$cuckoo_os"
             CUCKOO_ARCH="$cuckoo_arch"
@@ -607,12 +609,12 @@ cuckoo_hd_list()
     CUCKOO_ENV_NO="yes"
 
     echo ""
-    for cuckoo_arch in $ACTION_CUCKOO_ARCH_LIST
+    for cuckoo_arch in $CUCKOO_ACTION_ARCH_LIST
     do
-        for cuckoo_os in $ACTION_CUCKOO_OS_LIST
+        for cuckoo_os in $CUCKOO_ACTION_OS_LIST
         do
-            CUCKOO_OS="$cuckoo_os"
             CUCKOO_ARCH="$cuckoo_arch"
+            CUCKOO_OS="$cuckoo_os"
 
             cuckoo_dist_version="$CUCKOO_DIST_VERSION"
 
@@ -654,16 +656,16 @@ checking_and_default_qemu_values()
     then
         if [ -z "$QEMU_OS" ]
         then
-            ACTION_QEMU_OS_LIST="$QEMU_OS_LIST"
+            QEMU_ACTION_OS_LIST="$QEMU_OS_LIST"
         else
-            ACTION_QEMU_OS_LIST="$QEMU_OS"
+            QEMU_ACTION_OS_LIST="$QEMU_OS"
         fi
 
         if [ -z "$QEMU_ARCH" ]
         then
-            ACTION_QEMU_ARCH_LIST="$QEMU_ARCH_LIST"
+            QEMU_ACTION_ARCH_LIST="$QEMU_ARCH_LIST"
         else
-            ACTION_QEMU_ARCH_LIST="$QEMU_ARCH"
+            QEMU_ACTION_ARCH_LIST="$QEMU_ARCH"
         fi
     fi
 }
@@ -709,25 +711,25 @@ checking_and_default_values()
         then
             if [ -z "$CUCKOO_DIST_VERSION" ]
             then
-                ACTION_CUCKOO_OS_LIST="$CUCKOO_OS_LIST"
+                CUCKOO_ACTION_OS_LIST="$CUCKOO_OS_LIST"
             else
-                ACTION_CUCKOO_OS_LIST="$CUCKOO_OS_DEFAULT"
+                CUCKOO_ACTION_OS_LIST="$CUCKOO_OS_DEFAULT"
             fi
         else
-            ACTION_CUCKOO_OS_LIST="$CUCKOO_OS"
+            CUCKOO_ACTION_OS_LIST="$CUCKOO_OS"
         fi
 
         if [ -z "$CUCKOO_ARCH" ]
         then
             if [ -z "$CUCKOO_DIST_VERSION" ]
             then
-                ACTION_CUCKOO_ARCH_LIST="$CUCKOO_ARCH_LIST"
+                CUCKOO_ACTION_ARCH_LIST="$CUCKOO_ARCH_LIST"
             else
                 . "${CUCKOO_DIR}lib/env.sh"
-                ACTION_CUCKOO_ARCH_LIST="$CUCKOO_ARCH"
+                CUCKOO_ACTION_ARCH_LIST="$CUCKOO_ARCH"
             fi
         else
-            ACTION_CUCKOO_ARCH_LIST="$CUCKOO_ARCH"
+            CUCKOO_ACTION_ARCH_LIST="$CUCKOO_ARCH"
         fi
     fi
 }
@@ -851,6 +853,7 @@ if [ $? -gt 0 ]
 then
     error_message "Invalid option(s) value"
 fi
+
 eval set -- "$OPTS"
 
 # Options parsing

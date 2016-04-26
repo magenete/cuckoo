@@ -56,7 +56,7 @@ then
     QEMU_BIN_ARCH_OS_VERSION_FILE="${QEMU_BIN_ARCH_OS_DIR}VERSION"
     QEMU_BIN_ARCH_OS_VERSION="$(cat "$QEMU_BIN_ARCH_OS_VERSION_FILE" 2> /dev/null)"
 
-    if [ ! -z "$QEMU_BIN_ARCH_OS_VERSION" ]
+    if [ -z "$QEMU_BIN_ARCH_OS_VERSION" ]
     then
         QEMU_BIN_ARCH_OS_VERSION_DIR=""
     else

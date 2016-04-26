@@ -20,7 +20,6 @@ fi
 
 
 ##  ENV check
-
 if [ -z "$QEMU_BIN_ARCH_OS_VERSION" ]
 then
     echo "ERROR: QEMU version was not defined"
@@ -40,17 +39,14 @@ then
     exit 1
 fi
 
-if [ -e "$QEMU_HD_DIR" ] && [ -d "$QEMU_HD_DIR" ]
+if [ ! -d "$QEMU_HD_DIR" ]
 then
-    printf ""
-else
     echo "ERROR: Directory '${QEMU_HD_DIR}' does not exist for HD-s"
     exit 1
 fi
 
 
 ##  Copy in TMP_DIR
-
 "${QEMU_RUN_DIR}${QEMU_BIN_FILE}" -version > /dev/null
 if [ $? -gt 0 ]
 then
@@ -63,7 +59,7 @@ then
         if [ -d "${QEMU_TMP_DIR}${QEMU_BIN_ARCH_OS_VERSION}/" ]
         then
             QEMU_RUN_DIR="${QEMU_TMP_DIR}${QEMU_BIN_ARCH_OS_VERSION}/"
-            chmod -R 755 "$QEMU_RUN_DIR"
+            chmod -R 0755 "$QEMU_RUN_DIR"
 
             if [ ! -x "${QEMU_RUN_DIR}${QEMU_BIN_FILE}" ]
             then
