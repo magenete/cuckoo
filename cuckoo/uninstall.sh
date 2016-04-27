@@ -58,13 +58,12 @@ then
     done
     echo ""
 
-    # Getting answer for directory removing
-    echo "All will bee removed in '${HOME}/${CUCKOO_UNINSTALL_DIR}'"
+    # Directory removing and answer getting
     if [ -e "${HOME}/${CUCKOO_UNINSTALL_DIR}" ] && [ -d "${HOME}/${CUCKOO_UNINSTALL_DIR}" ]
     then
+        echo "Everything will be removed in '${HOME}/${CUCKOO_UNINSTALL_DIR}'!"
         cuckoo_removing_answer
     else
-        echo ""
         echo "Directory '${HOME}/${CUCKOO_UNINSTALL_DIR}' does not exist"
         echo ""
     fi
