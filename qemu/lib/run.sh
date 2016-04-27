@@ -59,7 +59,7 @@ then
         if [ -d "${QEMU_TMP_DIR}${QEMU_BIN_ARCH_OS_VERSION}/" ]
         then
             QEMU_RUN_DIR="${QEMU_TMP_DIR}${QEMU_BIN_ARCH_OS_VERSION}/"
-            chmod -R 0755 "$QEMU_RUN_DIR"
+            chmod -R 755 "$QEMU_RUN_DIR"
 
             if [ ! -x "${QEMU_RUN_DIR}${QEMU_BIN_FILE}" ]
             then

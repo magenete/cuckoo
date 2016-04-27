@@ -38,7 +38,7 @@ then
 
     if [ -e "${HOME}/${CUCKOO_BIN_FILE}" ] && [ -f "${HOME}/${CUCKOO_BIN_FILE}" ]
     then
-        chmod 0750 "${HOME}/${CUCKOO_BIN_FILE}"
+        chmod 755 "${HOME}/${CUCKOO_BIN_FILE}"
 
         for shell_profile_file in $HOME_SHELL_PROFILE_FILES
         do
