@@ -1182,6 +1182,3 @@ case "$CUCKOO_ACTION" in
         error_message "Cuckoo action '${CUCKOO_ACTION}' does not supported"
     ;;
 esac
-
-
-exit 0
