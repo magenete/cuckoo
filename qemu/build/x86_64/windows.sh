@@ -31,25 +31,6 @@ mkdir -p "$QEMU_BIN_ARCH_OS_TMP_DIR"
 
 
 echo ""
-echo "System packages will be installed for QEMU building ..."
-echo ""
-
-# System packages install
-. /etc/os-release
-case "$ID" in
-    debian | ubuntu )
-        sudo apt-get install -y libiscsi-dev libsdl2-dev libcap-dev libattr1-dev libpixman-1-dev flex curl tar
-    ;;
-    arch )
-        sudo pacman -S --noconfirm libiscsi sdl libcap attr pixman flex
-    ;;
-    * )
-        echo "WARNING: System packages were not installed for '${ID}'!"
-    ;;
-esac
-
-
-echo ""
 echo "QEMU will be downloaded into '${QEMU_BIN_ARCH_OS_TMP_BRANCH_DIR}' folder ..."
 echo ""
 

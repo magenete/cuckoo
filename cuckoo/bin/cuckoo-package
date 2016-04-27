@@ -1,0 +1,194 @@
+#!/bin/sh
+#
+# A desktop-oriented virtual machines management system written in Shell.
+#
+# Code is available online at https://github.com/magenete/cuckoo
+# See LICENSE for licensing information, and README for details.
+#
+# Copyright (C) 2016 Magenete Systems OÜ.
+#
+
+
+CUCKOO_PACKAGE_ACTION=""
+CUCKOO_PACKAGE_MANAGER=""
+CUCKOO_PACKAGE_MANAGER_ACTION=""
+CUCKOO_PACKAGE_LIST=""
+
+
+# Help message
+help_message()
+{
+    cat << _H_E_L_P
+
+Usage: $(basename $0) [argumets]
+
+  -i, --install  Install packages.
+  -r, --remove   Remove packages.
+  -l, --list     Get packages list.
+
+  -v, --version  Print the current version.
+  -h, --help     Show this message.
+
+_H_E_L_P
+}
+
+
+# Print error message and exit
+error_message()
+{
+    help_message
+
+    echo ""
+    echo "ERROR: $1"
+    echo ""
+
+    exit 1
+}
+
+
+# System packages
+cuckoo_system_package_action()
+{
+    case "$CUCKOO_PACKAGE_MANAGER" in
+        apt-get )
+            case "$CUCKOO_PACKAGE_ACTION" in
+                install )
+                    CUCKOO_PACKAGE_MANAGER_ACTION="install"
+                ;;
+                remove )
+                    CUCKOO_PACKAGE_MANAGER_ACTION="purge"
+                ;;
+                * )
+                    CUCKOO_PACKAGE_MANAGER_ACTION=""
+                ;;
+            esac
+        ;;
+        pacman )
+            case "$CUCKOO_PACKAGE_ACTION" in
+                install )
+                    CUCKOO_PACKAGE_MANAGER_ACTION="-S"
+                ;;
+                remove )
+                    CUCKOO_PACKAGE_MANAGER_ACTION="-Rs"
+                ;;
+                * )
+                    CUCKOO_PACKAGE_MANAGER_ACTION=""
+                ;;
+            esac
+        ;;
+        * )
+            error_message "Packages manager '${CUCKOO_PACKAGE_MANAGER}' dose not support"
+        ;;
+    esac
+}
+
+
+# System packages
+cuckoo_system_package_env()
+{
+    . /etc/os-release
+    case "$ID" in
+        debian | ubuntu )
+            CUCKOO_PACKAGE_MANAGER="apt-get"
+            cuckoo_system_package_action
+            CUCKOO_PACKAGE_LIST="libiscsi-dev libsdl2-dev libcap-dev libattr1-dev libpixman-1-dev flex curl tar python2.7"
+        ;;
+        arch )
+            CUCKOO_PACKAGE_MANAGER="pacman"
+            cuckoo_system_package_action
+            CUCKOO_PACKAGE_LIST="libiscsi sdl libcap attr pixman flex curl tar"
+        ;;
+        * )
+            error_message "System packages were not supported for '${ID}'!"
+        ;;
+    esac
+}
+
+
+# System packages
+cuckoo_print_packages()
+{
+
+    echo ""
+    echo "Packages list for current system:"
+
+    for package in $CUCKOO_PACKAGE_LIST
+    do
+        echo "    $package"
+    done
+    echo ""
+
+    exit 0
+}
+
+
+# Check OS ENV
+if [ "$(uname -s)" != "Linux" ]
+then
+    error_message "Current OS does not supported for QEMU building\nYou must use only OS Linux!"
+fi
+
+if [ "$(whoami)" = "$USER" ] && [ "root" = "$USER" ]
+then
+    if [ "$(uname -s)" != "Linux" ]
+    then
+        error_message "Current OS does not supported for QEMU building\nYou must use only OS Linux!"
+    fi
+else
+    error_message "Current user must be root!"
+fi
+
+
+##  Options definition
+OPTS="$(getopt -o "irlvh" -l "install,remove,list,version,help" -a -- "$@" 2>/dev/null)"
+if [ $? -gt 0 ]
+then
+    error_message "Invalid option(s) value"
+fi
+
+eval set -- "$OPTS"
+
+# Options parsing
+while [ $# -gt 0 ]
+do
+    case $1 in
+    -- )
+        shift 1
+    ;;
+    --install | -i )
+        CUCKOO_PACKAGE_ACTION="install"
+        shift 1
+    ;;
+    --remove | -r )
+        CUCKOO_PACKAGE_ACTION="remove"
+        shift 1
+    ;;
+    --list | -l )
+        CUCKOO_PACKAGE_ACTION="list"
+        shift 1
+    ;;
+    --version | -v )
+        echo "Cuckoo version: $(cat "$(realpath "$(readlink -f "$(dirname "$0")")/..")/etc/VERSION")"
+        exit 0
+    ;;
+    --help | -h )
+        help_message
+        exit 0
+    ;;
+    * )
+        error_message "Invalid option '$1'"
+    ;;
+    esac
+done
+
+
+# Run
+cuckoo_system_package_env
+case "$CUCKOO_PACKAGE_ACTION" in
+    install | remove )
+        $CUCKOO_PACKAGE_MANAGER $CUCKOO_PACKAGE_MANAGER_ACTION $CUCKOO_PACKAGE_LIST
+    ;;
+    list )
+        cuckoo_print_packages
+    ;;
+esac

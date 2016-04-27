@@ -20,7 +20,7 @@ set CUCKOO_ACTION_DEFAULT=run
 set CUCKOO_ACTION_ARCH_LIST=
 set CUCKOO_ACTION_OS_LIST=
 if "%CUCKOO_DIR%" == "" (
-    set CUCKOO_DIR=%~dp0
+    set CUCKOO_DIR=%~dp0..\
 ) else (
     set CUCKOO_DIR=%CUCKOO_DIR%\
 )
