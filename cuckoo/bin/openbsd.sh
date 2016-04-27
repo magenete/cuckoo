@@ -13,4 +13,4 @@ CUCKOO_DIST_VERSION="${CUCKOO_DIST_VERSION:=5.9}"
 CUCKOO_DIR="$(cd "$(dirname "$0")/.." && pwd -P)"
 
 
-. "${CUCKOO_DIR}/lib/manage.sh" $CUCKOO_ACTION --os-name $(basename $0 .sh) --dist-version $CUCKOO_DIST_VERSION --cpu-cores 1 --cpu-threads 1 $@
+. "${CUCKOO_DIR}/lib/mgt.sh" $CUCKOO_ACTION --os-name $(basename $0 .sh) --dist-version $CUCKOO_DIST_VERSION --cpu-cores 1 --cpu-threads 1 $@

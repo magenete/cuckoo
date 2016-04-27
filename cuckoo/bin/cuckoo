@@ -12,4 +12,4 @@
 CUCKOO_DIR="$(cd "$(dirname "$0")/.." && pwd -P)"
 
 
-. "${CUCKOO_DIR}/lib/manage.sh" $@
+. "${CUCKOO_DIR}/lib/mgt.sh" $@
