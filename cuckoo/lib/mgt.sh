@@ -1114,7 +1114,16 @@ case "$QEMU_ACTION" in
         VIRT_EMULATOR_SYSTEM="yes"
     ;;
     build )
-        qemu_build
+        QEMU_OS_REAL="yes"
+        . "${QEMU_DIR}lib/env.sh"
+        QEMU_OS_REAL=""
+
+        if [ "$QEMU_OS" != "linux" ]
+        then
+            error_message "QEMU building only on Linux!"
+        else
+            qemu_build
+        fi
     ;;
     remove )
         qemu_remove
