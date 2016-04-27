@@ -286,6 +286,7 @@ cuckoo_qemu_copy()
     done
 }
 
+
 ##  Setup
 cuckoo_setup()
 {
@@ -299,6 +300,7 @@ cuckoo_setup()
     cp -v "${CUCKOO_DIR}../cuckoo.sh" "$CUCKOO_SETUP_DIR"
     cp -v "${CUCKOO_DIR}../cuckoo.bat" "$CUCKOO_SETUP_DIR"
     cp -v "${CUCKOO_DIR}../README.md" "$CUCKOO_SETUP_DIR"
+    cp -v "${CUCKOO_DIR}../LICENSE" "$CUCKOO_SETUP_DIR"
 
     echo ""
 

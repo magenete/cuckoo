@@ -27,30 +27,67 @@ then
     CUCKOO_GIT_BRANCH="master"
     CUCKOO_GIT_URL="https://github.com/magenete/cuckoo/archive/${CUCKOO_GIT_BRANCH}.tar.gz"
 
+    CUCKOO_ARCH_LIST="x86 x86_64"
     CUCKOO_INSTALL_DIR=".cuckoo/"
     CUCKOO_DIR="${CUCKOO_INSTALL_DIR}cuckoo-${CUCKOO_GIT_BRANCH}/cuckoo/"
-    CUCKOO_BIN_FILE="${CUCKOO_DIR}bin/cuckoo"
+    CUCKOO_LIB_DIR="${CUCKOO_DIR}lib/"
+    CUCKOO_BIN_DIR="${CUCKOO_DIR}bin/"
+    CUCKOO_BIN_INSTALL_DIR="${CUCKOO_BIN_DIR}install/"
+    CUCKOO_BIN_RUN_DIR="${CUCKOO_BIN_DIR}run/"
+    CUCKOO_BIN_FILE="${CUCKOO_BIN_DIR}cuckoo"
 
-    HOME_SHELL_PROFILE_FILES=".mkshrc .bash_profile .bashrc .mkshrc .profile .zlogin .zshrc"
+    QEMU_ARCH_LIST="x86 x86_64"
+    QEMU_DIR="${CUCKOO_DIR}../qemu/"
+    QEMU_LIB_DIR="${QEMU_DIR}lib/"
+    QEMU_BUILD_DIR="${QEMU_DIR}build/"
+
+    HOME_SHELL_PROFILE_FILES=".bash_profile .bashrc .mkshrc .profile .zlogin .zshrc"
 
 
+    # Make project directory and download source from Git
     mkdir -p "${HOME}/${CUCKOO_INSTALL_DIR}" && cd "${HOME}/${CUCKOO_INSTALL_DIR}" && curl -SL "$CUCKOO_GIT_URL" | tar xz
 
     if [ -e "${HOME}/${CUCKOO_BIN_FILE}" ] && [ -f "${HOME}/${CUCKOO_BIN_FILE}" ]
     then
-        chmod 755 "${HOME}/${CUCKOO_BIN_FILE}"
+        ## Cuckoo
 
+        # Bin files
+        chmod 750 "${HOME}/${CUCKOO_DIR}"*.sh
+        chmod 750 "${HOME}/${CUCKOO_DIR}../"*.sh
+        chmod 750 "${HOME}/${CUCKOO_BIN_FILE}"
+        chmod 750 "${HOME}/${CUCKOO_BIN_DIR}"*.sh
+        for cuckoo_arch in $CUCKOO_ARCH_LIST
+        do
+            chmod 750 "${HOME}/${CUCKOO_BIN_INSTALL_DIR}${cuckoo_arch}/"*.sh
+            chmod 750 "${HOME}/${CUCKOO_BIN_RUN_DIR}${cuckoo_arch}/"*.sh
+        done
+
+        # Lib files
+        chmod 640 "${HOME}/${CUCKOO_LIB_DIR}"*.sh
+
+        ## QEMU
+
+        # Lib files
+        chmod 640 "${HOME}/${QEMU_LIB_DIR}"*.sh
+
+        # Build files
+        for qemu_arch in $QEMU_ARCH_LIST
+        do
+            chmod 750 "${HOME}/${QEMU_BUILD_DIR}${qemu_arch}/"*.sh
+        done
+
+        ## Add Cuckoo bin path in PATH
         for shell_profile_file in $HOME_SHELL_PROFILE_FILES
         do
             if [ -e "${HOME}/${shell_profile_file}" ] && [ -f "${HOME}/${shell_profile_file}" ]
             then
                 echo "" >> "${HOME}/${shell_profile_file}"
-                echo "export PATH=\"\${PATH}:\${HOME}/${CUCKOO_DIR}bin\"  # Add Cuckoo to PATH for scripting" >> "${HOME}/${shell_profile_file}"
-                echo "" >> "${HOME}/${shell_profile_file}"
+                echo "export PATH=\"\${PATH}:\${HOME}/${CUCKOO_BIN_DIR}\"  # Add Cuckoo to PATH for scripting" >> "${HOME}/${shell_profile_file}"
             fi
         done
 
-        export PATH="${PATH}:${HOME}/${CUCKOO_DIR}bin"
+        # Export new PATH
+        export PATH="${PATH}:${HOME}/${CUCKOO_BIN_DIR}"
     else
         error_message "Bin file '${HOME}/${CUCKOO_BIN_FILE}' does not exist"
     fi
