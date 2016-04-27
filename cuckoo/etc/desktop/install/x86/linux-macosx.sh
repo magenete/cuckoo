@@ -8,4 +8,4 @@
 #
 
 
-. "$(realpath "$(readlink -f "$(dirname "$0")")/../../..")/lib/unsupported.sh"
+. "$(realpath "$(readlink -f "$(dirname "$0")")/../../../..")/lib/unsupported.sh"

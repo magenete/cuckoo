@@ -96,7 +96,7 @@ cuckoo_system_package_env()
         arch )
             CUCKOO_PACKAGE_MANAGER="pacman"
             cuckoo_system_package_action
-            CUCKOO_PACKAGE_LIST="libiscsi sdl libcap attr pixman flex curl tar"
+            CUCKOO_PACKAGE_LIST="libiscsi sdl libcap attr pixman flex curl tar python2"
         ;;
         * )
             error_message "System packages were not supported for '${ID}'!"
