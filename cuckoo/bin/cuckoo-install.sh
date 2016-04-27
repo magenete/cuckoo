@@ -32,13 +32,17 @@ then
     CUCKOO_DIR="${CUCKOO_INSTALL_DIR}cuckoo-${CUCKOO_GIT_BRANCH}/cuckoo/"
     CUCKOO_LIB_DIR="${CUCKOO_DIR}lib/"
     CUCKOO_BIN_DIR="${CUCKOO_DIR}bin/"
-    CUCKOO_BIN_INSTALL_DIR="${CUCKOO_BIN_DIR}install/"
-    CUCKOO_BIN_RUN_DIR="${CUCKOO_BIN_DIR}run/"
+    CUCKOO_ISO_DIR="${CUCKOO_DIR}iso/"
+    CUCKOO_ETC_DIR="${CUCKOO_DIR}etc/"
+    CUCKOO_ETC_DESKTOP_DIR="${CUCKOO_BIN_DIR}desktop/"
+    CUCKOO_ETC_DESKTOP_INSTALL_DIR="${CUCKOO_ETC_DESKTOP_DIR}install/"
+    CUCKOO_ETC_DESKTOP_RUN_DIR="${CUCKOO_ETC_DESKTOP_DIR}run/"
     CUCKOO_BIN_FILE="${CUCKOO_BIN_DIR}cuckoo"
 
     QEMU_ARCH_LIST="x86 x86_64"
     QEMU_DIR="${CUCKOO_DIR}../qemu/"
     QEMU_LIB_DIR="${QEMU_DIR}lib/"
+    QEMU_BIN_DIR="${QEMU_DIR}bin/"
     QEMU_BUILD_DIR="${QEMU_DIR}build/"
 
     HOME_SHELL_PROFILE_FILES=".bash_profile .bashrc .mkshrc .profile .zlogin .zshrc"
@@ -52,28 +56,52 @@ then
         ## Cuckoo
 
         # Bin files
-        chmod 750 "${HOME}/${CUCKOO_DIR}"*.sh
-        chmod 750 "${HOME}/${CUCKOO_DIR}../"*.sh
-        chmod 750 "${HOME}/${CUCKOO_BIN_FILE}"
-        chmod 750 "${HOME}/${CUCKOO_BIN_DIR}"*.sh
+        chmod 700 "${HOME}/${CUCKOO_INSTALL_DIR}"
+        chmod 700 "${HOME}/${CUCKOO_DIR}../"
+        chmod 700 "${HOME}/${CUCKOO_DIR}"
+        chmod 700 "${HOME}/${CUCKOO_DIR}../"*.sh
+        chmod 600 "${HOME}/${CUCKOO_DIR}../"*.bat
+        chmod 700 "${HOME}/${CUCKOO_BIN_FILE}"
+        chmod 700 "${HOME}/${CUCKOO_BIN_DIR}"*.sh
+        chmod 600 "${HOME}/${CUCKOO_BIN_DIR}"*.bat
+
+        # Etc files
+        chmod 700 "${HOME}/${CUCKOO_ETC_DESKTOP_DIR}"
+        chmod 700 "${HOME}/${CUCKOO_ETC_DESKTOP_INSTALL_DIR}"
+        chmod 700 "${HOME}/${CUCKOO_ETC_DESKTOP_RUN_DIR}"
         for cuckoo_arch in $CUCKOO_ARCH_LIST
         do
-            chmod 750 "${HOME}/${CUCKOO_BIN_INSTALL_DIR}${cuckoo_arch}/"*.sh
-            chmod 750 "${HOME}/${CUCKOO_BIN_RUN_DIR}${cuckoo_arch}/"*.sh
+            chmod 700 "${HOME}/${CUCKOO_ETC_DESKTOP_INSTALL_DIR}${cuckoo_arch}/"
+            chmod 600 "${HOME}/${CUCKOO_ETC_DESKTOP_INSTALL_DIR}${cuckoo_arch}/"*
+            chmod 700 "${HOME}/${CUCKOO_ETC_DESKTOP_RUN_DIR}${cuckoo_arch}/"
+            chmod 600 "${HOME}/${CUCKOO_ETC_DESKTOP_RUN_DIR}${cuckoo_arch}/"*
+        done
+
+        # ISO files
+        chmod 700 "${HOME}/${CUCKOO_ISO_DIR}"
+        for cuckoo_arch in $CUCKOO_ARCH_LIST
+        do
+            chmod 700 "${HOME}/${CUCKOO_ISO_DIR}${cuckoo_arch}/"
+            chmod 700 "${HOME}/${CUCKOO_ISO_DIR}${cuckoo_arch}/"*
         done
 
         # Lib files
-        chmod 640 "${HOME}/${CUCKOO_LIB_DIR}"*.sh
+        chmod 600 "${HOME}/${CUCKOO_LIB_DIR}"*.sh
 
         ## QEMU
 
+        # Bin directory
+        chmod 700 "${HOME}/${QEMU_BIN_DIR}"
+
         # Lib files
-        chmod 640 "${HOME}/${QEMU_LIB_DIR}"*.sh
+        chmod 700 "${HOME}/${QEMU_LIB_DIR}"
+        chmod 600 "${HOME}/${QEMU_LIB_DIR}"*.sh
 
         # Build files
+        chmod 700 "${HOME}/${QEMU_BUILD_DIR}"
         for qemu_arch in $QEMU_ARCH_LIST
         do
-            chmod 750 "${HOME}/${QEMU_BUILD_DIR}${qemu_arch}/"*.sh
+            chmod 700 "${HOME}/${QEMU_BUILD_DIR}${qemu_arch}/"*.sh
         done
 
         ## Add Cuckoo bin path in PATH
