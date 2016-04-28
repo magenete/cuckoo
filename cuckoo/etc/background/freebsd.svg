@@ -11,18 +11,18 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="522.86755"
-   height="209.27863"
+   width="1920"
+   height="1080"
    id="svg2"
-   enable-background="new"
    sodipodi:version="0.32"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="cuckoo-freebsd.svg"
+   sodipodi:docname="freebsd.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1"
    inkscape:export-filename="cuckoo-freebsd.png"
    inkscape:export-xdpi="90"
-   inkscape:export-ydpi="90">
+   inkscape:export-ydpi="90"
+   style="enable-background:new">
   <metadata
      id="metadata14147">
     <rdf:RDF>
@@ -31,7 +31,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -63,7 +63,8 @@
        y="392.755"
        x="79.325996"
        filterUnits="userSpaceOnUse"
-       id="Adobe_OpacityMaskFilter_2_">
+       id="Adobe_OpacityMaskFilter_2_"
+       color-interpolation-filters="sRGB">
       <feColorMatrix
          id="feColorMatrix6678"
          values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"
@@ -160,7 +161,7 @@
        id="XMLID_58_">
       <g
          id="g6920"
-         filter="url(#Adobe_OpacityMaskFilter_3_)">
+         style="filter:url(#Adobe_OpacityMaskFilter_3_)">
         <radialGradient
            cx="875.55267"
            cy="470.90039"
@@ -197,7 +198,7 @@
            x="723.72101"
            y="334.13901"
            id="rect6927"
-           fill="url(#XMLID_59_)" />
+           style="fill:url(#XMLID_59_)" />
       </g>
     </mask>
     <linearGradient
@@ -274,7 +275,7 @@
        id="XMLID_29_">
       <g
          id="g6594"
-         filter="url(#Adobe_OpacityMaskFilter_2_)">
+         style="filter:url(#Adobe_OpacityMaskFilter_2_)">
         <radialGradient
            cx="91.932098"
            cy="512.89838"
@@ -311,7 +312,7 @@
            x="42.754002"
            y="376.13699"
            id="rect6601"
-           fill="url(#XMLID_30_)" />
+           style="fill:url(#XMLID_30_)" />
       </g>
     </mask>
     <linearGradient
@@ -865,7 +866,7 @@
        r="210.1494"
        id="XMLID_16_"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(-0.4079,-0.7171,0.8246,-2.35e-2,566.168,534.4017)">
+       gradientTransform="matrix(-0.4079,-0.7171,0.8246,-0.0235,566.168,534.4017)">
       <stop
          id="stop6449"
          stop-color="#ff2f00"
@@ -1371,7 +1372,7 @@
        id="XMLID_174_">
       <g
          id="g6268"
-         filter="url(#Adobe_OpacityMaskFilter_1_)">
+         style="filter:url(#Adobe_OpacityMaskFilter_1_)">
         <radialGradient
            cx="876.8252"
            cy="185.7769"
@@ -1408,14 +1409,14 @@
            x="724.82599"
            y="49.015999"
            id="rect6275"
-           fill="url(#XMLID_1_)" />
+           style="fill:url(#XMLID_1_)" />
       </g>
     </mask>
     <mask
        id="XMLID_145_">
       <g
          id="g5942"
-         filter="url(#Adobe_OpacityMaskFilter)">
+         style="filter:url(#Adobe_OpacityMaskFilter)">
         <radialGradient
            cx="92.014603"
            cy="231.7769"
@@ -1452,13 +1453,14 @@
            x="42.826"
            y="95.015999"
            id="rect5949"
-           fill="url(#XMLID_146_)" />
+           style="fill:url(#XMLID_146_)" />
       </g>
     </mask>
     <filter
        y="-0.2"
        inkscape:label="SoftLight"
-       id="filter2389">
+       id="filter2389"
+       color-interpolation-filters="sRGB">
       <feBlend
          result="result1"
          mode="screen"
@@ -1476,7 +1478,10 @@
          k1="1"
          in2="BackgroundImage"
          operator="arithmetic"
-         id="feComposite3187" />
+         id="feComposite3187"
+         k2="0"
+         k3="0"
+         k4="0" />
       <feColorMatrix
          result="result5"
          values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0 "
@@ -1487,18 +1492,24 @@
          operator="arithmetic"
          in2="result2"
          in="result5"
-         id="feComposite3205" />
+         id="feComposite3205"
+         k2="0"
+         k3="0"
+         k4="0" />
       <feComposite
          k3="1"
          k2="1"
          in2="result4"
          operator="arithmetic"
-         id="feComposite3233" />
+         id="feComposite3233"
+         k1="0"
+         k4="0" />
     </filter>
     <filter
        y="-0.2"
        inkscape:label="Screen"
-       id="filter13329">
+       id="filter13329"
+       color-interpolation-filters="sRGB">
       <feBlend
          mode="screen"
          in2="BackgroundImage"
@@ -1506,14 +1517,16 @@
     </filter>
     <filter
        inkscape:label="Multiply"
-       id="filter13333">
+       id="filter13333"
+       color-interpolation-filters="sRGB">
       <feBlend
          in2="BackgroundImage"
          mode="multiply"
          id="feBlend13335" />
     </filter>
     <filter
-       id="filter13851">
+       id="filter13851"
+       color-interpolation-filters="sRGB">
       <feGaussianBlur
          id="feGaussianBlur13853"
          stdDeviation="4.5579024"
@@ -1524,7 +1537,8 @@
        y="-0.24954218"
        width="1.7520697"
        x="-0.37603483"
-       id="filter4852">
+       id="filter4852"
+       color-interpolation-filters="sRGB">
       <feGaussianBlur
          id="feGaussianBlur4854"
          stdDeviation="5.7314267"
@@ -1544,17 +1558,18 @@
     <mask
        id="mask3530">
       <path
-         d="M 318.85776,244.04313 L 144.97884,244.04313 L 144.97884,84.93312 L 318.85776,84.93312 L 318.85776,244.04313 z"
+         d="m 318.85776,244.04313 -173.87892,0 0,-159.11001 173.87892,0 0,159.11001 z"
          id="path3532"
-         fill="url(#radialGradient3534)"
-         stroke="none" />
+         inkscape:connector-curvature="0"
+         style="fill:url(#radialGradient3534);stroke:none" />
     </mask>
     <filter
        height="1.3193372"
        y="-0.15966865"
        width="1.1631914"
        x="-0.081595697"
-       id="filter12588">
+       id="filter12588"
+       color-interpolation-filters="sRGB">
       <feGaussianBlur
          id="feGaussianBlur12590"
          stdDeviation="4.3903244"
@@ -1568,9 +1583,10 @@
     <mask
        id="mask13128">
       <path
-         d="M -455.93146,477.17319 C -458.40783,477.18719 -460.43005,477.76553 -461.77521,479.11069 C -467.58074,484.91622 -459.24057,503.40441 -451.99396,516.01694 C -458.30604,526.9855 -461.93146,539.71163 -461.93146,553.26694 C -461.93146,594.56372 -428.41575,628.07944 -387.11896,628.07944 C -345.82218,628.07944 -312.30646,594.56371 -312.30646,553.26694 C -312.30646,539.6223 -315.97948,526.8158 -322.36896,515.79819 C -315.15097,503.19145 -306.94003,484.88337 -312.71271,479.11069 C -312.83648,478.98692 -312.95259,478.87798 -313.08771,478.76694 C -313.09878,478.75906 -313.10776,478.74344 -313.11896,478.73569 C -319.30451,473.73842 -336.96556,481.69772 -349.27521,488.73569 C -360.38215,482.20267 -373.3098,478.45444 -387.11896,478.45444 C -399.7601,478.45444 -411.67405,481.59915 -422.11896,487.14194 C -418.6259,484.91287 -414.9298,482.99769 -411.05646,481.42319 C -416.17236,483.25204 -420.99566,485.65675 -425.49396,488.57944 C -435.1232,483.09965 -447.8835,477.1277 -455.93146,477.17319 z"
+         d="m -455.93146,477.17319 c -2.47637,0.014 -4.49859,0.59234 -5.84375,1.9375 -5.80553,5.80553 2.53464,24.29372 9.78125,36.90625 -6.31208,10.96856 -9.9375,23.69469 -9.9375,37.25 0,41.29678 33.51571,74.8125 74.8125,74.8125 41.29678,0 74.8125,-33.51573 74.8125,-74.8125 0,-13.64464 -3.67302,-26.45114 -10.0625,-37.46875 7.21799,-12.60674 15.42893,-30.91482 9.65625,-36.6875 -0.12377,-0.12377 -0.23988,-0.23271 -0.375,-0.34375 -0.0111,-0.008 -0.02,-0.0235 -0.0312,-0.0312 -6.18555,-4.99727 -23.8466,2.96203 -36.15625,10 -11.10694,-6.53302 -24.03459,-10.28125 -37.84375,-10.28125 -12.64114,0 -24.55509,3.14471 -35,8.6875 3.49306,-2.22907 7.18916,-4.14425 11.0625,-5.71875 -5.1159,1.82885 -9.9392,4.23356 -14.4375,7.15625 -9.62924,-5.47979 -22.38954,-11.45174 -30.4375,-11.40625 z"
          id="path13130"
-         fill="#ffffff" />
+         inkscape:connector-curvature="0"
+         style="fill:#ffffff" />
     </mask>
     <radialGradient
        cx="252.873"
@@ -4127,9 +4143,10 @@
      width="1920"
      height="1080"
      x="0"
-     y="-870.72137" />
+     y="0" />
   <g
-     id="g16908">
+     id="g16908"
+     transform="translate(0,870.72137)">
     <g
        transform="translate(825,-405)"
        id="g15143">
