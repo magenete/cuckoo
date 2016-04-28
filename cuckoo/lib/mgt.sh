@@ -447,6 +447,8 @@ cuckoo_iso_setup()
         curl -SL -o "$CUCKOO_ISO_FILE_SYS_PATH" "$CUCKOO_ISO_FILE_PATH"
     fi
 
+    chmod 600 "$CUCKOO_ISO_FILE_SYS_PATH"
+
     echo ""
     echo "ISO file has been setuped as '${CUCKOO_ISO_FILE_SYS_PATH}'"
     echo ""
@@ -847,7 +849,7 @@ cuckoo_dist_version_config()
 }
 
 
-##  Options definition
+# Options definition
 ARGS_SHORT="s:bqu:f:IHirlLQA:O:a:o:d:EURc:p:D:C:T:S:m:e:FNt:P:vh"
 ARGS_LONG="setup:,qemu-build,qemu-remove,iso-url:,iso-file:,iso-remove,hd-remove,install,run,iso-list,hd-list,qemu-system,qemu-arch,qemu-os-name:,arch:,os-name:,dist-version:,config-set,config-update,config-remove,boot-cdrom:,boot-floppy:,cdrom-add:,cpu-cores:,cpu-threads:,cpu-sockets:,memory-size:,smb-dir:,full-screen,no-daemonize,hd-type:,opts-add:,version,help"
 OPTS="$(getopt -o "${ARGS_SHORT}" -l "${ARGS_LONG}" -a -- "$@" 2>/dev/null)"

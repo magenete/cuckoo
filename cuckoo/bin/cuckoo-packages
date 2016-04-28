@@ -9,10 +9,10 @@
 #
 
 
-CUCKOO_PACKAGE_ACTION=""
-CUCKOO_PACKAGE_MANAGER=""
-CUCKOO_PACKAGE_MANAGER_ACTION=""
-CUCKOO_PACKAGE_LIST=""
+CUCKOO_PACKAGES_ACTION=""
+CUCKOO_PACKAGES_MANAGER=""
+CUCKOO_PACKAGES_MANAGER_ACTION=""
+CUCKOO_PACKAGES_LIST=""
 
 
 # Help message
@@ -47,58 +47,58 @@ error_message()
 
 
 # System packages
-cuckoo_system_package_action()
+cuckoo_packages_manager_action()
 {
-    case "$CUCKOO_PACKAGE_MANAGER" in
+    case "$CUCKOO_PACKAGES_MANAGER" in
         apt-get )
-            case "$CUCKOO_PACKAGE_ACTION" in
+            case "$CUCKOO_PACKAGES_ACTION" in
                 install )
-                    CUCKOO_PACKAGE_MANAGER_ACTION="install"
+                    CUCKOO_PACKAGES_MANAGER_ACTION="install"
                 ;;
                 remove )
-                    CUCKOO_PACKAGE_MANAGER_ACTION="purge"
+                    CUCKOO_PACKAGES_MANAGER_ACTION="purge"
                 ;;
                 * )
-                    CUCKOO_PACKAGE_MANAGER_ACTION=""
+                    CUCKOO_PACKAGES_MANAGER_ACTION=""
                 ;;
             esac
         ;;
         pacman )
-            case "$CUCKOO_PACKAGE_ACTION" in
+            case "$CUCKOO_PACKAGES_ACTION" in
                 install )
-                    CUCKOO_PACKAGE_MANAGER_ACTION="-S"
+                    CUCKOO_PACKAGES_MANAGER_ACTION="-S"
                 ;;
                 remove )
-                    CUCKOO_PACKAGE_MANAGER_ACTION="-Rs"
+                    CUCKOO_PACKAGES_MANAGER_ACTION="-Rs"
                 ;;
                 * )
-                    CUCKOO_PACKAGE_MANAGER_ACTION=""
+                    CUCKOO_PACKAGES_MANAGER_ACTION=""
                 ;;
             esac
         ;;
         * )
-            error_message "Packages manager '${CUCKOO_PACKAGE_MANAGER}' dose not support"
+            error_message "Packages manager '${CUCKOO_PACKAGES_MANAGER}' dose not support"
         ;;
     esac
 }
 
 
 # System packages
-cuckoo_system_package_env()
+cuckoo_packages()
 {
     # Only for Linux
     . /etc/os-release
 
     case "$ID" in
         debian | ubuntu )
-            CUCKOO_PACKAGE_MANAGER="apt-get"
-            cuckoo_system_package_action
-            CUCKOO_PACKAGE_LIST="libiscsi-dev libsdl2-dev libcap-dev libattr1-dev libpixman-1-dev flex curl tar python2.7"
+            CUCKOO_PACKAGES_MANAGER="apt-get"
+            cuckoo_packages_manager_action
+            CUCKOO_PACKAGES_LIST="libiscsi-dev libsdl2-dev libcap-dev libattr1-dev libpixman-1-dev flex curl tar python2.7"
         ;;
         arch )
-            CUCKOO_PACKAGE_MANAGER="pacman"
-            cuckoo_system_package_action
-            CUCKOO_PACKAGE_LIST="libiscsi sdl libcap attr pixman flex curl tar python2"
+            CUCKOO_PACKAGES_MANAGER="pacman"
+            cuckoo_packages_manager_action
+            CUCKOO_PACKAGES_LIST="libiscsi sdl libcap attr pixman flex curl tar python2"
         ;;
         * )
             error_message "System packages were not supported for '${ID}'!"
@@ -107,13 +107,13 @@ cuckoo_system_package_env()
 }
 
 
-# System packages
-cuckoo_print_packages()
+# Print packages list
+cuckoo_packages_list()
 {
     echo ""
     echo "Packages list for current system:"
 
-    for package in $CUCKOO_PACKAGE_LIST
+    for package in $CUCKOO_PACKAGES_LIST
     do
         echo "    $package"
     done
@@ -123,12 +123,7 @@ cuckoo_print_packages()
 }
 
 
-# Check OS ENV
-if [ "$(uname -s)" != "Linux" ]
-then
-    error_message "Current OS does not supported for QEMU building\nYou must use only OS Linux!"
-fi
-
+# Check only root and only Linux
 if [ "$(whoami)" = "$USER" ] && [ "root" = "$USER" ]
 then
     if [ "$(uname -s)" != "Linux" ]
@@ -140,7 +135,7 @@ else
 fi
 
 
-##  Options definition
+# Options definition
 OPTS="$(getopt -o "irlvh" -l "install,remove,list,version,help" -a -- "$@" 2>/dev/null)"
 if [ $? -gt 0 ]
 then
@@ -157,15 +152,15 @@ do
         shift 1
     ;;
     --install | -i )
-        CUCKOO_PACKAGE_ACTION="install"
+        CUCKOO_PACKAGES_ACTION="install"
         shift 1
     ;;
     --remove | -r )
-        CUCKOO_PACKAGE_ACTION="remove"
+        CUCKOO_PACKAGES_ACTION="remove"
         shift 1
     ;;
     --list | -l )
-        CUCKOO_PACKAGE_ACTION="list"
+        CUCKOO_PACKAGES_ACTION="list"
         shift 1
     ;;
     --version | -v )
@@ -184,12 +179,13 @@ done
 
 
 # Run
-cuckoo_system_package_env
-case "$CUCKOO_PACKAGE_ACTION" in
+cuckoo_packages
+
+case "$CUCKOO_PACKAGES_ACTION" in
     install | remove )
-        $CUCKOO_PACKAGE_MANAGER $CUCKOO_PACKAGE_MANAGER_ACTION $CUCKOO_PACKAGE_LIST
+        $CUCKOO_PACKAGES_MANAGER $CUCKOO_PACKAGES_MANAGER_ACTION $CUCKOO_PACKAGES_LIST
     ;;
     list )
-        cuckoo_print_packages
+        cuckoo_packages_list
     ;;
 esac

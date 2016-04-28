@@ -99,11 +99,13 @@ cuckoo_install()
 # Cuckoo structure install
 cuckoo_structure_install()
 {
-    # Bin
+    # Common
     chmod 700 "${HOME}/${CUCKOO_INSTALLER_DIR}"
     chmod 700 "${HOME}/${CUCKOO_DIR}../"
     chmod 700 "${HOME}/${CUCKOO_DIR}"
     chmod 700 "${HOME}/${CUCKOO_DIR}"*
+
+    # Bin
     chmod 700 "${HOME}/${CUCKOO_BIN_DIR}"*
     chmod 600 "${HOME}/${CUCKOO_BIN_DIR}"*.bat
 
@@ -120,7 +122,7 @@ cuckoo_structure_install()
         chmod 700 "${HOME}/${CUCKOO_ISO_DIR}${cuckoo_arch}/"*
         chmod 700 "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/"*
 
-        # Clean HD
+        # HD .clean
         for cuckoo_os in $(ls "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/")
         do
             chmod 700 "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/${cuckoo_os}/"
@@ -242,7 +244,7 @@ cuckoo_uninstall()
 }
 
 
-##  Options definition
+# Options definition
 OPTS="$(getopt -o "iuvh" -l "install,uninstall,version,help" -a -- "$@" 2>/dev/null)"
 if [ $? -gt 0 ]
 then
