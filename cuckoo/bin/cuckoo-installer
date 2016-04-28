@@ -12,7 +12,8 @@
 CUCKOO_GIT_BRANCH="master"
 CUCKOO_GIT_URL="https://github.com/magenete/cuckoo/archive/${CUCKOO_GIT_BRANCH}.tar.gz"
 
-CUCKOO_ARCH_LIST="x86 x86_64"
+CUCKOO_ACTION=""
+CUCKOO_ACTION_DEFAULT="install"
 CUCKOO_INSTALLER_DIR=".cuckoo/"
 CUCKOO_DIR="${CUCKOO_INSTALLER_DIR}cuckoo-${CUCKOO_GIT_BRANCH}/cuckoo/"
 CUCKOO_LIB_DIR="${CUCKOO_DIR}lib/"
@@ -24,8 +25,10 @@ CUCKOO_OS_COMMON_DIR="${CUCKOO_OS_DIR}common/"
 CUCKOO_HD_DIR="${CUCKOO_DIR}hd/"
 CUCKOO_BIN_DIR="${CUCKOO_DIR}bin/"
 CUCKOO_BIN_FILE="${CUCKOO_BIN_DIR}cuckoo"
+CUCKOO_LAUNCHERS_DIR="${CUCKOO_DIR}../launchers/"
+CUCKOO_LAUNCHERS_INSTALL_DIR="${CUCKOO_LAUNCHERS_DIR}install/"
+CUCKOO_LAUNCHERS_RUN_DIR="${CUCKOO_LAUNCHERS_DIR}run/"
 
-QEMU_ARCH_LIST="x86 x86_64"
 QEMU_DIR="${CUCKOO_DIR}../qemu/"
 QEMU_LIB_DIR="${QEMU_DIR}lib/"
 QEMU_BIN_DIR="${QEMU_DIR}bin/"
@@ -68,7 +71,7 @@ error_message()
 cuckoo_install()
 {
     # Make project directory and download source from Git
-    mkdir -p "${HOME}/${CUCKOO_INSTALLER_DIR}" && cd "${HOME}/${CUCKOO_INSTALLER_DIR}" && curl -SL "$CUCKOO_GIT_URL" | tar xz
+    mkdir -p "${HOME}/${CUCKOO_INSTALLER_DIR}" && cd "${HOME}/${CUCKOO_INSTALLER_DIR}"
     if [ $? -gt 0 ]
     then
         error_message "Could not create directory '${HOME}/${CUCKOO_INSTALLER_DIR}'"
@@ -100,53 +103,68 @@ cuckoo_structure_install()
     chmod 700 "${HOME}/${CUCKOO_INSTALLER_DIR}"
     chmod 700 "${HOME}/${CUCKOO_DIR}../"
     chmod 700 "${HOME}/${CUCKOO_DIR}"
+    chmod 700 "${HOME}/${CUCKOO_DIR}"*
     chmod 700 "${HOME}/${CUCKOO_BIN_DIR}"*
     chmod 600 "${HOME}/${CUCKOO_BIN_DIR}"*.bat
 
     # Etc
-    chmod 700 "${HOME}/${CUCKOO_ETC_DIR}"
     chmod 700 "${HOME}/${CUCKOO_ETC_DIR}"*
     chmod 600 "${HOME}/${CUCKOO_ETC_VERSION_FILE}"
 
     # HD and ISO
-    chmod 700 "${HOME}/${CUCKOO_ISO_DIR}"
     chmod 700 "${HOME}/${CUCKOO_ISO_DIR}"*
-
-    chmod 700 "${HOME}/${CUCKOO_HD_DIR}"
     chmod 700 "${HOME}/${CUCKOO_HD_DIR}"*
 
-    for cuckoo_arch in $CUCKOO_ARCH_LIST
+    for cuckoo_arch in $(ls "${HOME}/${CUCKOO_ISO_DIR}/")
     do
         chmod 700 "${HOME}/${CUCKOO_ISO_DIR}${cuckoo_arch}/"*
         chmod 700 "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/"*
+
+        # Clean HD
+        for cuckoo_os in $(ls "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/")
+        do
+            chmod 700 "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/${cuckoo_os}/"
+            chmod 700 "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/${cuckoo_os}/.clean/"
+            chmod 600 "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/${cuckoo_os}/.clean/"*
+        done
     done
 
     # OS
-    chmod 700 "${HOME}/${CUCKOO_OS_DIR}"
     chmod 700 "${HOME}/${CUCKOO_OS_DIR}"*
     chmod 700 "${HOME}/${CUCKOO_OS_COMMON_DIR}"*
 
-    # Lib files
+    # Lib
     chmod 600 "${HOME}/${CUCKOO_LIB_DIR}"*
+
+    # Launchers
+    chmod 700 -R "${HOME}/${CUCKOO_LAUNCHERS_DIR}"
+    chmod 600 "${HOME}/${CUCKOO_LAUNCHERS_DIR}"*.bat
+
+    for launchers_dir in "${HOME}/${CUCKOO_LAUNCHERS_INSTALL_DIR}" "${HOME}/${CUCKOO_LAUNCHERS_RUN_DIR}"
+    do
+        for cuckoo_arch in $(ls "$launchers_dir")
+        do
+            chmod 600 "${launchers_dir}${cuckoo_arch}/"*.bat
+        done
+    done
 }
 
 
 # QEMU install
 cuckoo_qemu_install()
 {
-    # Bin directory
+    chmod 700 "${HOME}/${QEMU_DIR}"
+
+    # Bin
     chmod 700 "${HOME}/${QEMU_BIN_DIR}"
+    chmod 700 "${HOME}/${QEMU_BIN_DIR}"*
 
-    # Lib files
+    # Lib
     chmod 700 "${HOME}/${QEMU_LIB_DIR}"
-    chmod 600 "${HOME}/${QEMU_LIB_DIR}"*.sh
+    chmod 600 "${HOME}/${QEMU_LIB_DIR}"*
 
-    # Build files
-    chmod 700 "${HOME}/${QEMU_BUILD_DIR}"
-    for qemu_arch in $QEMU_ARCH_LIST
-    do
-        chmod 700 "${HOME}/${QEMU_BUILD_DIR}${qemu_arch}/"*.sh
-    done
+    # Build
+    chmod 700 -R "${HOME}/${QEMU_BUILD_DIR}"
 }
 
 
@@ -180,19 +198,17 @@ cuckoo_uninstall_answer()
             echo ""
             echo "Directory '${HOME}/${CUCKOO_INSTALLER_DIR}' has been removed"
             echo ""
-            shift 1
         ;;
         "" | N | n | No | no )
             echo ""
             echo "Directory '${HOME}/${CUCKOO_INSTALLER_DIR}' has not been removed"
             echo ""
-            shift 1
         ;;
         * )
             echo "Please use Y|y|Yes|yes|N|n|No|no or just enter (by default No)."
+            echo ""
 
             cuckoo_uninstall_answer
-            shift 1
         ;;
     esac
 }
@@ -226,16 +242,6 @@ cuckoo_uninstall()
 }
 
 
-# Installation run
-if [ "$(whoami)" = "$USER" ] && [ "$(basename $HOME)" = "$USER" ]
-then
-    cuckoo_install
-    cuckoo_uninstall
-else
-    error_message "Invalid ENV of current user '$USER'"
-fi
-
-
 ##  Options definition
 OPTS="$(getopt -o "iuvh" -l "install,uninstall,version,help" -a -- "$@" 2>/dev/null)"
 if [ $? -gt 0 ]
@@ -257,11 +263,11 @@ do
         shift 1
     ;;
     --uninstall | -u )
-        CUCKOO_ACTION="remove"
+        CUCKOO_ACTION="uninstall"
         shift 1
     ;;
     --version | -v )
-        echo "Cuckoo version: $(cat "$(realpath "$(readlink -f "$(dirname "$0")")/..")/etc/VERSION")"
+        echo "Cuckoo version: 0.1.1"
         exit 0
     ;;
     --help | -h )
@@ -274,3 +280,20 @@ do
     esac
 done
 
+
+# Run
+if [ "$(whoami)" = "$USER" ] && [ "$(basename $HOME)" = "$USER" ]
+then
+    [ -z "$CUCKOO_ACTION" ] && CUCKOO_ACTION="$CUCKOO_ACTION_DEFAULT"
+
+    case "$CUCKOO_ACTION" in
+        install )
+            cuckoo_install
+        ;;
+        uninstall )
+            cuckoo_uninstall
+        ;;
+    esac
+else
+    error_message "Invalid ENV of current user '$USER'"
+fi
