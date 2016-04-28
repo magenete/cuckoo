@@ -86,7 +86,9 @@ cuckoo_system_package_action()
 # System packages
 cuckoo_system_package_env()
 {
+    # Only for Linux
     . /etc/os-release
+
     case "$ID" in
         debian | ubuntu )
             CUCKOO_PACKAGE_MANAGER="apt-get"
@@ -108,7 +110,6 @@ cuckoo_system_package_env()
 # System packages
 cuckoo_print_packages()
 {
-
     echo ""
     echo "Packages list for current system:"
 
