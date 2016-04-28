@@ -33,7 +33,7 @@ _H_E_L_P
 }
 
 
-# Print error message and exit
+# Print help, error message and exit
 error_message()
 {
     help_message
@@ -123,15 +123,10 @@ cuckoo_packages_list()
 }
 
 
-# Check only root and only Linux
-if [ "$(whoami)" = "$USER" ] && [ "root" = "$USER" ]
+# Check only Linux
+if [ "$(uname -s)" != "Linux" ]
 then
-    if [ "$(uname -s)" != "Linux" ]
-    then
-        error_message "Current OS does not supported for QEMU building\nYou must use only OS Linux!"
-    fi
-else
-    error_message "Current user must be root!"
+    error_message "Current OS does not supported for QEMU building\nYou must use only OS Linux!"
 fi
 
 
@@ -183,7 +178,13 @@ cuckoo_packages
 
 case "$CUCKOO_PACKAGES_ACTION" in
     install | remove )
-        $CUCKOO_PACKAGES_MANAGER $CUCKOO_PACKAGES_MANAGER_ACTION $CUCKOO_PACKAGES_LIST
+        # Check only root
+        if [ "$(whoami)" = "$USER" ] && [ "root" = "$USER" ]
+        then
+            $CUCKOO_PACKAGES_MANAGER $CUCKOO_PACKAGES_MANAGER_ACTION $CUCKOO_PACKAGES_LIST
+        else
+            error_message "Current user must be root!"
+        fi
     ;;
     list )
         cuckoo_packages_list
