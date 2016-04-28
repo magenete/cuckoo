@@ -11,12 +11,12 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="100%"
-   height="100%"
+   width="270"
+   height="270"
    id="svg2"
    sodipodi:version="0.32"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="cuckoo-freebsd.svg"
+   sodipodi:docname="freebsd.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1"
    inkscape:export-filename="cuckoo-freebsd.png"
@@ -31,7 +31,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -50,7 +50,7 @@
      showgrid="false"
      inkscape:zoom="2"
      inkscape:cx="119.08176"
-     inkscape:cy="140.48087"
+     inkscape:cy="129.47429"
      inkscape:window-x="-2"
      inkscape:window-y="32"
      inkscape:current-layer="svg2"
@@ -4142,7 +4142,7 @@
      inkscape:export-xdpi="42.669998"
      inkscape:export-ydpi="42.669998"
      inkscape:export-filename="/home/che/Pictures/cuckoo/icon/cuckoo-freebsd.png"
-     transform="translate(0,60.721375)">
+     transform="translate(3.5540939e-6,60.721367)">
     <path
        transform="matrix(1.3597122,0,0,1.26,316.61869,499.7536)"
        d="m -34.285713,-337.67856 c 0,59.17337 -44.451728,107.14286 -99.285717,107.14286 -54.83398,0 -99.28571,-47.96949 -99.28571,-107.14286 0,-59.17337 44.45173,-107.14286 99.28571,-107.14286 54.833989,0 99.285717,47.96949 99.285717,107.14286 z"

@@ -14,10 +14,10 @@
    id="svg3004"
    version="1.1"
    inkscape:version="0.48.5 r10040"
-   width="100%"
-   height="100%"
+   width="270"
+   height="270"
    xml:space="preserve"
-   sodipodi:docname="cuckoo-arch.svg"
+   sodipodi:docname="arch.svg"
    inkscape:export-filename="cuckoo-arch.png"
    inkscape:export-xdpi="42.669998"
    inkscape:export-ydpi="42.669998"><metadata
@@ -240,7 +240,7 @@
      showgrid="false"
      inkscape:zoom="2"
      inkscape:cx="115.92"
-     inkscape:cy="128.29817"
+     inkscape:cy="134.10511"
      inkscape:window-x="-2"
      inkscape:window-y="32"
      inkscape:window-maximized="1"
@@ -250,8 +250,9 @@
      id="g3012"
      inkscape:groupmode="layer"
      inkscape:label="ink_ext_XXXXXX"
-     transform="matrix(1.25,0,0,-1.25,0,270)"><g
-       id="g4219"><path
+     transform="matrix(1.25,0,0,-1.25,0,-512.36218)"><g
+       id="g4219"
+       transform="translate(0,-625.88975)"><path
          transform="matrix(1.0877698,0,0,-1.008,253.29496,-232.37998)"
          d="m -34.285713,-337.67856 c 0,59.17337 -44.451728,107.14286 -99.285717,107.14286 -54.83398,0 -99.28571,-47.96949 -99.28571,-107.14286 0,-59.17337 44.45173,-107.14286 99.28571,-107.14286 54.833989,0 99.285717,47.96949 99.285717,107.14286 z"
          sodipodi:ry="107.14286"
