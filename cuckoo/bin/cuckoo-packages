@@ -13,6 +13,8 @@ CUCKOO_PACKAGES_ACTION=""
 CUCKOO_PACKAGES_MANAGER=""
 CUCKOO_PACKAGES_MANAGER_ACTION=""
 CUCKOO_PACKAGES_LIST=""
+CUCKOO_PACKAGES_COMMAND=""
+CUCKOO_PACKAGES_SUPERUSER_COMMAND=""
 
 
 # Help message
@@ -22,9 +24,12 @@ help_message()
 
 Usage: $(basename $0) [argumets]
 
-  -i, --install  Install packages.
-  -r, --remove   Remove packages.
-  -l, --list     Get packages list.
+  -s, --su         Run using su as superuser (root).
+  -U, --su-user    Run using su as other superuser.
+  -S, --sudo       Run using sudo.
+  -i, --install    Install packages.
+  -u, --uninstall  Uninstall packages.
+  -l, --list       Get packages list.
 
   -v, --version  Print the current version.
   -h, --help     Show this message.
@@ -55,7 +60,7 @@ cuckoo_packages_manager_action()
                 install )
                     CUCKOO_PACKAGES_MANAGER_ACTION="install"
                 ;;
-                remove )
+                uninstall )
                     CUCKOO_PACKAGES_MANAGER_ACTION="purge"
                 ;;
                 * )
@@ -68,7 +73,7 @@ cuckoo_packages_manager_action()
                 install )
                     CUCKOO_PACKAGES_MANAGER_ACTION="-S"
                 ;;
-                remove )
+                uninstall )
                     CUCKOO_PACKAGES_MANAGER_ACTION="-Rs"
                 ;;
                 * )
@@ -77,7 +82,7 @@ cuckoo_packages_manager_action()
             esac
         ;;
         * )
-            error_message "Packages manager '${CUCKOO_PACKAGES_MANAGER}' dose not support"
+            error_message "Packages manager '${CUCKOO_PACKAGES_MANAGER}' does not support"
         ;;
     esac
 }
@@ -131,7 +136,7 @@ fi
 
 
 # Options definition
-OPTS="$(getopt -o "irlvh" -l "install,remove,list,version,help" -a -- "$@" 2>/dev/null)"
+OPTS="$(getopt -o "sU:Siulvh" -l "su,su-user:,sudo,install,uninstall,list,version,help" -a -- "$@" 2>/dev/null)"
 if [ $? -gt 0 ]
 then
     error_message "Invalid option(s) value"
@@ -146,12 +151,24 @@ do
     -- )
         shift 1
     ;;
+    --su | -s )
+        CUCKOO_PACKAGES_SUPERUSER_COMMAND="su --login root"
+        shift 1
+    ;;
+    --su-user | -U )
+        CUCKOO_PACKAGES_SUPERUSER_COMMAND="su --login ${2}"
+        shift 2
+    ;;
+    --sudo | -S )
+        CUCKOO_PACKAGES_SUPERUSER_COMMAND="sudo"
+        shift 1
+    ;;
     --install | -i )
         CUCKOO_PACKAGES_ACTION="install"
         shift 1
     ;;
-    --remove | -r )
-        CUCKOO_PACKAGES_ACTION="remove"
+    --uninstall | -u )
+        CUCKOO_PACKAGES_ACTION="uninstall"
         shift 1
     ;;
     --list | -l )
@@ -177,13 +194,14 @@ done
 cuckoo_packages
 
 case "$CUCKOO_PACKAGES_ACTION" in
-    install | remove )
-        # Check only root
-        if [ "$(whoami)" = "$USER" ] && [ "root" = "$USER" ]
+    install | uninstall )
+        CUCKOO_PACKAGES_COMMAND="${CUCKOO_PACKAGES_MANAGER} ${CUCKOO_PACKAGES_MANAGER_ACTION} ${CUCKOO_PACKAGES_LIST}"
+
+        if [ "$CUCKOO_PACKAGES_SUPERUSER_COMMAND" = "sudo" ]
         then
-            $CUCKOO_PACKAGES_MANAGER $CUCKOO_PACKAGES_MANAGER_ACTION $CUCKOO_PACKAGES_LIST
+            $CUCKOO_PACKAGES_SUPERUSER_COMMAND $CUCKOO_PACKAGES_COMMAND
         else
-            error_message "Current user must be root!"
+            $CUCKOO_PACKAGES_SUPERUSER_COMMAND --command "$CUCKOO_PACKAGES_COMMAND"
         fi
     ;;
     list )
