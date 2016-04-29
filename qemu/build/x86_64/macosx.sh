@@ -37,7 +37,7 @@ echo ""
 
 # Download
 cd "$QEMU_BIN_ARCH_OS_TMP_DIR"
-curl -SL "$QEMU_GIT_URL" | tar xz
+curl -SL "$QEMU_GIT_URL" | tar -vxz
 
 
 # QEMU version definition
