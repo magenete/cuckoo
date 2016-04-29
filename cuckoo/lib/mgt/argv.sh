@@ -69,7 +69,7 @@ cuckoo_args()
                 CUCKOO_ISO_FILE_PATH="$2"
                 CUCKOO_ISO_FILE_NET=""
             else
-                cuckoo_error "File ISO '$2' does not exist"
+                cuckoo_error "ISO file '$2' does not exist"
             fi
             shift 2
         ;;
@@ -158,7 +158,7 @@ cuckoo_args()
             then
                 CUCKOO_BOOT_CDROM_FILE="$2"
             else
-                cuckoo_error "File '$2' does not exist for CDROM"
+                cuckoo_error "CDROM file '$2' does not exist"
             fi
             shift 2
         ;;
@@ -167,7 +167,7 @@ cuckoo_args()
             then
                 CUCKOO_BOOT_FLOPPY_FILE="$2"
             else
-                cuckoo_error "File '$2' does not exist for Floppy Disk"
+                cuckoo_error "Floppy Disk file '$2' does not exist"
             fi
             shift 2
         ;;
@@ -176,7 +176,7 @@ cuckoo_args()
             then
                 CUCKOO_ADD_CDROM_FILE="$2"
             else
-                cuckoo_error "File '$2' does not exist for CDROM(adding)"
+                cuckoo_error "CDROM file '$2' does not exist (adding)"
             fi
             shift 2
         ;;
@@ -216,7 +216,7 @@ cuckoo_args()
             then
                 CUCKOO_SMB_DIR="$2"
             else
-                cuckoo_error "Directory '$2' does not exist for SMB"
+                cuckoo_error "SMB directory '$2' does not exist"
             fi
             shift 2
         ;;
