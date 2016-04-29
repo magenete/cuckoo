@@ -137,6 +137,9 @@ cuckoo_structure_install()
 
     # Lib
     chmod 600 "${HOME}/${CUCKOO_LIB_DIR}"*
+    chmod 700 "${HOME}/${CUCKOO_LIB_DIR}mgt/"
+    chmod 600 "${HOME}/${CUCKOO_LIB_DIR}mgt/"*
+
 
     # Launchers
     chmod 700 -R "${HOME}/${CUCKOO_LAUNCHERS_DIR}"
