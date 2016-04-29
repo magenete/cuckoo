@@ -22,12 +22,14 @@ Usage: $(basename $0) [actions] [argumets]
     -r, --run            Run QEMU (by default).
     -b, --qemu-build     Build(only on Linux) QEMU for OS: $(from_arr_to_str "$QEMU_OS_LIST").
     -q, --qemu-delete    Delete QEMU file(s).
-    -d, --iso-download   Download ISO file and setup in Cuckoo.
-    -c, --iso-copy       Local copy ISO file and setup in Cuckoo.
+    -d, --iso-download   Download ISO file and setup.
+    -c, --iso-copy       Local copy ISO file and setup.
     -l, --iso-list       Get list of existing ISO files.
     -x, --iso-delete     Delete ISO file(s).
+    -D, --hd-download    Download HD tar file and setup.
+    -C, --hd-copy        Local copy HD tar file and setup.
     -L, --hd-list        Get list of existing HD(s) files.
-    -X, --hd-delete      Delete QEMU HD(s).
+    -X, --hd-delete      Delete HD(s).
 
     -V, --version        Print the current version.
     -h, --help           Show this message.

@@ -13,7 +13,6 @@ cuckoo_variables()
 {
     [ -z "$CUCKOO_ENV_NO" ] && cuckoo_env
 
-
     CUCKOO_OS="${CUCKOO_OS:=linux}"
     CUCKOO_ARCH="${CUCKOO_ARCH:=x86_64}"
     CUCKOO_DIST_VERSION="${CUCKOO_DIST_VERSION:=debian/8.4}"

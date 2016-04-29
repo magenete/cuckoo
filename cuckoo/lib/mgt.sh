@@ -33,6 +33,8 @@ CUCKOO_ADD_CDROM_FILE=""
 CUCKOO_FULL_SCREEN=""
 CUCKOO_DAEMONIZE_NO=""
 CUCKOO_HD_TYPE=""
+CUCKOO_HD_FILE_PATH=""
+CUCKOO_HD_FILE_NET=""
 CUCKOO_DIST_VERSION_CONFIG=""
 CUCKOO_DIST_VERSION_CONFIG_FILE=""
 
@@ -72,17 +74,20 @@ cuckoo_actions()
         iso-setup )
             cuckoo_iso_copy_or_download
         ;;
-        iso-delete )
-            cuckoo_iso_delete
-        ;;
-        hd-delete )
-            cuckoo_hd_delete
-        ;;
         iso-list )
             cuckoo_iso_list
         ;;
+        iso-delete )
+            cuckoo_iso_delete
+        ;;
+        hd-setup )
+            cuckoo_hd_copy_or_download
+        ;;
         hd-list )
             cuckoo_hd_list
+        ;;
+        hd-delete )
+            cuckoo_hd_delete
         ;;
         * )
             cuckoo_error "Cuckoo action '${CUCKOO_ACTION}' does not supported"

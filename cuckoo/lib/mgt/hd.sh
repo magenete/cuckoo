@@ -27,6 +27,78 @@ cuckoo_hd_create()
 }
 
 
+# HD tar file copy or download
+cuckoo_hd_copy_or_download()
+{
+    CUCKOO_ENV_NO="yes"
+
+    cuckoo_variables
+
+    CUCKOO_HD_DIR_SYS_PATH="${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}"
+
+    mkdir -p "${CUCKOO_HD_DIR_SYS_PATH}"
+
+    if [ -z "$CUCKOO_HD_FILE_NET" ]
+    then
+        tar -jvx -f "$CUCKOO_HD_FILE_PATH" -C "$CUCKOO_HD_DIR_SYS_PATH"
+    else
+        curl -SL "$CUCKOO_HD_FILE_PATH" | tar -jvx -C "$CUCKOO_HD_DIR_SYS_PATH"
+    fi
+    if [ $? -gt 0 ]
+    then
+        cuckoo_error "HD file has not been setuped form '$CUCKOO_HD_FILE_PATH' to '${CUCKOO_HD_DIR_SYS_PATH}'"
+    fi
+
+    chmod 0600 "$CUCKOO_HD_DIR_SYS_PATH"*
+
+    echo ""
+    echo "HD tar file has been setuped in '${CUCKOO_HD_DIR_SYS_PATH}'"
+    echo ""
+}
+
+
+# HD list
+cuckoo_hd_list()
+{
+    CUCKOO_ENV_NO="yes"
+
+    echo ""
+    for cuckoo_arch in $CUCKOO_ACTION_ARCH_LIST
+    do
+        for cuckoo_os in $CUCKOO_ACTION_OS_LIST
+        do
+            CUCKOO_ARCH="$cuckoo_arch"
+            CUCKOO_OS="$cuckoo_os"
+
+            cuckoo_dist_version="$CUCKOO_DIST_VERSION"
+
+            cuckoo_variables
+
+            if [ -z "$cuckoo_dist_version" ]
+            then
+                CUCKOO_DIST_VERSION=""
+                CUCKOO_DIST_VERSION_DIR=""
+            fi
+
+            if [ -e "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ] && [ -d "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
+            then
+                echo "HD file(s) has been found in '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}':"
+
+                for hd_file in $(ls -R -h -x --file-type "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" 2> /dev/null)
+                do
+                    echo "    $hd_file"
+                done
+
+                echo ""
+            else
+                echo "WARNING: HD file(s) has not been found for OS: ${CUCKOO_OS}, arch: ${CUCKOO_ARCH}"
+                echo ""
+            fi
+        done
+    done
+}
+
+
 # HD delete
 cuckoo_hd_delete()
 {
@@ -79,45 +151,4 @@ cuckoo_hd_delete()
         fi
     fi
     echo ""
-}
-
-# HD list
-cuckoo_hd_list()
-{
-    CUCKOO_ENV_NO="yes"
-
-    echo ""
-    for cuckoo_arch in $CUCKOO_ACTION_ARCH_LIST
-    do
-        for cuckoo_os in $CUCKOO_ACTION_OS_LIST
-        do
-            CUCKOO_ARCH="$cuckoo_arch"
-            CUCKOO_OS="$cuckoo_os"
-
-            cuckoo_dist_version="$CUCKOO_DIST_VERSION"
-
-            cuckoo_variables
-
-            if [ -z "$cuckoo_dist_version" ]
-            then
-                CUCKOO_DIST_VERSION=""
-                CUCKOO_DIST_VERSION_DIR=""
-            fi
-
-            if [ -e "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ] && [ -d "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
-            then
-                echo "HD file(s) has been found in '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}':"
-
-                for hd_file in $(ls -R -h -x --file-type "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" 2> /dev/null)
-                do
-                    echo "    $hd_file"
-                done
-
-                echo ""
-            else
-                echo "WARNING: HD file(s) has not been found for OS: ${CUCKOO_OS}, arch: ${CUCKOO_ARCH}"
-                echo ""
-            fi
-        done
-    done
 }

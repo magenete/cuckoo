@@ -11,8 +11,8 @@
 # Options definition
 cuckoo_args()
 {
-    ARGS_SHORT="s:irbqd:c:lxLXQA:O:a:o:v:IUZp:f:M:K:T:S:m:e:FNt:P:Vh"
-    ARGS_LONG="setup:,install,run,qemu-build,qemu-delete,iso-download:,iso-copy:,iso-list,iso-delete,hd-list,hd-delete,qemu-system,qemu-arch,qemu-os-name:,arch:,os-name:,dist-version:,config-create,config-update,config-delete,boot-cdrom:,boot-floppy:,cdrom-add:,cpu-cores:,cpu-threads:,cpu-sockets:,memory-size:,smb-dir:,full-screen,no-daemonize,hd-type:,opts-add:,version,help"
+    ARGS_SHORT="s:irbqd:c:lxD:C:LXQA:O:a:o:v:IUZp:f:M:K:T:S:m:e:FNt:P:Vh"
+    ARGS_LONG="setup:,install,run,qemu-build,qemu-delete,iso-download:,iso-copy:,iso-list,iso-delete,hd-download,hd-copy,hd-list,hd-delete,qemu-system,qemu-arch,qemu-os-name:,arch:,os-name:,dist-version:,config-create,config-update,config-delete,boot-cdrom:,boot-floppy:,cdrom-add:,cpu-cores:,cpu-threads:,cpu-sockets:,memory-size:,smb-dir:,full-screen,no-daemonize,hd-type:,opts-add:,version,help"
     OPTS="$(getopt -o "${ARGS_SHORT}" -l "${ARGS_LONG}" -a -- "$@" 2>/dev/null)"
     if [ $? -gt 0 ]
     then
@@ -80,6 +80,24 @@ cuckoo_args()
         --iso-delete | -x )
             CUCKOO_ACTION="iso-delete"
             shift 1
+        ;;
+        --hd-download | -D )
+            CUCKOO_ACTION="hd-setup"
+            CUCKOO_HD_FILE_PATH="$2"
+            CUCKOO_HD_FILE_NET="yes"
+            shift 2
+        ;;
+        --hd-copy | -C )
+            CUCKOO_ACTION="hd-setup"
+
+            if [ -e "$2" ] && [ -f "$2" ]
+            then
+                CUCKOO_HD_FILE_PATH="$2"
+                CUCKOO_HD_FILE_NET=""
+            else
+                cuckoo_error "HD file '$2' does not exist"
+            fi
+            shift 2
         ;;
         --hd-list | -L )
             CUCKOO_ACTION="hd-list"

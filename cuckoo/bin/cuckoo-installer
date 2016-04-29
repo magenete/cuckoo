@@ -87,7 +87,7 @@ cuckoo_install()
     else
         cuckoo_message "Directory '${HOME}/${CUCKOO_INSTALLER_DIR}' has been created"
 
-        curl -SL "$CUCKOO_GIT_URL" | tar xz
+        curl -SL "$CUCKOO_GIT_URL" | tar -vxz
         if [ $? -gt 0 ]
         then
             cuckoo_error "Could not download file '$CUCKOO_GIT_URL'"
