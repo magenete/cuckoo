@@ -12,7 +12,7 @@
 cuckoo_args()
 {
     ARGS_SHORT="s:irbqd:c:lxLXQA:O:a:o:v:IUZp:f:M:K:T:S:m:e:FNt:P:Vh"
-    ARGS_LONG="setup:,install,run,qemu-build,qemu-delete,iso-download:,iso-copy:,iso-list,iso-delete,hd-list,hd-delete,qemu-system,qemu-arch,qemu-os-name:,arch:,os-name:,dist-version:,config-set,config-update,config-delete,boot-cdrom:,boot-floppy:,cdrom-add:,cpu-cores:,cpu-threads:,cpu-sockets:,memory-size:,smb-dir:,full-screen,no-daemonize,hd-type:,opts-add:,version,help"
+    ARGS_LONG="setup:,install,run,qemu-build,qemu-delete,iso-download:,iso-copy:,iso-list,iso-delete,hd-list,hd-delete,qemu-system,qemu-arch,qemu-os-name:,arch:,os-name:,dist-version:,config-create,config-update,config-delete,boot-cdrom:,boot-floppy:,cdrom-add:,cpu-cores:,cpu-threads:,cpu-sockets:,memory-size:,smb-dir:,full-screen,no-daemonize,hd-type:,opts-add:,version,help"
     OPTS="$(getopt -o "${ARGS_SHORT}" -l "${ARGS_LONG}" -a -- "$@" 2>/dev/null)"
     if [ $? -gt 0 ]
     then
@@ -141,8 +141,8 @@ cuckoo_args()
             CUCKOO_DIST_VERSION="$2"
             shift 2
         ;;
-        --config-set | -I )
-            CUCKOO_DIST_VERSION_CONFIG="set"
+        --config-create | -I )
+            CUCKOO_DIST_VERSION_CONFIG="create"
             shift 1
         ;;
         --config-update | -U )

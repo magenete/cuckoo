@@ -45,8 +45,7 @@ cuckoo_hd_delete()
 
                 if [ -e "$CUCKOO_HD_ARCH_OS_DIR" ] && [ -d "$CUCKOO_HD_ARCH_OS_DIR" ]
                 then
-                    rm -rf "$CUCKOO_HD_ARCH_OS_DIR"
-                    mkdir "$CUCKOO_HD_ARCH_OS_DIR"
+                    rm -rf "$CUCKOO_HD_ARCH_OS_DIR"*
 
                     echo "HD has been deleted in directory '${CUCKOO_HD_ARCH_OS_DIR}'"
                 else

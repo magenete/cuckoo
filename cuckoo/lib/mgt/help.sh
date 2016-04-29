@@ -44,7 +44,7 @@ Usage: $(basename $0) [actions] [argumets]
     -o, --os-name        Set OS name (by default: ${CUCKOO_OS_DEFAULT}).
                            OS: $(from_arr_to_str "$CUCKOO_OS_LIST").
     -v, --dist-version   Set dist and(or) version (by default: ${CUCKOO_DIST_VERSION_DEFAULT}).
-    -I, --config-set     Create and write config file if --dist-version defined.
+    -I, --config-create  Create and write config file if --dist-version defined.
     -U, --config-update  Update config file if config file exists.
     -Z, --config-delete  Delete config file if config file exists.
     -p, --boot-cdrom     Set file with full path for CDROM (IDE device).

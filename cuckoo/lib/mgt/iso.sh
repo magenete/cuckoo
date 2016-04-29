@@ -55,8 +55,7 @@ cuckoo_iso_delete()
 
                 if [ -e "$CUCKOO_ISO_ARCH_OS_DIR" ] && [ -d "$CUCKOO_ISO_ARCH_OS_DIR" ]
                 then
-                    rm -rf "$CUCKOO_ISO_ARCH_OS_DIR"
-                    mkdir "$CUCKOO_ISO_ARCH_OS_DIR"
+                    rm -rf "$CUCKOO_ISO_ARCH_OS_DIR"*
 
                     echo "ISO file(s) has been deleted in '${CUCKOO_ISO_ARCH_OS_DIR}'"
                 else

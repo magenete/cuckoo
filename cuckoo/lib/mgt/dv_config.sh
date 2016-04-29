@@ -103,7 +103,7 @@ cuckoo_dist_version_config_delete()
 cuckoo_dist_version_config()
 {
     case "$CUCKOO_DIST_VERSION_CONFIG" in
-        set )
+        create )
             cuckoo_dist_version_config_create
         ;;
         update )
