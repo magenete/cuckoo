@@ -27,6 +27,10 @@ cuckoo_iso_copy_or_download()
     else
         curl -SL -o "$CUCKOO_ISO_FILE_SYS_PATH" "$CUCKOO_ISO_FILE_PATH"
     fi
+    if [ $? -gt 0 ]
+    then
+        cuckoo_error "ISO file has not been setuped form '$CUCKOO_ISO_FILE_PATH' to '${CUCKOO_ISO_FILE_SYS_PATH}'"
+    fi
 
     chmod 600 "$CUCKOO_ISO_FILE_SYS_PATH"
 
