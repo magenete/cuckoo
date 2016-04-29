@@ -46,8 +46,8 @@ cuckoo_dist_version_config_load()
 }
 
 
-# Update
-cuckoo_dist_version_config_update()
+# Merge variables
+cuckoo_dist_version_config_merge()
 {
     CUCKOO_OS__C_O_N_F_I_G="$CUCKOO_OS"
     CUCKOO_ARCH__C_O_N_F_I_G="$CUCKOO_ARCH"
@@ -109,7 +109,7 @@ cuckoo_dist_version_config()
         update )
             if [ -e "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}" ] && [ -f "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}" ]
             then
-                cuckoo_dist_version_config_update
+                cuckoo_dist_version_config_merge
                 cuckoo_dist_version_config_create
             fi
         ;;
