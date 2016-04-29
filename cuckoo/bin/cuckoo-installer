@@ -242,7 +242,7 @@ cuckoo_uninstall()
 {
     # Information about Cuckoo bin path deleting in profile files
     echo ""
-    echo "Please remove Cuckoo Bin path from PATH in the following files:"
+    echo "Please Cuckoo Bin path delete from PATH in the following files:"
     for shell_profile_file in $HOME_SHELL_PROFILE_FILES
     do
         if [ -e "${HOME}/${shell_profile_file}" ] && [ -f "${HOME}/${shell_profile_file}" ]
