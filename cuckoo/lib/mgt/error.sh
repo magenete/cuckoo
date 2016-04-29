@@ -8,9 +8,14 @@
 #
 
 
-. "${CUCKOO_DIR}lib/mgt/error.sh"
-. "${CUCKOO_DIR}lib/mgt/help.sh"
-. "${CUCKOO_DIR}lib/mgt/const.sh"
+# Print error message and exit
+cuckoo_error()
+{
+    cuckoo_help
 
+    echo ""
+    echo "ERROR: $1"
+    echo ""
 
-cuckoo_error "This feature is not supported by the manufacturer!"
+    exit 1
+}

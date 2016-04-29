@@ -8,4 +8,7 @@
 #
 
 
-. "$(realpath "$(readlink -f "$(dirname "$0")")/../../../cuckoo")/lib/unsupported.sh"
+CUCKOO_DIR="${CUCKOO_DIR:=$(realpath "$(readlink -f "$(dirname "$0")")/../../../cuckoo")/}"
+
+
+. "${CUCKOO_DIR}lib/unsupported.sh"
