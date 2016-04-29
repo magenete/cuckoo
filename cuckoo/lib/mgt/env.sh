@@ -15,11 +15,11 @@ cuckoo_env()
         x86_64 | amd64 )
             CUCKOO_ARCH="${CUCKOO_ARCH:=x86_64}"
         ;;
-        x86 | i386 | i486 | i586 | i686 | i768 )
+        x86 | i386 | i486 | i586 | i686 | i786 )
             CUCKOO_ARCH="${CUCKOO_ARCH:=x86}"
         ;;
         * )
-            cuckoo_error "Current OS architecture has not been supported"
+            cuckoo_error "Current OS architecture does not support"
         ;;
     esac
 }
