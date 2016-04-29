@@ -18,7 +18,7 @@ CUCKOO_PACKAGES_SUPERUSER_COMMAND=""
 
 
 # Help message
-help_message()
+cuckoo_help()
 {
     cat << _H_E_L_P
 
@@ -39,9 +39,9 @@ _H_E_L_P
 
 
 # Print help, error message and exit
-error_message()
+cuckoo_error()
 {
-    help_message
+    cuckoo_help
 
     echo ""
     echo "ERROR: $1"
@@ -82,7 +82,7 @@ cuckoo_packages_manager_action()
             esac
         ;;
         * )
-            error_message "Packages manager '${CUCKOO_PACKAGES_MANAGER}' does not support"
+            cuckoo_error "Packages manager '${CUCKOO_PACKAGES_MANAGER}' does not support"
         ;;
     esac
 }
@@ -106,7 +106,7 @@ cuckoo_packages()
             CUCKOO_PACKAGES_LIST="libiscsi sdl libcap attr pixman flex curl tar python2"
         ;;
         * )
-            error_message "System packages were not supported for '${ID}'!"
+            cuckoo_error "System packages were not supported for '${ID}'!"
         ;;
     esac
 }
@@ -131,7 +131,7 @@ cuckoo_packages_list()
 # Check only Linux
 if [ "$(uname -s)" != "Linux" ]
 then
-    error_message "Current OS does not supported for QEMU building\nYou must use only OS Linux!"
+    cuckoo_error "Current OS does not supported for QEMU building\nYou must use only OS Linux!"
 fi
 
 
@@ -139,7 +139,7 @@ fi
 OPTS="$(getopt -o "sU:Siulvh" -l "su,su-user:,sudo,install,uninstall,list,version,help" -a -- "$@" 2>/dev/null)"
 if [ $? -gt 0 ]
 then
-    error_message "Invalid option(s) value"
+    cuckoo_error "Invalid option(s) value"
 fi
 
 eval set -- "$OPTS"
@@ -180,11 +180,11 @@ do
         exit 0
     ;;
     --help | -h )
-        help_message
+        cuckoo_help
         exit 0
     ;;
     * )
-        error_message "Invalid option '$1'"
+        cuckoo_error "Invalid option '$1'"
     ;;
     esac
 done

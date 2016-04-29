@@ -32,7 +32,7 @@ cuckoo_iso_copy_or_download()
         cuckoo_error "ISO file has not been setuped form '$CUCKOO_ISO_FILE_PATH' to '${CUCKOO_ISO_FILE_SYS_PATH}'"
     fi
 
-    chmod 600 "$CUCKOO_ISO_FILE_SYS_PATH"
+    chmod 0600 "$CUCKOO_ISO_FILE_SYS_PATH"
 
     echo ""
     echo "ISO file has been setuped as '${CUCKOO_ISO_FILE_SYS_PATH}'"
@@ -40,7 +40,7 @@ cuckoo_iso_copy_or_download()
 }
 
 
-# ISO files delete
+# ISO delete
 cuckoo_iso_delete()
 {
     CUCKOO_ENV_NO="yes"

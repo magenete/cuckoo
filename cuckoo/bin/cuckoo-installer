@@ -38,7 +38,7 @@ HOME_SHELL_PROFILE_FILES=".bash_profile .bashrc .mkshrc .profile .zlogin .zshrc"
 
 
 # Help message
-help_message()
+cuckoo_help()
 {
     cat << _H_E_L_P
 
@@ -54,10 +54,10 @@ _H_E_L_P
 }
 
 
-# Print error message and exit
-error_message()
+# Print help, error message and exit
+cuckoo_error()
 {
-    help_message
+    cuckoo_help
 
     echo ""
     echo "ERROR: $1"
@@ -74,102 +74,108 @@ cuckoo_install()
     mkdir -p "${HOME}/${CUCKOO_INSTALLER_DIR}" && cd "${HOME}/${CUCKOO_INSTALLER_DIR}"
     if [ $? -gt 0 ]
     then
-        error_message "Could not create directory '${HOME}/${CUCKOO_INSTALLER_DIR}'"
+        cuckoo_error "Could not create directory '${HOME}/${CUCKOO_INSTALLER_DIR}'"
     else
         curl -SL "$CUCKOO_GIT_URL" | tar xz
         if [ $? -gt 0 ]
         then
-            error_message "Could not download file '$CUCKOO_GIT_URL'"
+            cuckoo_error "Could not download file '$CUCKOO_GIT_URL'"
         fi
     fi
 
     if [ -e "${HOME}/${CUCKOO_BIN_FILE}" ] && [ -f "${HOME}/${CUCKOO_BIN_FILE}" ]
     then
-        cuckoo_structure_install
+        # Common
+        chmod 0700 "${HOME}/${CUCKOO_INSTALLER_DIR}"
+        chmod 0700 "${HOME}/${CUCKOO_DIR}../"
+
+        cuckoo_launchers_install
+
+        cuckoo_cuckoo_install
 
         cuckoo_qemu_install
 
         cuckoo_add_bin_path
     else
-        error_message "Bin file '${HOME}/${CUCKOO_BIN_FILE}' does not exist"
+        cuckoo_error "Bin file '${HOME}/${CUCKOO_BIN_FILE}' does not exist"
     fi
 }
 
 
-# Cuckoo structure install
-cuckoo_structure_install()
+# Launchers install
+cuckoo_launchers_install()
 {
-    # Common
-    chmod 700 "${HOME}/${CUCKOO_INSTALLER_DIR}"
-    chmod 700 "${HOME}/${CUCKOO_DIR}../"
-    chmod 700 "${HOME}/${CUCKOO_DIR}"
-    chmod 700 "${HOME}/${CUCKOO_DIR}"*
-
-    # Bin
-    chmod 700 "${HOME}/${CUCKOO_BIN_DIR}"*
-    chmod 600 "${HOME}/${CUCKOO_BIN_DIR}"*.bat
-
-    # Etc
-    chmod 700 "${HOME}/${CUCKOO_ETC_DIR}"*
-    chmod 600 "${HOME}/${CUCKOO_ETC_VERSION_FILE}"
-
-    # HD and ISO
-    chmod 700 "${HOME}/${CUCKOO_ISO_DIR}"*
-    chmod 700 "${HOME}/${CUCKOO_HD_DIR}"*
-
-    for cuckoo_arch in $(ls "${HOME}/${CUCKOO_ISO_DIR}/")
-    do
-        chmod 700 "${HOME}/${CUCKOO_ISO_DIR}${cuckoo_arch}/"*
-        chmod 700 "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/"*
-
-        # HD .clean
-        for cuckoo_os in $(ls "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/")
-        do
-            chmod 700 "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/${cuckoo_os}/"
-            chmod 700 "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/${cuckoo_os}/.clean/"
-            chmod 600 "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/${cuckoo_os}/.clean/"*
-        done
-    done
-
-    # OS
-    chmod 700 "${HOME}/${CUCKOO_OS_DIR}"*
-    chmod 700 "${HOME}/${CUCKOO_OS_COMMON_DIR}"*
-
-    # Lib
-    chmod 600 "${HOME}/${CUCKOO_LIB_DIR}"*
-    chmod 700 "${HOME}/${CUCKOO_LIB_DIR}mgt/"
-    chmod 600 "${HOME}/${CUCKOO_LIB_DIR}mgt/"*
-
-
-    # Launchers
-    chmod 700 -R "${HOME}/${CUCKOO_LAUNCHERS_DIR}"
-    chmod 600 "${HOME}/${CUCKOO_LAUNCHERS_DIR}"*.bat
+    chmod 0700 -R "${HOME}/${CUCKOO_LAUNCHERS_DIR}"
+    chmod 0600 "${HOME}/${CUCKOO_LAUNCHERS_DIR}"*.bat
 
     for launchers_dir in "${HOME}/${CUCKOO_LAUNCHERS_INSTALL_DIR}" "${HOME}/${CUCKOO_LAUNCHERS_RUN_DIR}"
     do
         for cuckoo_arch in $(ls "$launchers_dir")
         do
-            chmod 600 "${launchers_dir}${cuckoo_arch}/"*.bat
+            chmod 0600 "${launchers_dir}${cuckoo_arch}/"*.bat
         done
     done
+}
+
+
+# Cuckoo install
+cuckoo_cuckoo_install()
+{
+    chmod 0700 "${HOME}/${CUCKOO_DIR}"
+    chmod 0700 "${HOME}/${CUCKOO_DIR}"*
+
+    # Bin
+    chmod 0700 "${HOME}/${CUCKOO_BIN_DIR}"*
+    chmod 0600 "${HOME}/${CUCKOO_BIN_DIR}"*.bat
+
+    # Etc
+    chmod 0700 "${HOME}/${CUCKOO_ETC_DIR}"*
+    chmod 0600 "${HOME}/${CUCKOO_ETC_VERSION_FILE}"
+
+    # HD and ISO
+    chmod 0700 "${HOME}/${CUCKOO_ISO_DIR}"*
+    chmod 0700 "${HOME}/${CUCKOO_HD_DIR}"*
+
+    for cuckoo_arch in $(ls "${HOME}/${CUCKOO_ISO_DIR}/")
+    do
+        chmod 0700 "${HOME}/${CUCKOO_ISO_DIR}${cuckoo_arch}/"*
+        chmod 0700 "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/"*
+
+        # HD .clean
+        for cuckoo_os in $(ls "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/")
+        do
+            chmod 0700 "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/${cuckoo_os}/"
+            chmod 0700 "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/${cuckoo_os}/.clean/"
+            chmod 0600 "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/${cuckoo_os}/.clean/"*
+        done
+    done
+
+    # OS
+    chmod 0700 "${HOME}/${CUCKOO_OS_DIR}"*
+    chmod 0700 "${HOME}/${CUCKOO_OS_COMMON_DIR}"*
+
+    # Lib
+    chmod 0600 "${HOME}/${CUCKOO_LIB_DIR}"*
+    chmod 0700 "${HOME}/${CUCKOO_LIB_DIR}mgt/"
+    chmod 0600 "${HOME}/${CUCKOO_LIB_DIR}mgt/"*
 }
 
 
 # QEMU install
 cuckoo_qemu_install()
 {
-    chmod 700 "${HOME}/${QEMU_DIR}"
+    chmod 0700 "${HOME}/${QEMU_DIR}"
 
     # Bin
-    chmod 700 "${HOME}/${QEMU_BIN_DIR}"
-    chmod 700 "${HOME}/${QEMU_BIN_DIR}"*
+    chmod 0700 "${HOME}/${QEMU_BIN_DIR}"
+    chmod 0700 "${HOME}/${QEMU_BIN_DIR}"*
 
     # Lib
-    chmod 700 "${HOME}/${QEMU_LIB_DIR}"
-    chmod 600 "${HOME}/${QEMU_LIB_DIR}"*
+    chmod 0700 "${HOME}/${QEMU_LIB_DIR}"
+    chmod 0600 "${HOME}/${QEMU_LIB_DIR}"*
 
     # Build
-    chmod 700 -R "${HOME}/${QEMU_BUILD_DIR}"
+    chmod 0700 -R "${HOME}/${QEMU_BUILD_DIR}"
 }
 
 
@@ -190,7 +196,7 @@ cuckoo_add_bin_path()
 }
 
 
-# Answer for removing
+# Answer for uninstall
 cuckoo_uninstall_answer()
 {
     printf "This will completely uninstall cuckoo. Continue? (y/N):"
@@ -222,7 +228,7 @@ cuckoo_uninstall_answer()
 # Uninstall
 cuckoo_uninstall()
 {
-    # Information about Cuckoo bin path removing in profile files
+    # Information about Cuckoo bin path deleting in profile files
     echo ""
     echo "Please remove Cuckoo Bin path from PATH in the following files:"
     for shell_profile_file in $HOME_SHELL_PROFILE_FILES
@@ -234,7 +240,7 @@ cuckoo_uninstall()
     done
     echo ""
 
-    # Directory removing and answer getting
+    # Directory delete and answer getting
     if [ -e "${HOME}/${CUCKOO_INSTALLER_DIR}" ] && [ -d "${HOME}/${CUCKOO_INSTALLER_DIR}" ]
     then
         echo "Everything will be removed in '${HOME}/${CUCKOO_INSTALLER_DIR}'!"
@@ -251,7 +257,7 @@ cuckoo_uninstall()
 OPTS="$(getopt -o "iuvh" -l "install,uninstall,version,help" -a -- "$@" 2>/dev/null)"
 if [ $? -gt 0 ]
 then
-    error_message "Invalid option(s) value"
+    cuckoo_error "Invalid option(s) value"
 fi
 
 eval set -- "$OPTS"
@@ -272,15 +278,15 @@ do
         shift 1
     ;;
     --version | -v )
-        echo "Cuckoo version: 0.1.1"
+        echo "Cuckoo version: 0.1.2"
         exit 0
     ;;
     --help | -h )
-        help_message
+        cuckoo_help
         exit 0
     ;;
     * )
-        error_message "Invalid option '$1'"
+        cuckoo_error "Invalid option '$1'"
     ;;
     esac
 done
@@ -300,5 +306,5 @@ then
         ;;
     esac
 else
-    error_message "Invalid ENV of current user '$USER'"
+    cuckoo_error "Invalid ENV of current user '$USER'"
 fi
