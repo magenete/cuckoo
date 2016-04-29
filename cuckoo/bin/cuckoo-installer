@@ -195,6 +195,7 @@ cuckoo_qemu_install()
 # Add Cuckoo bin path in PATH
 cuckoo_add_bin_path()
 {
+    echo "Cuckoo bin path has been added in PATH in the following file(s):"
     for shell_profile_file in $HOME_SHELL_PROFILE_FILES
     do
         if [ -e "${HOME}/${shell_profile_file}" ] && [ -f "${HOME}/${shell_profile_file}" ]
@@ -202,7 +203,7 @@ cuckoo_add_bin_path()
             echo "" >> "${HOME}/${shell_profile_file}"
             echo "export PATH=\"\${PATH}:\${HOME}/${CUCKOO_BIN_DIR}\"  # Add Cuckoo to PATH for scripting" >> "${HOME}/${shell_profile_file}"
 
-            echo "Cuckoo bin path has been added in PATH into file '${HOME}/${shell_profile_file}'"
+            echo "    '${HOME}/${shell_profile_file}'"
         fi
     done
     echo ""
