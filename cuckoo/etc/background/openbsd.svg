@@ -14,10 +14,10 @@
    id="svg3004"
    version="1.1"
    inkscape:version="0.48.5 r10040"
-   width="540"
-   height="413.75"
+   width="1920"
+   height="1080"
    xml:space="preserve"
-   sodipodi:docname="cuckoo-openbsd.svg"
+   sodipodi:docname="openbsd.svg"
    inkscape:export-filename="cuckoo-openbsd.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90"><metadata
@@ -1373,7 +1373,7 @@
      id="g3012"
      inkscape:groupmode="layer"
      inkscape:label="ink_ext_XXXXXX"
-     transform="matrix(1.25,0,0,-1.25,0,413.75)"><rect
+     transform="matrix(1.25,0,0,-1.25,0,1080)"><rect
        style="fill:#333333;fill-opacity:1;stroke:none"
        id="rect3036"
        width="1536"

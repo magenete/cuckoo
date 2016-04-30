@@ -1,3 +1,12 @@
+#
+# A desktop-oriented virtual machines management system written in Shell.
+#
+# Code is available online at https://github.com/magenete/cuckoo
+# See LICENSE for licensing information, and README for details.
+#
+# Copyright (C) 2016 Magenete Systems OÜ.
+#
+
 
 . "${QEMU_DIR}lib/var.sh"
 
@@ -11,7 +20,6 @@ fi
 
 
 ##  ENV check
-
 if [ -z "$QEMU_BIN_ARCH_OS_VERSION" ]
 then
     echo "ERROR: QEMU version was not defined"
@@ -31,17 +39,14 @@ then
     exit 1
 fi
 
-if [ -e "$QEMU_HD_DIR" ] && [ -d "$QEMU_HD_DIR" ]
+if [ ! -d "$QEMU_HD_DIR" ]
 then
-    printf ""
-else
-    echo "ERROR: Directory '${QEMU_HD_DIR}' does not exist for HD-s"
+    echo "ERROR: Directory '${QEMU_HD_DIR}' does not exist for HD"
     exit 1
 fi
 
 
 ##  Copy in TMP_DIR
-
 "${QEMU_RUN_DIR}${QEMU_BIN_FILE}" -version > /dev/null
 if [ $? -gt 0 ]
 then
@@ -54,7 +59,7 @@ then
         if [ -d "${QEMU_TMP_DIR}${QEMU_BIN_ARCH_OS_VERSION}/" ]
         then
             QEMU_RUN_DIR="${QEMU_TMP_DIR}${QEMU_BIN_ARCH_OS_VERSION}/"
-            chmod -R 755 "$QEMU_RUN_DIR"
+            chmod -R 0700 "$QEMU_RUN_DIR"
 
             if [ ! -x "${QEMU_RUN_DIR}${QEMU_BIN_FILE}" ]
             then
@@ -82,7 +87,7 @@ then
 else
     if [ ! -z "$QEMU_BOOT_CDROM_FILE" ]
     then
-        if [ -e "$QEMU_BOOT_CDROM_FILE" ] && [ -f "$QEMU_BOOT_CDROM_FILE" ]
+        if [ -f "$QEMU_BOOT_CDROM_FILE" ]
         then
             QEMU_OPTS="${QEMU_OPTS}d -cdrom ${QEMU_BOOT_CDROM_FILE}"
         else
@@ -93,7 +98,7 @@ else
 
     if [ ! -z "$QEMU_BOOT_FLOPPY_FILE" ]
     then
-        if [ -e "$QEMU_BOOT_FLOPPY_FILE" ] && [ -f "$QEMU_BOOT_FLOPPY_FILE" ]
+        if [ -f "$QEMU_BOOT_FLOPPY_FILE" ]
         then
             QEMU_OPTS="${QEMU_OPTS}a -fda ${QEMU_BOOT_FLOPPY_FILE}"
         else
@@ -144,10 +149,13 @@ then
 fi
 
 # KVM
-QEMU_OPTS="${QEMU_OPTS} -enable-kvm"
+if [ -z "$QEMU_ENABLE_KVM_NO" ]
+then
+    QEMU_OPTS="${QEMU_OPTS} -enable-kvm"
+fi
 
 # Daemonize
-if [ -z "$QEMU_NO_DAEMONIZE" ]
+if [ -z "$QEMU_DAEMONIZE_NO" ]
 then
     QEMU_OPTS="${QEMU_OPTS} -daemonize"
 fi

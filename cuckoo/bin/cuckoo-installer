@@ -1,0 +1,339 @@
+#!/bin/sh
+#
+# A desktop-oriented virtual machines management system written in Shell.
+#
+# Code is available online at https://github.com/magenete/cuckoo
+# See LICENSE for licensing information, and README for details.
+#
+# Copyright (C) 2016 Magenete Systems OÜ.
+#
+
+
+CUCKOO_GIT_BRANCH="master"
+CUCKOO_GIT_URL="https://github.com/magenete/cuckoo/archive/${CUCKOO_GIT_BRANCH}.tar.gz"
+
+CUCKOO_ACTION=""
+CUCKOO_ACTION_DEFAULT="install"
+CUCKOO_INSTALLER_DIR=".cuckoo/"
+CUCKOO_DIR="${CUCKOO_INSTALLER_DIR}cuckoo-${CUCKOO_GIT_BRANCH}/cuckoo/"
+CUCKOO_LIB_DIR="${CUCKOO_DIR}lib/"
+CUCKOO_ISO_DIR="${CUCKOO_DIR}iso/"
+CUCKOO_ETC_DIR="${CUCKOO_DIR}etc/"
+CUCKOO_ETC_VERSION_FILE="${CUCKOO_ETC_DIR}VERSION"
+CUCKOO_OS_DIR="${CUCKOO_DIR}os/"
+CUCKOO_OS_COMMON_DIR="${CUCKOO_OS_DIR}common/"
+CUCKOO_HD_DIR="${CUCKOO_DIR}hd/"
+CUCKOO_BIN_DIR="${CUCKOO_DIR}bin/"
+CUCKOO_BIN_FILE="${CUCKOO_BIN_DIR}cuckoo"
+CUCKOO_LAUNCHERS_DIR="${CUCKOO_DIR}../launchers/"
+CUCKOO_LAUNCHERS_INSTALL_DIR="${CUCKOO_LAUNCHERS_DIR}install/"
+CUCKOO_LAUNCHERS_RUN_DIR="${CUCKOO_LAUNCHERS_DIR}run/"
+CUCKOO_LAUNCHERS_DESKTOP_DIR="${CUCKOO_LAUNCHERS_DIR}.desktop/"
+
+CUCKOO_USER_HOME_DESKTOP_DIR="${HOME}/.local/share/applications/"
+
+
+QEMU_DIR="${CUCKOO_DIR}../qemu/"
+QEMU_LIB_DIR="${QEMU_DIR}lib/"
+QEMU_BIN_DIR="${QEMU_DIR}bin/"
+QEMU_BUILD_DIR="${QEMU_DIR}build/"
+
+HOME_SHELL_PROFILE_FILES=".bash_profile .bashrc .mkshrc .profile .zlogin .zshrc"
+
+
+# Help message
+cuckoo_help()
+{
+    cat << _H_E_L_P
+
+Usage: $(basename $0) [argumets]
+
+  -i, --install    Install Cuckoo (by default).
+  -u, --uninstall  Uninstall Cuckoo.
+
+  -v, --version    Print the current version.
+  -h, --help       Show this message.
+
+_H_E_L_P
+}
+
+
+# Print help, error message and exit
+cuckoo_error()
+{
+    cuckoo_help
+
+    echo ""
+    echo "ERROR: ${1}"
+    echo ""
+
+    exit 1
+}
+
+
+# Print message
+cuckoo_message()
+{
+    echo ""
+    echo "$1"
+    echo ""
+}
+
+
+# Cuckoo install
+cuckoo_install()
+{
+    # Make project directory and download source from Git
+    mkdir -p "${HOME}/${CUCKOO_INSTALLER_DIR}" && cd "${HOME}/${CUCKOO_INSTALLER_DIR}"
+    if [ $? -gt 0 ]
+    then
+        cuckoo_error "Could not create directory '${HOME}/${CUCKOO_INSTALLER_DIR}'"
+    else
+        cuckoo_message "Directory '${HOME}/${CUCKOO_INSTALLER_DIR}' has been created"
+
+        curl -SL "$CUCKOO_GIT_URL" | tar -vxz
+        if [ $? -gt 0 ]
+        then
+            cuckoo_error "Could not download file '$CUCKOO_GIT_URL'"
+        else
+            cuckoo_message "Source code has been downloaded from '$CUCKOO_GIT_URL'"
+        fi
+    fi
+
+    if [ -e "${HOME}/${CUCKOO_BIN_FILE}" ] && [ -f "${HOME}/${CUCKOO_BIN_FILE}" ]
+    then
+        # Common
+        chmod 0700 "${HOME}/${CUCKOO_INSTALLER_DIR}"
+        chmod 0700 "${HOME}/${CUCKOO_DIR}../"
+
+        cuckoo_launchers_install
+
+        cuckoo_cuckoo_install
+
+        cuckoo_qemu_install
+
+        cuckoo_add_bin_path
+    else
+        cuckoo_error "Bin file '${HOME}/${CUCKOO_BIN_FILE}' does not exist"
+    fi
+}
+
+
+# Launchers install
+cuckoo_launchers_install()
+{
+    chmod 0700 -R "${HOME}/${CUCKOO_LAUNCHERS_DIR}"
+    chmod 0600 "${HOME}/${CUCKOO_LAUNCHERS_DIR}"*.bat
+
+    # Run and install
+    for launchers_dir in "${HOME}/${CUCKOO_LAUNCHERS_INSTALL_DIR}" "${HOME}/${CUCKOO_LAUNCHERS_RUN_DIR}"
+    do
+        for cuckoo_arch in $(ls "$launchers_dir")
+        do
+            chmod 0600 "${launchers_dir}${cuckoo_arch}/"*.bat
+        done
+    done
+
+    # Desktop
+    for cuckoo_arch in $(ls "${HOME}/${CUCKOO_LAUNCHERS_DESKTOP_DIR}/")
+    do
+        for cuckoo_os in $(ls "${HOME}/${CUCKOO_LAUNCHERS_DESKTOP_DIR}${cuckoo_arch}/")
+        do
+            chmod 0600 "${HOME}/${CUCKOO_LAUNCHERS_DESKTOP_DIR}${cuckoo_arch}/${cuckoo_os}/.keep"
+        done
+    done
+}
+
+
+# Cuckoo install
+cuckoo_cuckoo_install()
+{
+    chmod 0700 "${HOME}/${CUCKOO_DIR}"
+    chmod 0700 "${HOME}/${CUCKOO_DIR}"*
+
+    # Bin
+    chmod 0700 "${HOME}/${CUCKOO_BIN_DIR}"*
+    chmod 0600 "${HOME}/${CUCKOO_BIN_DIR}"*.bat
+
+    # Etc
+    chmod 0700 "${HOME}/${CUCKOO_ETC_DIR}"*
+    chmod 0600 "${HOME}/${CUCKOO_ETC_VERSION_FILE}"
+
+    # HD and ISO
+    chmod 0700 "${HOME}/${CUCKOO_ISO_DIR}"*
+    chmod 0700 "${HOME}/${CUCKOO_HD_DIR}"*
+
+    for cuckoo_arch in $(ls "${HOME}/${CUCKOO_ISO_DIR}/")
+    do
+        chmod 0700 "${HOME}/${CUCKOO_ISO_DIR}${cuckoo_arch}/"*
+        chmod 0700 "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/"*
+
+        # HD .clean
+        for cuckoo_os in $(ls "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/")
+        do
+            chmod 0700 "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/${cuckoo_os}/"
+            chmod 0700 "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/${cuckoo_os}/.clean/"
+            chmod 0600 "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/${cuckoo_os}/.clean/"*
+        done
+    done
+
+    # OS
+    chmod 0700 "${HOME}/${CUCKOO_OS_DIR}"*
+    chmod 0700 "${HOME}/${CUCKOO_OS_COMMON_DIR}"*
+
+    # Lib
+    chmod 0600 "${HOME}/${CUCKOO_LIB_DIR}"*
+    chmod 0700 "${HOME}/${CUCKOO_LIB_DIR}mgt/"
+    chmod 0600 "${HOME}/${CUCKOO_LIB_DIR}mgt/"*
+}
+
+
+# QEMU install
+cuckoo_qemu_install()
+{
+    chmod 0700 "${HOME}/${QEMU_DIR}"
+
+    # Bin
+    chmod 0700 "${HOME}/${QEMU_BIN_DIR}"
+    chmod 0700 "${HOME}/${QEMU_BIN_DIR}"*
+
+    # Lib
+    chmod 0700 "${HOME}/${QEMU_LIB_DIR}"
+    chmod 0600 "${HOME}/${QEMU_LIB_DIR}"*
+
+    # Build
+    chmod 0700 -R "${HOME}/${QEMU_BUILD_DIR}"
+}
+
+
+# Add Cuckoo bin path in PATH
+cuckoo_add_bin_path()
+{
+    echo "Cuckoo bin path has been added in PATH in the following file(s):"
+    for shell_profile_file in $HOME_SHELL_PROFILE_FILES
+    do
+        if [ -e "${HOME}/${shell_profile_file}" ] && [ -f "${HOME}/${shell_profile_file}" ]
+        then
+            echo "" >> "${HOME}/${shell_profile_file}"
+            echo "export PATH=\"\${PATH}:\${HOME}/${CUCKOO_BIN_DIR}\"  # Add Cuckoo to PATH for scripting" >> "${HOME}/${shell_profile_file}"
+
+            echo "    '${HOME}/${shell_profile_file}'"
+        fi
+    done
+    echo ""
+
+    # Export new PATH
+    export PATH="${PATH}:${HOME}/${CUCKOO_BIN_DIR}"
+}
+
+
+# Answer for uninstall
+cuckoo_uninstall_answer()
+{
+    printf "This will completely uninstall cuckoo. Continue? (y/N):"
+    read uninstall_answer
+
+    case $uninstall_answer in
+        Y | y | Yes | yes )
+            rm -rf "${HOME}/${CUCKOO_INSTALLER_DIR}"
+
+            cuckoo_message "Directory '${HOME}/${CUCKOO_INSTALLER_DIR}' has been deleted"
+        ;;
+        "" | N | n | No | no )
+            cuckoo_message "Directory '${HOME}/${CUCKOO_INSTALLER_DIR}' has not been deleted"
+        ;;
+        * )
+            cuckoo_message "Please use Y|y|Yes|yes|N|n|No|no or just enter (by default No)."
+
+            cuckoo_uninstall_answer
+        ;;
+    esac
+}
+
+
+# Uninstall
+cuckoo_uninstall()
+{
+    # Information about Cuckoo bin path deleting in profile files
+    echo ""
+    echo "Please Cuckoo Bin path delete from PATH in the following files:"
+    for shell_profile_file in $HOME_SHELL_PROFILE_FILES
+    do
+        if [ -e "${HOME}/${shell_profile_file}" ] && [ -f "${HOME}/${shell_profile_file}" ]
+        then
+            echo "    ${HOME}/${shell_profile_file}"
+        fi
+    done
+
+    # Desktop launcher
+    rm -f "${CUCKOO_USER_HOME_DESKTOP_DIR}cuckoo"*
+    echo ""
+    echo "Desktop file(s) has been deleted in '${CUCKOO_USER_HOME_DESKTOP_DIR}'"
+
+    # Directory delete and answer getting
+    if [ -e "${HOME}/${CUCKOO_INSTALLER_DIR}" ] && [ -d "${HOME}/${CUCKOO_INSTALLER_DIR}" ]
+    then
+        cuckoo_message "Everything will be deleted in '${HOME}/${CUCKOO_INSTALLER_DIR}'!"
+
+        cuckoo_uninstall_answer
+    else
+        cuckoo_error "Directory '${HOME}/${CUCKOO_INSTALLER_DIR}' does not exist"
+    fi
+}
+
+
+# Options definition
+OPTS="$(getopt -o "iuvh" -l "install,uninstall,version,help" -a -- "$@" 2>/dev/null)"
+if [ $? -gt 0 ]
+then
+    cuckoo_error "Invalid option(s) value"
+fi
+
+eval set -- "$OPTS"
+
+# Options parsing
+while [ $# -gt 0 ]
+do
+    case $1 in
+        -- )
+            shift 1
+        ;;
+        --install | -i )
+            CUCKOO_ACTION="install"
+            shift 1
+        ;;
+        --uninstall | -u )
+            CUCKOO_ACTION="uninstall"
+            shift 1
+        ;;
+        --version | -v )
+            echo "Cuckoo version: 0.1.3"
+            exit 0
+        ;;
+        --help | -h )
+            cuckoo_help
+            exit 0
+        ;;
+        * )
+            cuckoo_error "Invalid option '${1}'"
+        ;;
+    esac
+done
+
+
+# Launch
+if [ "$(whoami)" = "$USER" ] && [ "$(basename $HOME)" = "$USER" ]
+then
+    [ -z "$CUCKOO_ACTION" ] && CUCKOO_ACTION="$CUCKOO_ACTION_DEFAULT"
+
+    case "$CUCKOO_ACTION" in
+        install )
+            cuckoo_install
+        ;;
+        uninstall )
+            cuckoo_uninstall
+        ;;
+    esac
+else
+    cuckoo_error "Invalid ENV of current user '$USER'"
+fi

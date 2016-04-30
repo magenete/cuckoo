@@ -1,3 +1,12 @@
+#
+# A desktop-oriented virtual machines management system written in Shell.
+#
+# Code is available online at https://github.com/magenete/cuckoo
+# See LICENSE for licensing information, and README for details.
+#
+# Copyright (C) 2016 Magenete Systems OÜ.
+#
+
 
 if [ -z "$QEMU_DIR" ]
 then
@@ -17,11 +26,12 @@ QEMU_HD_TYPE="${QEMU_HD_TYPE:=virtio}"
 QEMU_CPU_CORES=${QEMU_CPU_CORES:=4}
 QEMU_CPU_THREADS=${QEMU_CPU_THREADS:=2}
 QEMU_CPU_SOCKETS=${QEMU_CPU_SOCKETS:=1}
+QEMU_MEMORY_SIZE="${QEMU_MEMORY_SIZE:=1G}"
 QEMU_CDROM_FILE="${QEMU_CDROM_FILE:=}"
 QEMU_SMB_DIR="${QEMU_SMB_DIR:=}"
 QEMU_FULL_SCREEN="${QEMU_FULL_SCREEN:=}"
-QEMU_NO_DAEMONIZE="${QEMU_NO_DAEMONIZE:=}"
-QEMU_MEMORY_SIZE="${QEMU_MEMORY_SIZE:=1G}"
+QEMU_DAEMONIZE_NO="${QEMU_DAEMONIZE_NO:=}"
+QEMU_ENABLE_KVM_NO="${QEMU_ENABLE_KVM_NO:=}"
 
 
 case "$QEMU_ARCH" in
@@ -47,7 +57,7 @@ then
     QEMU_BIN_ARCH_OS_VERSION_FILE="${QEMU_BIN_ARCH_OS_DIR}VERSION"
     QEMU_BIN_ARCH_OS_VERSION="$(cat "$QEMU_BIN_ARCH_OS_VERSION_FILE" 2> /dev/null)"
 
-    if [ ! -z "$QEMU_BIN_ARCH_OS_VERSION" ]
+    if [ -z "$QEMU_BIN_ARCH_OS_VERSION" ]
     then
         QEMU_BIN_ARCH_OS_VERSION_DIR=""
     else
