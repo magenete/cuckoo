@@ -22,7 +22,7 @@ cuckoo_hd_create()
                 cp "${CUCKOO_HD_ARCH_OS_CLEAN_DIR}${hd_file}" "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}${hd_file}"
                 if [ $? -gt 0 ]
                 then
-                    cuckoo_error "HD file has not been created form '${CUCKOO_HD_ARCH_OS_CLEAN_DIR}${hd_file}' to '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}${hd_file}'"
+                    cuckoo_error "HD file has not been created from '${CUCKOO_HD_ARCH_OS_CLEAN_DIR}${hd_file}' to '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}${hd_file}'"
                 fi
             fi
         done
@@ -51,7 +51,7 @@ cuckoo_hd_copy_or_download()
     fi
     if [ $? -gt 0 ]
     then
-        cuckoo_error "HD file has not been setuped form '$CUCKOO_HD_FILE_PATH' to '${CUCKOO_HD_DIR_SYS_PATH}'"
+        cuckoo_error "HD file has not been setuped from '$CUCKOO_HD_FILE_PATH' to '${CUCKOO_HD_DIR_SYS_PATH}'"
     fi
 
     chmod 0600 "$CUCKOO_HD_DIR_SYS_PATH"*

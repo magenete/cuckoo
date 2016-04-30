@@ -29,7 +29,7 @@ cuckoo_iso_copy_or_download()
     fi
     if [ $? -gt 0 ]
     then
-        cuckoo_error "ISO file has not been setuped form '$CUCKOO_ISO_FILE_PATH' to '${CUCKOO_ISO_FILE_SYS_PATH}'"
+        cuckoo_error "ISO file has not been setuped from '$CUCKOO_ISO_FILE_PATH' to '${CUCKOO_ISO_FILE_SYS_PATH}'"
     fi
 
     chmod 0600 "$CUCKOO_ISO_FILE_SYS_PATH"

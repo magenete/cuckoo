@@ -41,7 +41,7 @@ Usage: $(basename $0) [actions] [argumets]
 
   Arguments:
 
-    -Q, --qemu-system     Run system QEMU.
+    -Q, --qemu-system     Run system VM (by default: QEMU).
     -A, --qemu-arch       Set QEMU architecture (by default: definition by OS).
                             QEMU architecture: $(from_arr_to_str "$QEMU_ARCH_LIST").
     -O, --qemu-os-name    Set QEMU OS (by default: definition by OS).
@@ -51,13 +51,13 @@ Usage: $(basename $0) [actions] [argumets]
     -o, --os-name         Set OS name (by default: ${CUCKOO_OS_DEFAULT}).
                             OS: $(from_arr_to_str "$CUCKOO_OS_LIST").
     -v, --dist-version    Set dist and(or) version (by default: ${CUCKOO_DIST_VERSION_DEFAULT}).
-    -p, --boot-cdrom      Set file with full path for CDROM (IDE device).
-    -f, --boot-floppy     Set file with full path for Floppy Disk.
-    -M, --cdrom-add       Set file with full path for CDROM (by default: ${CUCKOO_HD_TYPE_DEFAULT}).
+    -m, --memory-size     Set memory size (by default: ${CUCKOO_MEMORY_SIZE_DEFAULT}).
     -K, --cpu-cores       Set CPU cores (by default: ${CUCKOO_CPU_CORES_DEFAULT}, min: ${CUCKOO_CPU_MIN}, max: ${CUCKOO_CPU_CORES_MAX}).
     -T, --cpu-threads     Set CPU threads (by default: ${CUCKOO_CPU_THREADS_DEFAULT}, min: ${CUCKOO_CPU_MIN}, max: ${CUCKOO_CPU_THREADS_MAX}).
     -S, --cpu-sockets     Set CPU sockets (by default: ${CUCKOO_CPU_SOCKETS_DEFAULT}, min: ${CUCKOO_CPU_MIN}, max: ${CUCKOO_CPU_SOCKETS_MAX}).
-    -m, --memory-size     Set memory size (by default: ${CUCKOO_MEMORY_SIZE_DEFAULT}).
+    -M, --cdrom-add       Set file with full path for CDROM (by default: ${CUCKOO_HD_TYPE_DEFAULT}).
+    -p, --boot-cdrom      Set file with full path for CDROM (IDE device).
+    -f, --boot-floppy     Set file with full path for Floppy Disk.
     -e, --smb-dir         Set directory with full path for SMB share.
     -F, --full-screen     Set full screen.
     -N, --no-daemonize    Running no daemonize.
