@@ -81,28 +81,28 @@ fi
 
 # Bootloading (hd, cdrom, floppy)
 QEMU_OPTS="-boot order="
-if [ -z "$QEMU_BOOT_CDROM_FILE" ] && [ -z "$QEMU_BOOT_FLOPPY_FILE" ]
+if [ -z "$QEMU_CDROM_BOOT_FILE" ] && [ -z "$QEMU_FLOPPY_BOOT_FILE" ]
 then
     QEMU_OPTS="${QEMU_OPTS}c"
 else
-    if [ ! -z "$QEMU_BOOT_CDROM_FILE" ]
+    if [ ! -z "$QEMU_CDROM_BOOT_FILE" ]
     then
-        if [ -f "$QEMU_BOOT_CDROM_FILE" ]
+        if [ -f "$QEMU_CDROM_BOOT_FILE" ]
         then
-            QEMU_OPTS="${QEMU_OPTS}d -cdrom ${QEMU_BOOT_CDROM_FILE}"
+            QEMU_OPTS="${QEMU_OPTS}d -cdrom ${QEMU_CDROM_BOOT_FILE}"
         else
-            echo "ERROR: ISO file '${QEMU_BOOT_CDROM_FILE}' does not exist for CDROM"
+            echo "ERROR: ISO file '${QEMU_CDROM_BOOT_FILE}' does not exist for CDROM"
             exit 1
         fi
     fi
 
-    if [ ! -z "$QEMU_BOOT_FLOPPY_FILE" ]
+    if [ ! -z "$QEMU_FLOPPY_BOOT_FILE" ]
     then
-        if [ -f "$QEMU_BOOT_FLOPPY_FILE" ]
+        if [ -f "$QEMU_FLOPPY_BOOT_FILE" ]
         then
-            QEMU_OPTS="${QEMU_OPTS}a -fda ${QEMU_BOOT_FLOPPY_FILE}"
+            QEMU_OPTS="${QEMU_OPTS}a -fda ${QEMU_FLOPPY_BOOT_FILE}"
         else
-            echo "ERROR: ISO file '${QEMU_BOOT_FLOPPY_FILE}' does not exist for Floppy Disk"
+            echo "ERROR: ISO file '${QEMU_FLOPPY_BOOT_FILE}' does not exist for Floppy Disk"
             exit 1
         fi
     fi
@@ -124,9 +124,9 @@ do
 done
 
 # CDROM add
-if [ ! -z "$QEMU_ADD_CDROM_FILE" ]
+if [ ! -z "$QEMU_CDROM_ADD_FILE" ]
 then
-    QEMU_OPTS="${QEMU_OPTS} -drive media=cdrom,if=${QEMU_HD_TYPE},id=cdrom-1,index=-1,file=${QEMU_ADD_CDROM_FILE}"
+    QEMU_OPTS="${QEMU_OPTS} -drive media=cdrom,if=${QEMU_HD_TYPE},id=cdrom-1,index=-1,file=${QEMU_CDROM_ADD_FILE}"
 fi
 
 # Screen

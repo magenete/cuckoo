@@ -23,11 +23,11 @@ Usage: $(basename $0) [actions] [argumets]
     -b, --qemu-build      Build (only on Linux) QEMU for OS: $(from_arr_to_str "$QEMU_OS_LIST").
     -q, --qemu-delete     Delete QEMU file(s).
     -d, --iso-download    Download ISO file and setup.
-    -c, --iso-copy        Local copy ISO file and setup.
+    -p, --iso-import      Local copy ISO file and setup.
     -l, --iso-list        Get list of existing ISO files.
     -x, --iso-delete      Delete ISO file(s).
     -D, --hd-download     Download HD tar (bz2) file and setup.
-    -C, --hd-copy         Local copy HD tar file and setup.
+    -P, --hd-import       Local copy HD tar file and setup.
     -L, --hd-list         Get list of existing HD(s) files.
     -X, --hd-delete       Delete HD(s).
     -W, --config-create   Create and write config file if --dist-version defined.
@@ -55,15 +55,16 @@ Usage: $(basename $0) [actions] [argumets]
     -K, --cpu-cores       Set CPU cores (by default: ${CUCKOO_CPU_CORES_DEFAULT}, min: ${CUCKOO_CPU_MIN}, max: ${CUCKOO_CPU_CORES_MAX}).
     -T, --cpu-threads     Set CPU threads (by default: ${CUCKOO_CPU_THREADS_DEFAULT}, min: ${CUCKOO_CPU_MIN}, max: ${CUCKOO_CPU_THREADS_MAX}).
     -S, --cpu-sockets     Set CPU sockets (by default: ${CUCKOO_CPU_SOCKETS_DEFAULT}, min: ${CUCKOO_CPU_MIN}, max: ${CUCKOO_CPU_SOCKETS_MAX}).
-    -M, --cdrom-add       Set file with full path for CDROM (by default: ${CUCKOO_HD_TYPE_DEFAULT}).
-    -p, --boot-cdrom      Set file with full path for CDROM (IDE device).
-    -f, --boot-floppy     Set file with full path for Floppy Disk.
-    -e, --smb-dir         Set directory with full path for SMB share.
+    -C, --cdrom-add       Set file with full path for non-bootable CDROM
+                            to add drivers, packages, etc. (by default: ${CUCKOO_HD_TYPE_DEFAULT}).
+    -c, --cdrom-boot      Set file with full path for CDROM to boot from (IDE device).
+    -f, --floppy-boot     Set file with full path for Floppy Disk.
+    -M, --smb-dir         Set directory with full path for SMB share.
     -F, --full-screen     Set full screen.
     -N, --no-daemonize    Running no daemonize.
     -t, --hd-type         Set hard drive type (by default: ${CUCKOO_HD_TYPE_DEFAULT}).
                             HD type: ${CUCKOO_HD_TYPE_LIST}.
-    -P, --opts-add        Add other QEMU options.
+    -R, --opts-add        Add other QEMU options.
 
 _H_E_L_P
 }

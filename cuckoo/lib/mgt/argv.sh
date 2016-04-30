@@ -11,8 +11,8 @@
 # Options definition
 cuckoo_args()
 {
-    ARGS_SHORT="s:irbqd:c:lxD:C:LXWUZwzQA:O:a:o:v:m:K:T:S:M:p:f:e:FNt:P:Vh"
-    ARGS_LONG="setup:,install,run,qemu-build,qemu-delete,iso-download:,iso-copy:,iso-list,iso-delete,hd-download,hd-copy,hd-list,hd-delete,config-create,config-update,config-delete,desktop-create,desktop-delete,qemu-system,qemu-arch,qemu-os-name:,arch:,os-name:,dist-version:,memory-size:,cpu-cores:,cpu-threads:,cpu-sockets:,cdrom-add:,boot-cdrom:,boot-floppy:,smb-dir:,full-screen,no-daemonize,hd-type:,opts-add:,version,help"
+    ARGS_SHORT="s:irbqd:p:lxD:P:LXWUZwzQA:O:a:o:v:m:K:T:S:C:c:f:M:FNt:R:Vh"
+    ARGS_LONG="setup:,install,run,qemu-build,qemu-delete,iso-download:,iso-import:,iso-list,iso-delete,hd-download,hd-import,hd-list,hd-delete,config-create,config-update,config-delete,desktop-create,desktop-delete,qemu-system,qemu-arch,qemu-os-name:,arch:,os-name:,dist-version:,memory-size:,cpu-cores:,cpu-threads:,cpu-sockets:,cdrom-add:,cdrom-boot:,floppy-boot:,smb-dir:,full-screen,no-daemonize,hd-type:,opts-add:,version,help"
     OPTS="$(getopt -o "${ARGS_SHORT}" -l "${ARGS_LONG}" -a -- "$@" 2>/dev/null)"
     if [ $? -gt 0 ]
     then
@@ -64,7 +64,7 @@ cuckoo_args()
             CUCKOO_ISO_FILE_NET="yes"
             shift 2
         ;;
-        --iso-copy | -c )
+        --iso-import | -p )
             CUCKOO_ACTION="iso-setup"
 
             if [ -f "$2" ]
@@ -90,7 +90,7 @@ cuckoo_args()
             CUCKOO_HD_FILE_NET="yes"
             shift 2
         ;;
-        --hd-copy | -C )
+        --hd-import | -P )
             CUCKOO_ACTION="hd-setup"
 
             if [ -f "$2" ]
@@ -221,34 +221,34 @@ cuckoo_args()
             fi
             shift 2
         ;;
-        --cdrom-add | -M )
+        --cdrom-add | -C )
             if [ -f "$2" ]
             then
-                CUCKOO_ADD_CDROM_FILE="$2"
+                CUCKOO_CDROM_ADD_FILE="$2"
             else
                 cuckoo_error "CDROM file '$2' does not exist (adding)"
             fi
             shift 2
         ;;
-        --boot-cdrom | -p )
+        --cdrom-boot | -c )
             if [ -f "$2" ]
             then
-                CUCKOO_BOOT_CDROM_FILE="$2"
+                CUCKOO_CDROM_BOOT_FILE="$2"
             else
                 cuckoo_error "CDROM file '$2' does not exist"
             fi
             shift 2
         ;;
-        --boot-floppy | -f )
+        --floppy-boot | -f )
             if [ -f "$2" ]
             then
-                CUCKOO_BOOT_FLOPPY_FILE="$2"
+                CUCKOO_FLOPPY_BOOT_FILE="$2"
             else
                 cuckoo_error "Floppy Disk file '$2' does not exist"
             fi
             shift 2
         ;;
-        --smb-dir | -e )
+        --smb-dir | -M )
             if [ -d "$2" ]
             then
                 CUCKOO_SMB_DIR="$2"
@@ -276,7 +276,7 @@ cuckoo_args()
             esac
             shift 2
         ;;
-        --opts-add | -P )
+        --opts-add | -R )
             CUCKOO_OPTS_EXT="$2"
             shift 2
         ;;
