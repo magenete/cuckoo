@@ -11,8 +11,8 @@
 # Options definition
 cuckoo_args()
 {
-    ARGS_SHORT="s:irbqd:c:lxD:C:LXWUZQA:O:a:o:v:p:f:M:K:T:S:m:e:FNt:P:Vh"
-    ARGS_LONG="setup:,install,run,qemu-build,qemu-delete,iso-download:,iso-copy:,iso-list,iso-delete,hd-download,hd-copy,hd-list,hd-delete,config-create,config-update,config-delete,qemu-system,qemu-arch,qemu-os-name:,arch:,os-name:,dist-version:,boot-cdrom:,boot-floppy:,cdrom-add:,cpu-cores:,cpu-threads:,cpu-sockets:,memory-size:,smb-dir:,full-screen,no-daemonize,hd-type:,opts-add:,version,help"
+    ARGS_SHORT="s:irbqd:c:lxD:C:LXWUZwzQA:O:a:o:v:p:f:M:K:T:S:m:e:FNt:P:Vh"
+    ARGS_LONG="setup:,install,run,qemu-build,qemu-delete,iso-download:,iso-copy:,iso-list,iso-delete,hd-download,hd-copy,hd-list,hd-delete,config-create,config-update,config-delete,desktop-create,desktop-delete,qemu-system,qemu-arch,qemu-os-name:,arch:,os-name:,dist-version:,boot-cdrom:,boot-floppy:,cdrom-add:,cpu-cores:,cpu-threads:,cpu-sockets:,memory-size:,smb-dir:,full-screen,no-daemonize,hd-type:,opts-add:,version,help"
     OPTS="$(getopt -o "${ARGS_SHORT}" -l "${ARGS_LONG}" -a -- "$@" 2>/dev/null)"
     if [ $? -gt 0 ]
     then
@@ -123,6 +123,16 @@ cuckoo_args()
         --config-delete | -Z )
             CUCKOO_ACTION="config"
             CUCKOO_DIST_VERSION_CONFIG="delete"
+            shift 1
+        ;;
+        --desktop-create | -w )
+            CUCKOO_ACTION="desktop"
+            CUCKOO_DIST_VERSION_DESKTOP="create"
+            shift 1
+        ;;
+        --desktop-delete | -z )
+            CUCKOO_ACTION="desktop"
+            CUCKOO_DIST_VERSION_DESKTOP="delete"
             shift 1
         ;;
 

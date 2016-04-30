@@ -8,9 +8,6 @@
 #
 
 
-## Config management for distributive/version
-
-
 # Create
 cuckoo_dist_version_config_create()
 {
@@ -97,8 +94,14 @@ cuckoo_dist_version_config_delete()
     if [ -e "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}" ] && [ -f "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}" ]
     then
         rm -f "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}"
-
-        cuckoo_message "Config has been deleted in '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}'"
+        if [ $? -gt 0 ]
+        then
+            cuckoo_error "Config file '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}' has not been deleted"
+        else
+            cuckoo_message "Config file '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}' has been deleted"
+        fi
+    else
+        cuckoo_error "Config file '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}' does not exist"
     fi
 }
 

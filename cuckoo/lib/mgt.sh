@@ -35,6 +35,10 @@ CUCKOO_DAEMONIZE_NO=""
 CUCKOO_HD_TYPE=""
 CUCKOO_HD_FILE_PATH=""
 CUCKOO_HD_FILE_NET=""
+CUCKOO_DIST_VERSION_DESKTOP=""
+CUCKOO_DIST_VERSION_DESKTOP_FILE=""
+CUCKOO_DIST_VERSION_DESKTOP_ICON_FILE=""
+CUCKOO_DIST_VERSION_DESKTOP_LAUNCHER_FILE=""
 CUCKOO_DIST_VERSION_CONFIG=""
 CUCKOO_DIST_VERSION_CONFIG_FILE=""
 
@@ -91,6 +95,9 @@ cuckoo_actions()
         ;;
         config )
             cuckoo_dist_version_config
+        ;;
+        desktop )
+            cuckoo_dist_version_desktop
         ;;
         * )
             cuckoo_error "Cuckoo action '${CUCKOO_ACTION}' does not supported"

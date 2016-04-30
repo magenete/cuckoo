@@ -28,6 +28,9 @@ CUCKOO_BIN_FILE="${CUCKOO_BIN_DIR}cuckoo"
 CUCKOO_LAUNCHERS_DIR="${CUCKOO_DIR}../launchers/"
 CUCKOO_LAUNCHERS_INSTALL_DIR="${CUCKOO_LAUNCHERS_DIR}install/"
 CUCKOO_LAUNCHERS_RUN_DIR="${CUCKOO_LAUNCHERS_DIR}run/"
+CUCKOO_LAUNCHERS_DESKTOP_DIR="${CUCKOO_LAUNCHERS_DIR}.desktop/"
+CUCKOO_USER_HOME_DESKTOP_DIR="${HOME}/.local/share/applications/"
+
 
 QEMU_DIR="${CUCKOO_DIR}../qemu/"
 QEMU_LIB_DIR="${QEMU_DIR}lib/"
@@ -60,7 +63,7 @@ cuckoo_error()
     cuckoo_help
 
     echo ""
-    echo "ERROR: $1"
+    echo "ERROR: ${1}"
     echo ""
 
     exit 1
@@ -71,7 +74,7 @@ cuckoo_error()
 cuckoo_message()
 {
     echo ""
-    echo "${1}"
+    echo "$1"
     echo ""
 }
 
@@ -121,7 +124,7 @@ cuckoo_launchers_install()
     chmod 0700 -R "${HOME}/${CUCKOO_LAUNCHERS_DIR}"
     chmod 0600 "${HOME}/${CUCKOO_LAUNCHERS_DIR}"*.bat
 
-    for launchers_dir in "${HOME}/${CUCKOO_LAUNCHERS_INSTALL_DIR}" "${HOME}/${CUCKOO_LAUNCHERS_RUN_DIR}"
+    for launchers_dir in "${HOME}/${CUCKOO_LAUNCHERS_INSTALL_DIR}" "${HOME}/${CUCKOO_LAUNCHERS_RUN_DIR}" "${CUCKOO_LAUNCHERS_DESKTOP_DIR}"
     do
         for cuckoo_arch in $(ls "$launchers_dir")
         do
@@ -251,10 +254,15 @@ cuckoo_uninstall()
         fi
     done
 
+    # Desktop launcher
+    rm -f "${CUCKOO_USER_HOME_DESKTOP_DIR}cuckoo"*
+    echo ""
+    echo "Desktop file(s) has been deleted in '${CUCKOO_USER_HOME_DESKTOP_DIR}'"
+
     # Directory delete and answer getting
     if [ -e "${HOME}/${CUCKOO_INSTALLER_DIR}" ] && [ -d "${HOME}/${CUCKOO_INSTALLER_DIR}" ]
     then
-        cuckoo_message "Everything will be removed in '${HOME}/${CUCKOO_INSTALLER_DIR}'!"
+        cuckoo_message "Everything will be deleted in '${HOME}/${CUCKOO_INSTALLER_DIR}'!"
 
         cuckoo_uninstall_answer
     else
