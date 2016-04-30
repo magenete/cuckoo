@@ -8,8 +8,8 @@
 #
 
 
-# ISO file copy or download
-cuckoo_iso_copy_or_download()
+# ISO file import or download
+cuckoo_iso_import_or_download()
 {
     CUCKOO_ENV_NO="yes"
 

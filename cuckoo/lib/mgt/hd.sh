@@ -32,8 +32,8 @@ cuckoo_hd_create()
 }
 
 
-# HD tar file copy or download
-cuckoo_hd_copy_or_download()
+# HD tar file import or download
+cuckoo_hd_import_or_download()
 {
     CUCKOO_ENV_NO="yes"
 

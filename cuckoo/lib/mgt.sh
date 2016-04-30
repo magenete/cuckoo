@@ -76,7 +76,7 @@ cuckoo_actions()
             cuckoo_setup
         ;;
         iso-setup )
-            cuckoo_iso_copy_or_download
+            cuckoo_iso_import_or_download
         ;;
         iso-list )
             cuckoo_iso_list
@@ -85,7 +85,7 @@ cuckoo_actions()
             cuckoo_iso_delete
         ;;
         hd-setup )
-            cuckoo_hd_copy_or_download
+            cuckoo_hd_import_or_download
         ;;
         hd-list )
             cuckoo_hd_list
