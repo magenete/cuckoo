@@ -49,11 +49,11 @@ qemu_build()
                 . "$QEMU_BUILD_ARCH_OS_FILE"
 
                 echo ""
-                echo "QEMU has been builded in '${QEMU_BIN_ARCH_OS_VERSION_DIR}'"
+                echo "QEMU has been buit in '${QEMU_BIN_ARCH_OS_VERSION_DIR}'"
                 echo ""
             else
                 echo ""
-                echo "WARNING: QEMU has not been builded for OS: ${qemu_os}, arch: ${qemu_arch}"
+                echo "WARNING: QEMU has not been buit for OS: ${qemu_os}, arch: ${qemu_arch}"
                 echo ""
             fi
         done
@@ -132,7 +132,7 @@ qemu_actions()
 
             if [ "$QEMU_OS" != "linux" ]
             then
-                cuckoo_error "QEMU building only on Linux!"
+                cuckoo_error "QEMU building done only on GNU/Linux!"
             else
                 qemu_build
             fi
@@ -143,7 +143,7 @@ qemu_actions()
         copy )  # See common method cuckoo_setup()
         ;;
         * )
-            cuckoo_error "QEMU action '${QEMU_ACTION}' does not supported"
+            cuckoo_error "QEMU action '${QEMU_ACTION}' is not supported"
         ;;
     esac
 }

@@ -51,12 +51,12 @@ cuckoo_hd_import_or_download()
     fi
     if [ $? -gt 0 ]
     then
-        cuckoo_error "HD file has not been setuped from '$CUCKOO_HD_FILE_PATH' to '${CUCKOO_HD_DIR_SYS_PATH}'"
+        cuckoo_error "HD file was not set from '$CUCKOO_HD_FILE_PATH' to '${CUCKOO_HD_DIR_SYS_PATH}'"
     fi
 
     chmod 0600 "$CUCKOO_HD_DIR_SYS_PATH"*
 
-    cuckoo_message "HD tar file has been setuped in '${CUCKOO_HD_DIR_SYS_PATH}'"
+    cuckoo_message "HD tar file was set in '${CUCKOO_HD_DIR_SYS_PATH}'"
 }
 
 
@@ -85,7 +85,7 @@ cuckoo_hd_list()
 
             if [ -d "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
             then
-                echo "HD file(s) has been found in '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}':"
+                echo "HD file(s) found in '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}':"
 
                 for hd_file in $(ls -R -h -x --file-type "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" 2> /dev/null)
                 do
@@ -94,7 +94,7 @@ cuckoo_hd_list()
 
                 echo ""
             else
-                echo "WARNING: HD file(s) has not been found for OS: ${CUCKOO_OS}, arch: ${CUCKOO_ARCH}"
+                echo "WARNING: HD file(s) not found for OS: ${CUCKOO_OS}, arch: ${CUCKOO_ARCH}"
                 echo ""
             fi
         done
