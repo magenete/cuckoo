@@ -14,8 +14,17 @@ cuckoo_error()
     cuckoo_help
 
     echo ""
-    echo "ERROR: $1"
+    echo "ERROR: ${1}"
     echo ""
 
     exit 1
+}
+
+
+# Print message
+cuckoo_message()
+{
+    echo ""
+    echo "$1"
+    echo ""
 }

@@ -89,6 +89,9 @@ cuckoo_actions()
         hd-delete )
             cuckoo_hd_delete
         ;;
+        config )
+            cuckoo_dist_version_config
+        ;;
         * )
             cuckoo_error "Cuckoo action '${CUCKOO_ACTION}' does not supported"
         ;;

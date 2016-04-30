@@ -14,6 +14,8 @@
 # Create
 cuckoo_dist_version_config_create()
 {
+    mkdir -p "$(dirname "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}")"
+
     cat > "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}" << _C_O_F_I_G
 CUCKOO_OS="$CUCKOO_OS"
 CUCKOO_ARCH="$CUCKOO_ARCH"
@@ -95,6 +97,8 @@ cuckoo_dist_version_config_delete()
     if [ -e "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}" ] && [ -f "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}" ]
     then
         rm -f "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}"
+
+        cuckoo_message "Config has been deleted in '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}'"
     fi
 }
 
@@ -102,15 +106,21 @@ cuckoo_dist_version_config_delete()
 # Manage
 cuckoo_dist_version_config()
 {
+    cuckoo_variables
+
     case "$CUCKOO_DIST_VERSION_CONFIG" in
         create )
             cuckoo_dist_version_config_create
+
+            cuckoo_message "Config has been created in '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}'"
         ;;
         update )
             if [ -e "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}" ] && [ -f "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}" ]
             then
                 cuckoo_dist_version_config_merge
                 cuckoo_dist_version_config_create
+
+                cuckoo_message "Config has been updated in '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}'"
             fi
         ;;
         delete )

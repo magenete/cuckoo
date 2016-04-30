@@ -11,8 +11,8 @@
 # Options definition
 cuckoo_args()
 {
-    ARGS_SHORT="s:irbqd:c:lxD:C:LXQA:O:a:o:v:IUZp:f:M:K:T:S:m:e:FNt:P:Vh"
-    ARGS_LONG="setup:,install,run,qemu-build,qemu-delete,iso-download:,iso-copy:,iso-list,iso-delete,hd-download,hd-copy,hd-list,hd-delete,qemu-system,qemu-arch,qemu-os-name:,arch:,os-name:,dist-version:,config-create,config-update,config-delete,boot-cdrom:,boot-floppy:,cdrom-add:,cpu-cores:,cpu-threads:,cpu-sockets:,memory-size:,smb-dir:,full-screen,no-daemonize,hd-type:,opts-add:,version,help"
+    ARGS_SHORT="s:irbqd:c:lxD:C:LXWUZQA:O:a:o:v:p:f:M:K:T:S:m:e:FNt:P:Vh"
+    ARGS_LONG="setup:,install,run,qemu-build,qemu-delete,iso-download:,iso-copy:,iso-list,iso-delete,hd-download,hd-copy,hd-list,hd-delete,config-create,config-update,config-delete,qemu-system,qemu-arch,qemu-os-name:,arch:,os-name:,dist-version:,boot-cdrom:,boot-floppy:,cdrom-add:,cpu-cores:,cpu-threads:,cpu-sockets:,memory-size:,smb-dir:,full-screen,no-daemonize,hd-type:,opts-add:,version,help"
     OPTS="$(getopt -o "${ARGS_SHORT}" -l "${ARGS_LONG}" -a -- "$@" 2>/dev/null)"
     if [ $? -gt 0 ]
     then
@@ -28,6 +28,9 @@ cuckoo_args()
         -- )
             shift 1
         ;;
+
+    # Actions
+
         --setup | -s )
             CUCKOO_ACTION="setup"
             if [ -e "$2" ] && [ -d "$2" ]
@@ -107,6 +110,24 @@ cuckoo_args()
             CUCKOO_ACTION="hd-delete"
             shift 1
         ;;
+        --config-create | -W )
+            CUCKOO_ACTION="config"
+            CUCKOO_DIST_VERSION_CONFIG="create"
+            shift 1
+        ;;
+        --config-update | -U )
+            CUCKOO_ACTION="config"
+            CUCKOO_DIST_VERSION_CONFIG="update"
+            shift 1
+        ;;
+        --config-delete | -Z )
+            CUCKOO_ACTION="config"
+            CUCKOO_DIST_VERSION_CONFIG="delete"
+            shift 1
+        ;;
+
+    # Arguments
+
         --qemu-system | -Q )
             QEMU_ACTION="run-system"
             shift 1
@@ -158,18 +179,6 @@ cuckoo_args()
         --dist-version | -v )
             CUCKOO_DIST_VERSION="$2"
             shift 2
-        ;;
-        --config-create | -I )
-            CUCKOO_DIST_VERSION_CONFIG="create"
-            shift 1
-        ;;
-        --config-update | -U )
-            CUCKOO_DIST_VERSION_CONFIG="update"
-            shift 1
-        ;;
-        --config-delete | -Z )
-            CUCKOO_DIST_VERSION_CONFIG="delete"
-            shift 1
         ;;
         --boot-cdrom | -p )
             if [ -e "$2" ] && [ -f "$2" ]

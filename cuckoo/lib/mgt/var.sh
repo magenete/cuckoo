@@ -51,7 +51,7 @@ cuckoo_variables_check()
 {
     [ -z "$CUCKOO_ACTION" ] && CUCKOO_ACTION="$CUCKOO_ACTION_DEFAULT"
 
-    if [ "$CUCKOO_ACTION" = "run" ] || [ "$CUCKOO_ACTION" = "install" ]
+    if [ "$CUCKOO_ACTION" = "run" ] || [ "$CUCKOO_ACTION" = "install" ] || [ "$CUCKOO_ACTION" = "config" ]
     then
         [ -z "$CUCKOO_OS" ] && CUCKOO_OS="$CUCKOO_OS_DEFAULT"
         [ -z "$CUCKOO_DIST_VERSION" ] && CUCKOO_DIST_VERSION="$CUCKOO_DIST_VERSION_DEFAULT"

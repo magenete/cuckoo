@@ -158,8 +158,6 @@ cuckoo_qemu_launch()
 
     [ "$QEMU_OS" != "linux" ] && QEMU_ENABLE_KVM_NO="yes"
 
-    cuckoo_dist_version_config
-
     if [ "$CUCKOO_ACTION" = "install" ]
     then
         CUCKOO_BOOT_CDROM_FILE="${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}"

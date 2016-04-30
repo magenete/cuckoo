@@ -34,9 +34,7 @@ cuckoo_iso_copy_or_download()
 
     chmod 0600 "$CUCKOO_ISO_FILE_SYS_PATH"
 
-    echo ""
-    echo "ISO file has been setuped as '${CUCKOO_ISO_FILE_SYS_PATH}'"
-    echo ""
+    cuckoo_message "ISO file has been setuped as '${CUCKOO_ISO_FILE_SYS_PATH}'"
 }
 
 

@@ -18,9 +18,9 @@ Usage: $(basename $0) [actions] [argumets]
   Actions:
 
     -s, --setup          Set directory with full path and setup Cuckoo.
-    -i, --install        Install OS on QEMU image(s).
-    -r, --run            Run QEMU (by default).
-    -b, --qemu-build     Build(only on Linux) QEMU for OS: $(from_arr_to_str "$QEMU_OS_LIST").
+    -i, --install        Install OS on HD(s) (QEMU image).
+    -r, --run            Run VM (by default: QEMU).
+    -b, --qemu-build     Build (only on Linux) QEMU for OS: $(from_arr_to_str "$QEMU_OS_LIST").
     -q, --qemu-delete    Delete QEMU file(s).
     -d, --iso-download   Download ISO file and setup.
     -c, --iso-copy       Local copy ISO file and setup.
@@ -30,6 +30,9 @@ Usage: $(basename $0) [actions] [argumets]
     -C, --hd-copy        Local copy HD tar file and setup.
     -L, --hd-list        Get list of existing HD(s) files.
     -X, --hd-delete      Delete HD(s).
+    -W, --config-create  Create and write config file if --dist-version defined.
+    -U, --config-update  Update config file if config file exists.
+    -Z, --config-delete  Delete config file if config file exists.
 
     -V, --version        Print the current version.
     -h, --help           Show this message.
@@ -46,9 +49,6 @@ Usage: $(basename $0) [actions] [argumets]
     -o, --os-name        Set OS name (by default: ${CUCKOO_OS_DEFAULT}).
                            OS: $(from_arr_to_str "$CUCKOO_OS_LIST").
     -v, --dist-version   Set dist and(or) version (by default: ${CUCKOO_DIST_VERSION_DEFAULT}).
-    -I, --config-create  Create and write config file if --dist-version defined.
-    -U, --config-update  Update config file if config file exists.
-    -Z, --config-delete  Delete config file if config file exists.
     -p, --boot-cdrom     Set file with full path for CDROM (IDE device).
     -f, --boot-floppy    Set file with full path for Floppy Disk.
     -M, --cdrom-add      Set file with full path for CDROM (by default: ${CUCKOO_HD_TYPE_DEFAULT}).

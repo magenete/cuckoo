@@ -51,9 +51,7 @@ cuckoo_hd_copy_or_download()
 
     chmod 0600 "$CUCKOO_HD_DIR_SYS_PATH"*
 
-    echo ""
-    echo "HD tar file has been setuped in '${CUCKOO_HD_DIR_SYS_PATH}'"
-    echo ""
+    cuckoo_message "HD tar file has been setuped in '${CUCKOO_HD_DIR_SYS_PATH}'"
 }
 
 
