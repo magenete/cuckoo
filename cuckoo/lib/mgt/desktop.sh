@@ -27,12 +27,12 @@ cuckoo_dist_version_desktop_var_file()
     CUCKOO_DIST_VERSION_DESKTOP_FILE="cuckoo-${CUCKOO_OS}-${cuckoo_dist_version}_${CUCKOO_ARCH}.desktop"
     CUCKOO_DIST_VERSION_DESKTOP_LAUNCHER_FILE="${cuckoo_dist_version}.sh"
 
-    if [ -f "${CUCKOO_ETC_ICONS_DIR}${CUCKOO_OS}.svg" ]
-    then
-        CUCKOO_DIST_VERSION_DESKTOP_ICON_FILE="${CUCKOO_ETC_ICONS_DIR}${CUCKOO_OS}.svg"
-    elif [ -f "${CUCKOO_ETC_ICONS_DIR}${CUCKOO_OS}/${cuckoo_dist_version_tmp_file}.svg" ]
+    if [ -f "${CUCKOO_ETC_ICONS_DIR}${CUCKOO_OS}/${cuckoo_dist_version_tmp_file}.svg" ]
     then
         CUCKOO_DIST_VERSION_DESKTOP_ICON_FILE="${CUCKOO_ETC_ICONS_DIR}${CUCKOO_OS}/${cuckoo_dist_version_tmp_file}.svg"
+    elif [ -f "${CUCKOO_ETC_ICONS_DIR}${CUCKOO_OS}.svg" ]
+    then
+        CUCKOO_DIST_VERSION_DESKTOP_ICON_FILE="${CUCKOO_ETC_ICONS_DIR}${CUCKOO_OS}.svg"
     else
         CUCKOO_DIST_VERSION_DESKTOP_ICON_FILE="$CUCKOO_OS"
     fi
