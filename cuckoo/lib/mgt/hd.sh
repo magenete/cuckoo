@@ -11,14 +11,19 @@
 # HD create
 cuckoo_hd_create()
 {
-    if [ -e "$CUCKOO_HD_ARCH_OS_CLEAN_DIR" ] && [ -d "$CUCKOO_HD_ARCH_OS_CLEAN_DIR" ]
+    if [ -d "$CUCKOO_HD_ARCH_OS_CLEAN_DIR" ]
     then
         for hd_file in $(ls "${CUCKOO_HD_ARCH_OS_CLEAN_DIR}")
         do
             if [ -f "${CUCKOO_HD_ARCH_OS_CLEAN_DIR}${hd_file}" ]
             then
                 mkdir -p "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}"
+
                 cp "${CUCKOO_HD_ARCH_OS_CLEAN_DIR}${hd_file}" "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}${hd_file}"
+                if [ $? -gt 0 ]
+                then
+                    cuckoo_error "HD file has not been created form '${CUCKOO_HD_ARCH_OS_CLEAN_DIR}${hd_file}' to '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}${hd_file}'"
+                fi
             fi
         done
     else
@@ -78,7 +83,7 @@ cuckoo_hd_list()
                 CUCKOO_DIST_VERSION_DIR=""
             fi
 
-            if [ -e "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ] && [ -d "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
+            if [ -d "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
             then
                 echo "HD file(s) has been found in '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}':"
 
@@ -114,7 +119,7 @@ cuckoo_hd_delete()
 
                 cuckoo_variables
 
-                if [ -e "$CUCKOO_HD_ARCH_OS_DIR" ] && [ -d "$CUCKOO_HD_ARCH_OS_DIR" ]
+                if [ -d "$CUCKOO_HD_ARCH_OS_DIR" ]
                 then
                     rm -rf "$CUCKOO_HD_ARCH_OS_DIR"*
 
@@ -130,14 +135,14 @@ cuckoo_hd_delete()
 
         cuckoo_variables
 
-        if [ -e "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ] && [ -d "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
+        if [ -d "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
         then
             rm -rf "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}"
             cuckoo_dist_version_config_delete
 
             echo "HD has been deleted in directory '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}'"
         else
-            if [ -e "${CUCKOO_HD_ARCH_OS_DIR}" ] && [ -f "${CUCKOO_HD_ARCH_OS_DIR}" ]
+            if [ -f "${CUCKOO_HD_ARCH_OS_DIR}" ]
             then
                 rm -f "${CUCKOO_HD_ARCH_OS_DIR}"
                 cuckoo_dist_version_config_delete

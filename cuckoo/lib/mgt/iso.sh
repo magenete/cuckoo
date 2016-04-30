@@ -55,7 +55,7 @@ cuckoo_iso_delete()
 
                 cuckoo_variables
 
-                if [ -e "$CUCKOO_ISO_ARCH_OS_DIR" ] && [ -d "$CUCKOO_ISO_ARCH_OS_DIR" ]
+                if [ -d "$CUCKOO_ISO_ARCH_OS_DIR" ]
                 then
                     rm -rf "$CUCKOO_ISO_ARCH_OS_DIR"*
 
@@ -71,13 +71,13 @@ cuckoo_iso_delete()
 
         cuckoo_variables
 
-        if [ -e "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ] && [ -d "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
+        if [ -d "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
         then
             rm -rf "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}"
 
             echo "ISO file(s) has been deleted in '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}'"
         else
-            if [ -e "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}" ] && [ -f "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}" ]
+            if [ -f "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}" ]
             then
                 rm -f "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}"
 
@@ -114,7 +114,7 @@ cuckoo_iso_list()
                 CUCKOO_DIST_VERSION_DIR=""
             fi
 
-            if [ -e "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ] && [ -d "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
+            if [ -d "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
             then
                 echo "ISO file(s) has been found in '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}':"
 

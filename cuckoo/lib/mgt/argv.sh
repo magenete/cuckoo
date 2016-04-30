@@ -33,7 +33,7 @@ cuckoo_args()
 
         --setup | -s )
             CUCKOO_ACTION="setup"
-            if [ -e "$2" ] && [ -d "$2" ]
+            if [ -d "$2" ]
             then
                 CUCKOO_SETUP_DIR="${2}/"
                 QEMU_ACTION="copy"
@@ -67,7 +67,7 @@ cuckoo_args()
         --iso-copy | -c )
             CUCKOO_ACTION="iso-setup"
 
-            if [ -e "$2" ] && [ -f "$2" ]
+            if [ -f "$2" ]
             then
                 CUCKOO_ISO_FILE_PATH="$2"
                 CUCKOO_ISO_FILE_NET=""
@@ -93,7 +93,7 @@ cuckoo_args()
         --hd-copy | -C )
             CUCKOO_ACTION="hd-setup"
 
-            if [ -e "$2" ] && [ -f "$2" ]
+            if [ -f "$2" ]
             then
                 CUCKOO_HD_FILE_PATH="$2"
                 CUCKOO_HD_FILE_NET=""
@@ -191,7 +191,7 @@ cuckoo_args()
             shift 2
         ;;
         --boot-cdrom | -p )
-            if [ -e "$2" ] && [ -f "$2" ]
+            if [ -f "$2" ]
             then
                 CUCKOO_BOOT_CDROM_FILE="$2"
             else
@@ -200,7 +200,7 @@ cuckoo_args()
             shift 2
         ;;
         --boot-floppy | -f )
-            if [ -e "$2" ] && [ -f "$2" ]
+            if [ -f "$2" ]
             then
                 CUCKOO_BOOT_FLOPPY_FILE="$2"
             else
@@ -209,7 +209,7 @@ cuckoo_args()
             shift 2
         ;;
         --cdrom-add | -M )
-            if [ -e "$2" ] && [ -f "$2" ]
+            if [ -f "$2" ]
             then
                 CUCKOO_ADD_CDROM_FILE="$2"
             else
@@ -249,7 +249,7 @@ cuckoo_args()
             shift 2
         ;;
         --smb-dir | -e )
-            if [ -e "$2" ] && [ -d "$2" ]
+            if [ -d "$2" ]
             then
                 CUCKOO_SMB_DIR="$2"
             else

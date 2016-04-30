@@ -87,7 +87,7 @@ then
 else
     if [ ! -z "$QEMU_BOOT_CDROM_FILE" ]
     then
-        if [ -e "$QEMU_BOOT_CDROM_FILE" ] && [ -f "$QEMU_BOOT_CDROM_FILE" ]
+        if [ -f "$QEMU_BOOT_CDROM_FILE" ]
         then
             QEMU_OPTS="${QEMU_OPTS}d -cdrom ${QEMU_BOOT_CDROM_FILE}"
         else
@@ -98,7 +98,7 @@ else
 
     if [ ! -z "$QEMU_BOOT_FLOPPY_FILE" ]
     then
-        if [ -e "$QEMU_BOOT_FLOPPY_FILE" ] && [ -f "$QEMU_BOOT_FLOPPY_FILE" ]
+        if [ -f "$QEMU_BOOT_FLOPPY_FILE" ]
         then
             QEMU_OPTS="${QEMU_OPTS}a -fda ${QEMU_BOOT_FLOPPY_FILE}"
         else

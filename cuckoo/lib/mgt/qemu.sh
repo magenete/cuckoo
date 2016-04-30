@@ -44,7 +44,7 @@ qemu_build()
 
             . "${QEMU_DIR}lib/var.sh"
 
-            if [ -e "$QEMU_BUILD_ARCH_OS_FILE" ] && [ -f "$QEMU_BUILD_ARCH_OS_FILE" ]
+            if [ -f "$QEMU_BUILD_ARCH_OS_FILE" ]
             then
                 . "$QEMU_BUILD_ARCH_OS_FILE"
 
@@ -76,7 +76,7 @@ qemu_delete()
 
             . "${QEMU_DIR}lib/var.sh"
 
-            if [ ! -z "$QEMU_BIN_ARCH_OS_VERSION_DIR" ] && [ -e "$QEMU_BIN_ARCH_OS_VERSION_DIR" ] && [ -d "$QEMU_BIN_ARCH_OS_VERSION_DIR" ]
+            if [ ! -z "$QEMU_BIN_ARCH_OS_VERSION_DIR" ] && [ -d "$QEMU_BIN_ARCH_OS_VERSION_DIR" ]
             then
                 rm -rf "$QEMU_BIN_ARCH_OS_VERSION_DIR"
 
@@ -162,11 +162,11 @@ cuckoo_qemu_launch()
     then
         CUCKOO_BOOT_CDROM_FILE="${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}"
 
-        if [ -e "$CUCKOO_BOOT_CDROM_FILE" ] && [ -f "$CUCKOO_BOOT_CDROM_FILE" ]
+        if [ -f "$CUCKOO_BOOT_CDROM_FILE" ]
         then
             cuckoo_hd_create
         else
-            cuckoo_error "ISO file '$2' does not exist for installation"
+            cuckoo_error "ISO file '${2}' does not exist for installation"
         fi
     fi
 

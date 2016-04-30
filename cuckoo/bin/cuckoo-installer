@@ -29,6 +29,7 @@ CUCKOO_LAUNCHERS_DIR="${CUCKOO_DIR}../launchers/"
 CUCKOO_LAUNCHERS_INSTALL_DIR="${CUCKOO_LAUNCHERS_DIR}install/"
 CUCKOO_LAUNCHERS_RUN_DIR="${CUCKOO_LAUNCHERS_DIR}run/"
 CUCKOO_LAUNCHERS_DESKTOP_DIR="${CUCKOO_LAUNCHERS_DIR}.desktop/"
+
 CUCKOO_USER_HOME_DESKTOP_DIR="${HOME}/.local/share/applications/"
 
 
@@ -124,11 +125,21 @@ cuckoo_launchers_install()
     chmod 0700 -R "${HOME}/${CUCKOO_LAUNCHERS_DIR}"
     chmod 0600 "${HOME}/${CUCKOO_LAUNCHERS_DIR}"*.bat
 
-    for launchers_dir in "${HOME}/${CUCKOO_LAUNCHERS_INSTALL_DIR}" "${HOME}/${CUCKOO_LAUNCHERS_RUN_DIR}" "${CUCKOO_LAUNCHERS_DESKTOP_DIR}"
+    # Run and install
+    for launchers_dir in "${HOME}/${CUCKOO_LAUNCHERS_INSTALL_DIR}" "${HOME}/${CUCKOO_LAUNCHERS_RUN_DIR}"
     do
         for cuckoo_arch in $(ls "$launchers_dir")
         do
             chmod 0600 "${launchers_dir}${cuckoo_arch}/"*.bat
+        done
+    done
+
+    # Desktop
+    for cuckoo_arch in $(ls "${HOME}/${CUCKOO_LAUNCHERS_DESKTOP_DIR}/")
+    do
+        for cuckoo_os in $(ls "${HOME}/${CUCKOO_LAUNCHERS_DESKTOP_DIR}${cuckoo_arch}/")
+        do
+            chmod 0600 "${HOME}/${CUCKOO_LAUNCHERS_DESKTOP_DIR}${cuckoo_arch}/${cuckoo_os}/.keep"
         done
     done
 }
@@ -284,33 +295,33 @@ eval set -- "$OPTS"
 while [ $# -gt 0 ]
 do
     case $1 in
-    -- )
-        shift 1
-    ;;
-    --install | -i )
-        CUCKOO_ACTION="install"
-        shift 1
-    ;;
-    --uninstall | -u )
-        CUCKOO_ACTION="uninstall"
-        shift 1
-    ;;
-    --version | -v )
-        echo "Cuckoo version: 0.1.3"
-        exit 0
-    ;;
-    --help | -h )
-        cuckoo_help
-        exit 0
-    ;;
-    * )
-        cuckoo_error "Invalid option '$1'"
-    ;;
+        -- )
+            shift 1
+        ;;
+        --install | -i )
+            CUCKOO_ACTION="install"
+            shift 1
+        ;;
+        --uninstall | -u )
+            CUCKOO_ACTION="uninstall"
+            shift 1
+        ;;
+        --version | -v )
+            echo "Cuckoo version: 0.1.3"
+            exit 0
+        ;;
+        --help | -h )
+            cuckoo_help
+            exit 0
+        ;;
+        * )
+            cuckoo_error "Invalid option '${1}'"
+        ;;
     esac
 done
 
 
-# Run
+# Launch
 if [ "$(whoami)" = "$USER" ] && [ "$(basename $HOME)" = "$USER" ]
 then
     [ -z "$CUCKOO_ACTION" ] && CUCKOO_ACTION="$CUCKOO_ACTION_DEFAULT"

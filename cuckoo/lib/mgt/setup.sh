@@ -24,7 +24,7 @@ cuckoo_setup_iso()
 
                 cuckoo_variables
 
-                if [ -e "$CUCKOO_ISO_ARCH_OS_DIR" ] && [ -d "$CUCKOO_ISO_ARCH_OS_DIR" ]
+                if [ -d "$CUCKOO_ISO_ARCH_OS_DIR" ]
                 then
                     mkdir -p "${CUCKOO_SETUP_DIR}cuckoo/iso/${CUCKOO_ARCH}/"
                     cp -rv "$CUCKOO_ISO_ARCH_OS_DIR" "${CUCKOO_SETUP_DIR}cuckoo/iso/${CUCKOO_ARCH}/"
@@ -41,14 +41,14 @@ cuckoo_setup_iso()
 
         cuckoo_variables
 
-        if [ -e "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ] && [ -d "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
+        if [ -d "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
         then
             mkdir -p "${CUCKOO_SETUP_DIR}cuckoo/iso/${CUCKOO_ARCH}/${CUCKOO_OS}/"
             cp -rv "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" "${CUCKOO_SETUP_DIR}cuckoo/iso/${CUCKOO_ARCH}/${CUCKOO_OS}/${CUCKOO_DIST_VERSION_DIR}"
 
             echo "      ...from '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}'"
         else
-            if [ -e "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}" ] && [ -f "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}" ]
+            if [ -f "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}" ]
             then
                 mkdir -p "${CUCKOO_SETUP_DIR}cuckoo/iso/${CUCKOO_ARCH}/${CUCKOO_OS}/${CUCKOO_DIST_VERSION_DIR}"
                 cp -v "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}" "${CUCKOO_SETUP_DIR}cuckoo/iso/${CUCKOO_ARCH}/${CUCKOO_OS}/${CUCKOO_ISO_FILE}"
@@ -78,7 +78,7 @@ cuckoo_setup_hd()
 
                 cuckoo_variables
 
-                if [ -e "$CUCKOO_HD_ARCH_OS_DIR" ] && [ -d "$CUCKOO_HD_ARCH_OS_DIR" ]
+                if [ -d "$CUCKOO_HD_ARCH_OS_DIR" ]
                 then
                     mkdir -p "${CUCKOO_SETUP_DIR}cuckoo/hd/${CUCKOO_ARCH}/"
                     cp -rv "$CUCKOO_HD_ARCH_OS_DIR" "${CUCKOO_SETUP_DIR}cuckoo/hd/${CUCKOO_ARCH}/"
@@ -95,12 +95,12 @@ cuckoo_setup_hd()
 
         cuckoo_variables
 
-        if [ -e "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ] && [ -d "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
+        if [ -d "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
         then
             mkdir -p "${CUCKOO_SETUP_DIR}cuckoo/hd/${CUCKOO_ARCH}/${CUCKOO_OS}/${CUCKOO_DIST_VERSION_DIR}"
             cp -rv "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" "${CUCKOO_SETUP_DIR}cuckoo/hd/${CUCKOO_ARCH}/${CUCKOO_OS}/$(dirname ${CUCKOO_DIST_VERSION_DIR})"
 
-            if [ -e "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}" ] && [ -f "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}" ]
+            if [ -f "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}" ]
             then
                 cp -v "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}" "$(dirname "${CUCKOO_SETUP_DIR}cuckoo/hd/${CUCKOO_ARCH}/${CUCKOO_OS}/${CUCKOO_DIST_VERSION_DIR}")"
             fi
@@ -127,7 +127,7 @@ cuckoo_setup_qemu()
 
             . "${QEMU_DIR}lib/var.sh"
 
-            if [ ! -z "$QEMU_BIN_ARCH_OS_DIR" ] && [ -e "$QEMU_BIN_ARCH_OS_DIR" ] && [ -d "$QEMU_BIN_ARCH_OS_DIR" ]
+            if [ ! -z "$QEMU_BIN_ARCH_OS_DIR" ] && [ -d "$QEMU_BIN_ARCH_OS_DIR" ]
             then
                 mkdir "${CUCKOO_SETUP_DIR}qemu/bin/${QEMU_ARCH}/"
                 cp -rv "$QEMU_BIN_ARCH_OS_DIR" "${CUCKOO_SETUP_DIR}qemu/bin/${QEMU_ARCH}/"
