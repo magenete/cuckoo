@@ -11,8 +11,8 @@
 # Options definition
 cuckoo_args()
 {
-    ARGS_SHORT="s:irbqd:p:lxD:P:LXWUZwzQA:O:a:o:v:m:K:T:S:C:c:f:M:FNt:R:Vh"
-    ARGS_LONG="setup:,install,run,qemu-build,qemu-delete,iso-download:,iso-import:,iso-list,iso-delete,hd-download,hd-import,hd-list,hd-delete,config-create,config-update,config-delete,desktop-create,desktop-delete,qemu-system,qemu-arch,qemu-os-name:,arch:,os-name:,dist-version:,memory-size:,cpu-cores:,cpu-threads:,cpu-sockets:,cdrom-add:,cdrom-boot:,floppy-boot:,smb-dir:,full-screen,no-daemonize,hd-type:,opts-add:,version,help"
+    ARGS_SHORT="s:irbqd:p:e:lxD:P:LXWUZwzQA:O:a:o:v:m:K:T:S:C:c:f:M:FNt:R:Vh"
+    ARGS_LONG="setup:,install,run,qemu-build,qemu-delete,iso-download:,iso-import:,iso-export:,iso-list,iso-delete,hd-download,hd-import,hd-list,hd-delete,config-create,config-update,config-delete,desktop-create,desktop-delete,qemu-system,qemu-arch,qemu-os-name:,arch:,os-name:,dist-version:,memory-size:,cpu-cores:,cpu-threads:,cpu-sockets:,cdrom-add:,cdrom-boot:,floppy-boot:,smb-dir:,full-screen,no-daemonize,hd-type:,opts-add:,version,help"
     OPTS="$(getopt -o "${ARGS_SHORT}" -l "${ARGS_LONG}" -a -- "$@" 2>/dev/null)"
     if [ $? -gt 0 ]
     then
@@ -38,7 +38,7 @@ cuckoo_args()
                 CUCKOO_SETUP_DIR="${2}/"
                 QEMU_ACTION="copy"
             else
-                cuckoo_error "Directory '$2' does not exist for setup"
+                cuckoo_error "Directory '${2}' does not exist for setup"
             fi
             shift 2
         ;;
@@ -72,7 +72,19 @@ cuckoo_args()
                 CUCKOO_ISO_FILE_PATH="$2"
                 CUCKOO_ISO_FILE_NET=""
             else
-                cuckoo_error "ISO file '$2' does not exist"
+                cuckoo_error "ISO file '${2}' does not exist"
+            fi
+            shift 2
+        ;;
+        --iso-export | -e )
+            CUCKOO_ACTION="iso-export"
+
+            if [ -d "$2" ]
+            then
+                CUCKOO_ISO_FILE_PATH="${2}/"
+                CUCKOO_ISO_FILE_NET=""
+            else
+                cuckoo_error "Directory '${2}' does not exist for export"
             fi
             shift 2
         ;;
@@ -98,7 +110,7 @@ cuckoo_args()
                 CUCKOO_HD_FILE_PATH="$2"
                 CUCKOO_HD_FILE_NET=""
             else
-                cuckoo_error "HD file '$2' does not exist"
+                cuckoo_error "HD file '${2}' does not exist"
             fi
             shift 2
         ;;
@@ -148,7 +160,7 @@ cuckoo_args()
                     QEMU_ARCH="$2"
                 ;;
                 * )
-                    cuckoo_error "QEMU architecture '$2' does not supported"
+                    cuckoo_error "QEMU architecture '${2}' does not supported"
                 ;;
             esac
             shift 2
@@ -159,7 +171,7 @@ cuckoo_args()
                     QEMU_OS="$2"
                 ;;
                 * )
-                    cuckoo_error "QEMU OS '$2' does not supported"
+                    cuckoo_error "QEMU OS '${2}' does not supported"
                 ;;
             esac
             shift 2
@@ -170,7 +182,7 @@ cuckoo_args()
                     CUCKOO_ARCH="$2"
                 ;;
                 * )
-                    cuckoo_error "OS architecture '$2' does not supported"
+                    cuckoo_error "OS architecture '${2}' does not supported"
                 ;;
             esac
             shift 2
@@ -181,7 +193,7 @@ cuckoo_args()
                     CUCKOO_OS="$2"
                 ;;
                 * )
-                    cuckoo_error "OS '$2' does not supported"
+                    cuckoo_error "OS '${2}' does not supported"
                 ;;
             esac
             shift 2
@@ -199,7 +211,7 @@ cuckoo_args()
             then
                 CUCKOO_CPU_CORES=$2
             else
-                cuckoo_error "Invalid value CPU cores '$2'"
+                cuckoo_error "Invalid value CPU cores '${2}'"
             fi
             shift 2
         ;;
@@ -208,7 +220,7 @@ cuckoo_args()
             then
                 CUCKOO_CPU_THREADS=$2
             else
-                cuckoo_error "Invalid value CPU threads '$2'"
+                cuckoo_error "Invalid value CPU threads '${2}'"
             fi
             shift 2
         ;;
@@ -217,7 +229,7 @@ cuckoo_args()
             then
                 CUCKOO_CPU_SOCKETS=$2
             else
-                cuckoo_error "Invalid value CPU sockets '$2'"
+                cuckoo_error "Invalid value CPU sockets '${2}'"
             fi
             shift 2
         ;;
@@ -226,7 +238,7 @@ cuckoo_args()
             then
                 CUCKOO_CDROM_ADD_FILE="$2"
             else
-                cuckoo_error "CDROM file '$2' does not exist (adding)"
+                cuckoo_error "CDROM file '${2}' does not exist (adding)"
             fi
             shift 2
         ;;
@@ -235,7 +247,7 @@ cuckoo_args()
             then
                 CUCKOO_CDROM_BOOT_FILE="$2"
             else
-                cuckoo_error "CDROM file '$2' does not exist"
+                cuckoo_error "CDROM file '${2}' does not exist"
             fi
             shift 2
         ;;
@@ -244,7 +256,7 @@ cuckoo_args()
             then
                 CUCKOO_FLOPPY_BOOT_FILE="$2"
             else
-                cuckoo_error "Floppy Disk file '$2' does not exist"
+                cuckoo_error "Floppy Disk file '${2}' does not exist"
             fi
             shift 2
         ;;
@@ -253,7 +265,7 @@ cuckoo_args()
             then
                 CUCKOO_SMB_DIR="$2"
             else
-                cuckoo_error "SMB directory '$2' does not exist"
+                cuckoo_error "SMB directory '${2}' does not exist"
             fi
             shift 2
         ;;
@@ -271,7 +283,7 @@ cuckoo_args()
                     CUCKOO_HD_TYPE="$2"
                 ;;
                 * )
-                    cuckoo_error "HD type '$2' does not supported"
+                    cuckoo_error "HD type '${2}' does not supported"
                 ;;
             esac
             shift 2

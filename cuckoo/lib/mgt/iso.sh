@@ -8,7 +8,48 @@
 #
 
 
-# ISO file import or download
+# Export recursive find by directory
+cuckoo_iso_recursive_export_find_files()
+{
+    for dir_file in $(ls "$1")
+    do
+        if [ -d "${1}${dir_file}" ] && [ ! -L "${1}${dir_file}" ]
+        then
+            cuckoo_iso_recursive_export_find_files "${1}${dir_file}/"
+        else
+            cuckoo_dist_version_define_by_file_path "$cuckoo_iso_recursive_export_find_dir" "${1}/$(basename "$dir_file" .iso)"
+            cuckoo_iso_define_file_name
+
+            cp -v "${1}${dir_file}" "${CUCKOO_ISO_FILE_PATH}${CUCKOO_ISO_DEFINE_FILE}"
+        fi
+    done
+}
+
+
+# Export recursive file(s)
+cuckoo_iso_recursive_export()
+{
+    cuckoo_iso_recursive_export_find_dir="$1"
+
+    cuckoo_iso_recursive_export_find_files "$1"
+}
+
+
+# Define file name
+cuckoo_iso_define_file_name()
+{
+    cuckoo_dist_version_var_file_name
+
+    if [ -z "$cuckoo_dist_version_env" ]
+    then
+        CUCKOO_ISO_DEFINE_FILE="${CUCKOO_OS}-${cuckoo_dist_version}${cuckoo_version_basename}_${CUCKOO_ARCH}.iso"
+    else
+        CUCKOO_ISO_DEFINE_FILE="${CUCKOO_OS}-${cuckoo_dist_version_env}-${cuckoo_dist_version}_${CUCKOO_ARCH}.iso"
+    fi
+}
+
+
+# Import or download file
 cuckoo_iso_import_or_download()
 {
     CUCKOO_ENV_NO="yes"
@@ -35,6 +76,64 @@ cuckoo_iso_import_or_download()
     chmod 0600 "$CUCKOO_ISO_FILE_SYS_PATH"
 
     cuckoo_message "ISO file has been setuped as '${CUCKOO_ISO_FILE_SYS_PATH}'"
+}
+
+
+# Export file(s)
+cuckoo_iso_export()
+{
+    CUCKOO_ENV_NO="yes"
+
+    echo ""
+    if [ -z "$CUCKOO_DIST_VERSION" ]
+    then
+        for cuckoo_arch in $CUCKOO_ACTION_ARCH_LIST
+        do
+            for cuckoo_os in $CUCKOO_ACTION_OS_LIST
+            do
+                CUCKOO_OS="$cuckoo_os"
+                CUCKOO_ARCH="$cuckoo_arch"
+
+                cuckoo_variables
+
+                if [ -d "$CUCKOO_ISO_ARCH_OS_DIR" ]
+                then
+                    cuckoo_iso_recursive_export "${CUCKOO_ISO_ARCH_OS_DIR}"
+
+                    echo "ISO file(s) has been exported in '${CUCKOO_ISO_ARCH_OS_DIR}'"
+                else
+                    echo "WARNING: ISO file(s) has not been exported for OS: ${CUCKOO_OS}, arch: ${CUCKOO_ARCH}"
+                fi
+            done
+        done
+    else
+        CUCKOO_ARCH="$CUCKOO_ACTION_ARCH_LIST"
+        CUCKOO_OS="$CUCKOO_ACTION_OS_LIST"
+
+        cuckoo_variables
+
+        if [ -d "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
+        then
+            cuckoo_dist_version_env="$CUCKOO_DIST_VERSION"
+
+            cuckoo_iso_recursive_export "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}"
+
+            echo ""
+            echo "ISO file(s) has been exported from '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}' to '${CUCKOO_ISO_FILE_PATH}${CUCKOO_DIST_VERSION_DIR}'"
+        else
+            if [ -f "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}" ]
+            then
+                cuckoo_iso_define_file_name
+
+                cp -v "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}" "${CUCKOO_ISO_FILE_PATH}${CUCKOO_ISO_DEFINE_FILE}"
+
+                echo "ISO file '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}' has been exported"
+            else
+                echo "WARNING: ISO file '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}' has not been exported"
+            fi
+        fi
+    fi
+    echo ""
 }
 
 

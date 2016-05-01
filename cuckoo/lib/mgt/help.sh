@@ -24,6 +24,7 @@ Usage: $(basename $0) [actions] [argumets]
     -q, --qemu-delete     Delete QEMU file(s).
     -d, --iso-download    Download ISO file and setup.
     -p, --iso-import      Local copy ISO file and setup.
+    -e, --iso-export      Local export ISO file and setup.
     -l, --iso-list        Get list of existing ISO files.
     -x, --iso-delete      Delete ISO file(s).
     -D, --hd-download     Download HD tar (bz2) file and setup.

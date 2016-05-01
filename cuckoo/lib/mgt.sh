@@ -78,6 +78,9 @@ cuckoo_actions()
         iso-setup )
             cuckoo_iso_import_or_download
         ;;
+        iso-export )
+            cuckoo_iso_export
+        ;;
         iso-list )
             cuckoo_iso_list
         ;;
