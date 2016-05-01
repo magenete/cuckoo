@@ -11,8 +11,9 @@
 # Define dist/version by file name
 cuckoo_dist_version_define_by_file_path()
 {
-    cuckoo_dist_version_tmp_file_dir="$2"
-    cuckoo_dist_version_tmp=""
+    local cuckoo_dist_version_tmp_file_dir="$2"
+    local cuckoo_dist_version_tmp=""
+
     CUCKOO_DIST_VERSION=""
 
     while [ "${cuckoo_dist_version_tmp_file_dir}/" != "$1" ]
@@ -30,18 +31,19 @@ cuckoo_dist_version_define_by_file_path()
 # Define dist/version file name
 cuckoo_dist_version_var_file_name()
 {
-    cuckoo_dist_version_tmp_file=""
-    cuckoo_dist_version_tmp_dir="$CUCKOO_DIST_VERSION"
+    local cuckoo_dist_version_tmp_dir="$CUCKOO_DIST_VERSION"
+
+    cuckoo_dist_version_tmp=""
     cuckoo_dist_version=""
 
     while [ "$cuckoo_dist_version_tmp_dir" != "." ]
     do
-        cuckoo_dist_version_tmp_file="$(basename "$cuckoo_dist_version_tmp_dir")"
+        cuckoo_dist_version_tmp="$(basename "$cuckoo_dist_version_tmp_dir")"
         cuckoo_dist_version_tmp_dir="$(dirname "$cuckoo_dist_version_tmp_dir")"
 
         [ ! -z "$cuckoo_dist_version" ] && cuckoo_dist_version="-${cuckoo_dist_version}"
 
-        cuckoo_dist_version="${cuckoo_dist_version_tmp_file}${cuckoo_dist_version}"
+        cuckoo_dist_version="${cuckoo_dist_version_tmp}${cuckoo_dist_version}"
     done
 }
 
