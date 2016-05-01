@@ -15,7 +15,7 @@ cuckoo_dist_version_desktop_create_desktop()
 [Desktop Entry]
 Version=1.0
 Name=${CUCKOO_OS} ${CUCKOO_DIST_VERSION} ${CUCKOO_ARCH} launcher
-GenericName=Cuckoo - ${CUCKOO_OS} ${CUCKOO_DIST_VERSION} ${CUCKOO_ARCH}
+GenericName=Cuckoo - ${CUCKOO_OS_NAME} ${CUCKOO_OS_SUB_NAME} ${CUCKOO_ARCH}
 Type=Application
 Exec=${CUCKOO_LAUNCHERS_DESKTOP_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DESKTOP_LAUNCHER_FILE}
 Keywords=virtualization;
@@ -91,9 +91,11 @@ cuckoo_dist_version_desktop()
     if [ -f "${CUCKOO_ETC_ICONS_DIR}${CUCKOO_OS}/${cuckoo_dist_version_tmp_file}.svg" ]
     then
         CUCKOO_DIST_VERSION_DESKTOP_ICON_FILE="${CUCKOO_ETC_ICONS_DIR}${CUCKOO_OS}/${cuckoo_dist_version_tmp_file}.svg"
+        CUCKOO_OS_SUB_NAME="$(cat "${CUCKOO_ETC_OS_DIR}${CUCKOO_OS}/${cuckoo_dist_version_tmp_file}.name" 2> /dev/null)"
     elif [ -f "${CUCKOO_ETC_ICONS_DIR}${CUCKOO_OS}.svg" ]
     then
         CUCKOO_DIST_VERSION_DESKTOP_ICON_FILE="${CUCKOO_ETC_ICONS_DIR}${CUCKOO_OS}.svg"
+        CUCKOO_OS_SUB_NAME="$cuckoo_dist_version_tmp_file"
     else
         CUCKOO_DIST_VERSION_DESKTOP_ICON_FILE="$CUCKOO_OS"
     fi
