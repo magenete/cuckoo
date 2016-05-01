@@ -35,6 +35,7 @@ CUCKOO_DAEMONIZE_NO=""
 CUCKOO_HD_TYPE=""
 CUCKOO_HD_FILE_PATH=""
 CUCKOO_HD_FILE_NET=""
+CUCKOO_HD_DEFINE_FILE=""
 CUCKOO_DIST_VERSION_DESKTOP=""
 CUCKOO_DIST_VERSION_DESKTOP_FILE=""
 CUCKOO_DIST_VERSION_DESKTOP_ICON_FILE=""
@@ -89,6 +90,9 @@ cuckoo_actions()
         ;;
         hd-setup )
             cuckoo_hd_import_or_download
+        ;;
+        hd-export )
+            cuckoo_hd_export
         ;;
         hd-list )
             cuckoo_hd_list

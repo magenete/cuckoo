@@ -24,11 +24,12 @@ Usage: $(basename $0) [actions] [arguments]
     -q, --qemu-delete     Delete QEMU file(s).
     -d, --iso-download    Download ISO file and setup.
     -p, --iso-import      Copy ISO file locally and setup.
-    -e, --iso-export      Local export ISO file and setup.
+    -e, --iso-export      Export ISO file(s) in directory.
     -l, --iso-list        List existing ISO files.
     -x, --iso-delete      Delete ISO file(s).
     -D, --hd-download     Download HD tar (bz2) file and setup.
     -P, --hd-import       Copy HD tar file locally and setup.
+    -E, --hd-export       Export HD(s) in directory.
     -L, --hd-list         List existing HD(s) files.
     -X, --hd-delete       Delete HD(s).
     -W, --config-create   Create and write config file if --dist-version is defined.

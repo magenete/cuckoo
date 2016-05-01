@@ -8,6 +8,44 @@
 #
 
 
+# Export recursive find by directory
+cuckoo_hd_recursive_export_find_files()
+{
+    for dir_file in $(ls "$1")
+    do
+        if [ -d "${1}${dir_file}" ] && [ ! -L "${1}${dir_file}" ]
+        then
+            cuckoo_hd_recursive_export_find_files "${1}${dir_file}/"
+        else
+            if [ -f "${1}/${dir_file}" ] && [ "$(basename "$dir_file" .config)" = "$dir_file" ]
+            then
+                cuckoo_dist_version_define_by_file_path "$cuckoo_hd_recursive_export_find_dir" "$1"
+
+                cuckoo_dist_version_var_file_name
+
+                CUCKOO_HD_DEFINE_FILE="${CUCKOO_OS}-${cuckoo_dist_version_env}-${cuckoo_dist_version}_${CUCKOO_ARCH}.tar.bz2"
+
+                if [ -f "${CUCKOO_HD_FILE_PATH}${CUCKOO_HD_DEFINE_FILE}" ]
+                then
+                    continue
+                else
+                    tar -cvSj -f "${CUCKOO_HD_FILE_PATH}${CUCKOO_HD_DEFINE_FILE}" -C "$1" .
+                fi
+            fi
+        fi
+    done
+}
+
+
+# Export recursive file(s)
+cuckoo_hd_recursive_export()
+{
+    cuckoo_hd_recursive_export_find_dir="$1"
+
+    cuckoo_hd_recursive_export_find_files "$1"
+}
+
+
 # HD create
 cuckoo_hd_create()
 {
@@ -57,6 +95,55 @@ cuckoo_hd_import_or_download()
     chmod 0600 "$CUCKOO_HD_DIR_SYS_PATH"*
 
     cuckoo_message "HD tar file was set in '${CUCKOO_HD_DIR_SYS_PATH}'"
+}
+
+
+# Export file(s)
+cuckoo_hd_export()
+{
+    CUCKOO_ENV_NO="yes"
+
+    echo ""
+    if [ -z "$CUCKOO_DIST_VERSION" ]
+    then
+        for cuckoo_arch in $CUCKOO_ACTION_ARCH_LIST
+        do
+            for cuckoo_os in $CUCKOO_ACTION_OS_LIST
+            do
+                CUCKOO_OS="$cuckoo_os"
+                CUCKOO_ARCH="$cuckoo_arch"
+
+                cuckoo_variables
+
+                if [ -d "$CUCKOO_HD_ARCH_OS_DIR" ]
+                then
+                    cuckoo_hd_recursive_export "${CUCKOO_HD_ARCH_OS_DIR}"
+
+                    echo "HD file(s) has been exported in '${CUCKOO_HD_ARCH_OS_DIR}'"
+                else
+                    echo "WARNING: HD file(s) has not been exported for OS: ${CUCKOO_OS}, arch: ${CUCKOO_ARCH}"
+                fi
+            done
+        done
+    else
+        CUCKOO_ARCH="$CUCKOO_ACTION_ARCH_LIST"
+        CUCKOO_OS="$CUCKOO_ACTION_OS_LIST"
+
+        cuckoo_variables
+
+        if [ -d "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
+        then
+            cuckoo_dist_version_env="$CUCKOO_DIST_VERSION"
+
+            cuckoo_hd_recursive_export "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}"
+
+            echo ""
+            echo "HD file(s) has been exported from '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}' to '${CUCKOO_HD_FILE_PATH}'"
+        else
+            echo "WARNING: HD file(s) '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}' has not been exported"
+        fi
+    fi
+    echo ""
 }
 
 

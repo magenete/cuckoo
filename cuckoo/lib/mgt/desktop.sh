@@ -14,8 +14,8 @@ cuckoo_dist_version_desktop_create_desktop()
     cat > "${CUCKOO_USER_HOME_DESKTOP_DIR}${CUCKOO_DIST_VERSION_DESKTOP_FILE}" << _D_E_S_K_T_O_P
 [Desktop Entry]
 Version=1.0
-Name=${CUCKOO_OS} ${cuckoo_dist_version} ${CUCKOO_ARCH} launcher
-GenericName=Cuckoo - ${CUCKOO_OS} ${cuckoo_dist_version} ${CUCKOO_ARCH}
+Name=${CUCKOO_OS} ${CUCKOO_DIST_VERSION} ${CUCKOO_ARCH} launcher
+GenericName=Cuckoo - ${CUCKOO_OS} ${CUCKOO_DIST_VERSION} ${CUCKOO_ARCH}
 Type=Application
 Exec=${CUCKOO_LAUNCHERS_DESKTOP_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DESKTOP_LAUNCHER_FILE}
 Keywords=virtualization;
