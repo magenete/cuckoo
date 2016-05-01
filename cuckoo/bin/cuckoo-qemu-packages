@@ -22,14 +22,18 @@ cuckoo_help()
 {
     cat << _H_E_L_P
 
-Usage: $(basename $0) [argumets]
+Usage: $(basename $0) [arguments]
 
-  -s, --su         Run using su as superuser (root).
-  -U, --su-user    Run using su as other superuser.
-  -S, --sudo       Run using sudo.
+Deals with run and build dependencies for Cuckoo and QEMU
+using native package manager of the host system.
+
   -i, --install    Install packages.
   -u, --uninstall  Uninstall packages.
   -l, --list       Get packages list.
+
+  -s, --su         Run from superuser (root), using su.
+  -U, --su-user    Run from some different user, using su.
+  -S, --sudo       Run using sudo.
 
   -v, --version  Print the current version.
   -h, --help     Show this message.
@@ -82,7 +86,7 @@ cuckoo_packages_manager_action()
             esac
         ;;
         * )
-            cuckoo_error "Packages manager '${CUCKOO_PACKAGES_MANAGER}' does not support"
+            cuckoo_error "Packages manager '${CUCKOO_PACKAGES_MANAGER}' is not supported"
         ;;
     esac
 }
@@ -116,7 +120,7 @@ cuckoo_packages()
 cuckoo_packages_list()
 {
     echo ""
-    echo "Packages list for current system:"
+    echo "Packages list for the current system:"
 
     for package in $CUCKOO_PACKAGES_LIST
     do
@@ -131,7 +135,7 @@ cuckoo_packages_list()
 # Check only Linux
 if [ "$(uname -s)" != "Linux" ]
 then
-    cuckoo_error "Current OS does not supported for QEMU building\nYou must use only OS Linux!"
+    cuckoo_error "Currently this OS is not supported for QEMU building\nYou should use only GNU/Linux!"
 fi
 
 

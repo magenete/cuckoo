@@ -31,7 +31,7 @@ cuckoo_setup_iso()
 
                     echo "      ...from '${CUCKOO_ISO_ARCH_OS_DIR}'"
                 else
-                    echo "      WARNING: ISO file(s) has not been copyed for OS: ${CUCKOO_OS}, arch: ${CUCKOO_ARCH}"
+                    echo "      WARNING: ISO file(s) not copyed for OS: ${CUCKOO_OS}, arch: ${CUCKOO_ARCH}"
                 fi
             done
         done
@@ -85,7 +85,7 @@ cuckoo_setup_hd()
 
                     echo "      ...from '${CUCKOO_HD_ARCH_OS_DIR}'"
                 else
-                    echo "      WARNING: HD(s) has not been copyed for OS: ${CUCKOO_OS}, arch: ${CUCKOO_ARCH}"
+                    echo "      WARNING: HD(s) not copyed for OS: ${CUCKOO_OS}, arch: ${CUCKOO_ARCH}"
                 fi
             done
         done
@@ -107,7 +107,7 @@ cuckoo_setup_hd()
 
             echo "      ...from '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}'"
         else
-            echo "      WARNING: HD(s) has not been copyed for OS: ${CUCKOO_OS}, arch: ${CUCKOO_ARCH}"
+            echo "      WARNING: HD(s) not copyed for OS: ${CUCKOO_OS}, arch: ${CUCKOO_ARCH}"
         fi
     fi
 }
@@ -134,7 +134,7 @@ cuckoo_setup_qemu()
 
                 echo "      ...from '${QEMU_BIN_ARCH_OS_DIR}'"
             else
-                echo "WARNING: QEMU has not been copyed for OS: ${qemu_os}, arch: ${qemu_arch}"
+                echo "WARNING: QEMU not copyed for OS: ${qemu_os}, arch: ${qemu_arch}"
             fi
         done
     done
@@ -229,6 +229,6 @@ cuckoo_setup()
     cuckoo_setup_qemu_dir
 
     echo ""
-    echo "Cuckoo has been setuped in '${CUCKOO_SETUP_DIR}'"
+    echo "Cuckoo was set in '${CUCKOO_SETUP_DIR}'"
     echo ""
 }

@@ -19,7 +19,7 @@ cuckoo_env()
             CUCKOO_ARCH="${CUCKOO_ARCH:=x86}"
         ;;
         * )
-            cuckoo_error "Current OS architecture does not support"
+            cuckoo_error "Current OS architecture is not supported"
         ;;
     esac
 }

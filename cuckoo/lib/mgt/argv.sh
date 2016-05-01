@@ -38,7 +38,7 @@ cuckoo_args()
                 CUCKOO_SETUP_DIR="${2}/"
                 QEMU_ACTION="copy"
             else
-                cuckoo_error "Directory '${2}' does not exist for setup"
+                cuckoo_error "Directory '${2}' does not exist, so it can not be used for setup"
             fi
             shift 2
         ;;
@@ -160,7 +160,7 @@ cuckoo_args()
                     QEMU_ARCH="$2"
                 ;;
                 * )
-                    cuckoo_error "QEMU architecture '${2}' does not supported"
+                    cuckoo_error "QEMU architecture '${2}' is not supported"
                 ;;
             esac
             shift 2
@@ -171,7 +171,7 @@ cuckoo_args()
                     QEMU_OS="$2"
                 ;;
                 * )
-                    cuckoo_error "QEMU OS '${2}' does not supported"
+                    cuckoo_error "QEMU OS '${2}' is not supported"
                 ;;
             esac
             shift 2
@@ -182,7 +182,7 @@ cuckoo_args()
                     CUCKOO_ARCH="$2"
                 ;;
                 * )
-                    cuckoo_error "OS architecture '${2}' does not supported"
+                    cuckoo_error "OS architecture '${2}' is not supported"
                 ;;
             esac
             shift 2
@@ -193,7 +193,7 @@ cuckoo_args()
                     CUCKOO_OS="$2"
                 ;;
                 * )
-                    cuckoo_error "OS '${2}' does not supported"
+                    cuckoo_error "OS '${2}' is not supported"
                 ;;
             esac
             shift 2
@@ -211,7 +211,7 @@ cuckoo_args()
             then
                 CUCKOO_CPU_CORES=$2
             else
-                cuckoo_error "Invalid value CPU cores '${2}'"
+                cuckoo_error "Invalid number of CPU cores '${2}'"
             fi
             shift 2
         ;;
@@ -220,7 +220,7 @@ cuckoo_args()
             then
                 CUCKOO_CPU_THREADS=$2
             else
-                cuckoo_error "Invalid value CPU threads '${2}'"
+                cuckoo_error "Invalid number of CPU threads '${2}'"
             fi
             shift 2
         ;;
@@ -229,7 +229,7 @@ cuckoo_args()
             then
                 CUCKOO_CPU_SOCKETS=$2
             else
-                cuckoo_error "Invalid value CPU sockets '${2}'"
+                cuckoo_error "Invalid number of CPU sockets '${2}'"
             fi
             shift 2
         ;;
@@ -238,7 +238,7 @@ cuckoo_args()
             then
                 CUCKOO_CDROM_ADD_FILE="$2"
             else
-                cuckoo_error "CDROM file '${2}' does not exist (adding)"
+                cuckoo_error "CDROM file '${2}' does not exist, so it can not be added"
             fi
             shift 2
         ;;
@@ -283,7 +283,7 @@ cuckoo_args()
                     CUCKOO_HD_TYPE="$2"
                 ;;
                 * )
-                    cuckoo_error "HD type '${2}' does not supported"
+                    cuckoo_error "HD type '${2}' is not supported"
                 ;;
             esac
             shift 2
