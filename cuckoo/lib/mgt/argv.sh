@@ -85,7 +85,7 @@ cuckoo_args()
                 CUCKOO_ISO_FILE_PATH="${2}/"
                 CUCKOO_ISO_FILE_NET=""
             else
-                cuckoo_error "Directory '${2}' does not exist for export"
+                cuckoo_error "Directory '${2}' does not exist, so it can not be used for export"
             fi
             shift 2
         ;;
@@ -123,7 +123,7 @@ cuckoo_args()
                 CUCKOO_HD_FILE_PATH="${2}/"
                 CUCKOO_HD_FILE_NET=""
             else
-                cuckoo_error "Directory '${2}' does not exist for export"
+                cuckoo_error "Directory '${2}' does not exist, so it can not be used for export"
             fi
             shift 2
         ;;

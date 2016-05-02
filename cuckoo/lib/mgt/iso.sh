@@ -70,12 +70,12 @@ cuckoo_iso_import_or_download()
     fi
     if [ $? -gt 0 ]
     then
-        cuckoo_error "ISO file has not been setuped from '$CUCKOO_ISO_FILE_PATH' to '${CUCKOO_ISO_FILE_SYS_PATH}'"
+        cuckoo_error "ISO file was not set from '$CUCKOO_ISO_FILE_PATH' to '${CUCKOO_ISO_FILE_SYS_PATH}'"
     fi
 
     chmod 0600 "$CUCKOO_ISO_FILE_SYS_PATH"
 
-    cuckoo_message "ISO file has been setuped as '${CUCKOO_ISO_FILE_SYS_PATH}'"
+    cuckoo_message "ISO file was set as '${CUCKOO_ISO_FILE_SYS_PATH}'"
 }
 
 
@@ -100,9 +100,9 @@ cuckoo_iso_export()
                 then
                     cuckoo_iso_recursive_export "${CUCKOO_ISO_ARCH_OS_DIR}"
 
-                    echo "ISO file(s) has been exported in '${CUCKOO_ISO_ARCH_OS_DIR}'"
+                    echo "ISO file(s) exported in '${CUCKOO_ISO_ARCH_OS_DIR}'"
                 else
-                    echo "WARNING: ISO file(s) has not been exported for OS: ${CUCKOO_OS}, arch: ${CUCKOO_ARCH}"
+                    echo "WARNING: ISO file(s) not exported for OS: ${CUCKOO_OS}, arch: ${CUCKOO_ARCH}"
                 fi
             done
         done
@@ -119,7 +119,7 @@ cuckoo_iso_export()
             cuckoo_iso_recursive_export "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}"
 
             echo ""
-            echo "ISO file(s) has been exported from '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}' to '${CUCKOO_ISO_FILE_PATH}${CUCKOO_DIST_VERSION_DIR}'"
+            echo "ISO file(s) exported from '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}' to '${CUCKOO_ISO_FILE_PATH}${CUCKOO_DIST_VERSION_DIR}'"
         else
             if [ -f "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}" ]
             then
@@ -127,9 +127,9 @@ cuckoo_iso_export()
 
                 cp -v "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}" "${CUCKOO_ISO_FILE_PATH}${CUCKOO_ISO_DEFINE_FILE}"
 
-                echo "ISO file '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}' has been exported"
+                echo "ISO file '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}' was exported"
             else
-                echo "WARNING: ISO file '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}' has not been exported"
+                echo "WARNING: ISO file '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}' was not exported"
             fi
         fi
     fi
@@ -158,9 +158,9 @@ cuckoo_iso_delete()
                 then
                     rm -rf "$CUCKOO_ISO_ARCH_OS_DIR"*
 
-                    echo "ISO file(s) has been deleted in '${CUCKOO_ISO_ARCH_OS_DIR}'"
+                    echo "ISO file(s) deleted in '${CUCKOO_ISO_ARCH_OS_DIR}'"
                 else
-                    echo "WARNING: ISO file(s) has not been deleted for OS: ${CUCKOO_OS}, arch: ${CUCKOO_ARCH}"
+                    echo "WARNING: ISO file(s) not deleted for OS: ${CUCKOO_OS}, arch: ${CUCKOO_ARCH}"
                 fi
             done
         done
@@ -174,15 +174,15 @@ cuckoo_iso_delete()
         then
             rm -rf "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}"
 
-            echo "ISO file(s) has been deleted in '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}'"
+            echo "ISO file(s) deleted in '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}'"
         else
             if [ -f "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}" ]
             then
                 rm -f "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}"
 
-                echo "ISO file '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}' has been deleted"
+                echo "ISO file '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}' was deleted"
             else
-                echo "WARNING: ISO file '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}' has not been deleted"
+                echo "WARNING: ISO file '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}' was not deleted"
             fi
         fi
     fi
@@ -215,7 +215,7 @@ cuckoo_iso_list()
 
             if [ -d "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
             then
-                echo "ISO file(s) has been found in '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}':"
+                echo "ISO file(s) found in '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}':"
 
                 for iso_file in $(ls -R -h -x --file-type "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" 2> /dev/null)
                 do
@@ -224,7 +224,7 @@ cuckoo_iso_list()
 
                 echo ""
             else
-                echo "WARNING: ISO file(s) has not been found for OS: ${CUCKOO_OS}, arch: ${CUCKOO_ARCH}"
+                echo "WARNING: ISO file(s) not found for OS: ${CUCKOO_OS}, arch: ${CUCKOO_ARCH}"
                 echo ""
             fi
         done

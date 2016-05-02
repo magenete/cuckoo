@@ -136,9 +136,9 @@ cuckoo_dist_version_config_delete()
         rm -f "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}"
         if [ $? -gt 0 ]
         then
-            cuckoo_error "Config file '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}' has not been deleted"
+            cuckoo_error "Config file '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}' was not deleted"
         else
-            cuckoo_message "Config file '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}' has been deleted"
+            cuckoo_message "Config file '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}' was deleted"
         fi
     else
         cuckoo_error "Config file '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}' does not exist"
@@ -155,7 +155,7 @@ cuckoo_dist_version_config()
         create )
             cuckoo_dist_version_config_create
 
-            cuckoo_message "Config has been created in '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}'"
+            cuckoo_message "Config was created in '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}'"
         ;;
         update )
             if [ -f "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}" ]
@@ -163,7 +163,7 @@ cuckoo_dist_version_config()
                 cuckoo_dist_version_config_merge
                 cuckoo_dist_version_config_create
 
-                cuckoo_message "Config has been updated in '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}'"
+                cuckoo_message "Config was updated in '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}'"
             fi
         ;;
         delete )

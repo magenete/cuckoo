@@ -116,7 +116,7 @@ cuckoo_actions()
             cuckoo_dist_version_desktop
         ;;
         * )
-            cuckoo_error "Cuckoo action '${CUCKOO_ACTION}' does not supported"
+            cuckoo_error "Cuckoo action '${CUCKOO_ACTION}' is not supported"
         ;;
     esac
 }

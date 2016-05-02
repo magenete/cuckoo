@@ -91,14 +91,14 @@ cuckoo_install()
     then
         cuckoo_error "Could not create directory '${HOME}/${CUCKOO_INSTALLER_DIR}'"
     else
-        cuckoo_message "Directory '${HOME}/${CUCKOO_INSTALLER_DIR}' has been created"
+        cuckoo_message "Directory '${HOME}/${CUCKOO_INSTALLER_DIR}' was created"
 
         curl -SL "$CUCKOO_GIT_URL" | tar -vxz
         if [ $? -gt 0 ]
         then
             cuckoo_error "Could not download file '$CUCKOO_GIT_URL'"
         else
-            cuckoo_message "Source code has been downloaded from '$CUCKOO_GIT_URL'"
+            cuckoo_message "Source code was downloaded from '$CUCKOO_GIT_URL'"
         fi
     fi
 
@@ -211,7 +211,7 @@ cuckoo_qemu_install()
 # Add Cuckoo bin path in PATH
 cuckoo_add_bin_path()
 {
-    echo "Cuckoo bin path has been added in PATH in the following file(s):"
+    echo "Cuckoo bin path was added in PATH in the following file(s):"
     for shell_profile_file in $HOME_SHELL_PROFILE_FILES
     do
         if [ -e "${HOME}/${shell_profile_file}" ] && [ -f "${HOME}/${shell_profile_file}" ]
@@ -239,10 +239,10 @@ cuckoo_uninstall_answer()
         Y | y | Yes | yes )
             rm -rf "${HOME}/${CUCKOO_INSTALLER_DIR}"
 
-            cuckoo_message "Directory '${HOME}/${CUCKOO_INSTALLER_DIR}' has been deleted"
+            cuckoo_message "Directory '${HOME}/${CUCKOO_INSTALLER_DIR}' deleted"
         ;;
         "" | N | n | No | no )
-            cuckoo_message "Directory '${HOME}/${CUCKOO_INSTALLER_DIR}' has not been deleted"
+            cuckoo_message "Directory '${HOME}/${CUCKOO_INSTALLER_DIR}' not deleted"
         ;;
         * )
             cuckoo_message "Please use Y|y|Yes|yes|N|n|No|no or just enter (by default No)."
@@ -270,7 +270,7 @@ cuckoo_uninstall()
     # Desktop launcher
     rm -f "${CUCKOO_USER_HOME_DESKTOP_DIR}cuckoo"*
     echo ""
-    echo "Desktop file(s) has been deleted in '${CUCKOO_USER_HOME_DESKTOP_DIR}'"
+    echo "Desktop file(s) deleted in '${CUCKOO_USER_HOME_DESKTOP_DIR}'"
 
     # Directory delete after getting an answer
     if [ -e "${HOME}/${CUCKOO_INSTALLER_DIR}" ] && [ -d "${HOME}/${CUCKOO_INSTALLER_DIR}" ]

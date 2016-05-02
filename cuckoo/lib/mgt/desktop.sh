@@ -24,7 +24,7 @@ Categories=Emulator;System;
 Comment=Run ${CUCKOO_OS} inside of QEMU-based virtualization system
 _D_E_S_K_T_O_P
 
-    echo "Desktop file '${CUCKOO_USER_HOME_DESKTOP_DIR}${CUCKOO_DIST_VERSION_DESKTOP_FILE}' has been created"
+    echo "Desktop file '${CUCKOO_USER_HOME_DESKTOP_DIR}${CUCKOO_DIST_VERSION_DESKTOP_FILE}' was created"
 }
 
 
@@ -38,7 +38,7 @@ _L_A_U_N_C_H_E_R
 
     chmod 0700 "${CUCKOO_LAUNCHERS_DESKTOP_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DESKTOP_LAUNCHER_FILE}"
 
-    cuckoo_message "Laucher has been created in '${CUCKOO_LAUNCHERS_DESKTOP_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DESKTOP_LAUNCHER_FILE}'"
+    cuckoo_message "Laucher was created in '${CUCKOO_LAUNCHERS_DESKTOP_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DESKTOP_LAUNCHER_FILE}'"
 }
 
 
@@ -50,9 +50,9 @@ cuckoo_dist_version_desktop_delete_desktop()
         rm -f "${CUCKOO_USER_HOME_DESKTOP_DIR}${CUCKOO_DIST_VERSION_DESKTOP_FILE}"
         if [ $? -gt 0 ]
         then
-            echo "Desktop file '${CUCKOO_USER_HOME_DESKTOP_DIR}${CUCKOO_DIST_VERSION_DESKTOP_FILE}' has not been deleted"
+            echo "Desktop file '${CUCKOO_USER_HOME_DESKTOP_DIR}${CUCKOO_DIST_VERSION_DESKTOP_FILE}' was not deleted"
         else
-            echo "Desktop file '${CUCKOO_USER_HOME_DESKTOP_DIR}${CUCKOO_DIST_VERSION_DESKTOP_FILE}' has been deleted"
+            echo "Desktop file '${CUCKOO_USER_HOME_DESKTOP_DIR}${CUCKOO_DIST_VERSION_DESKTOP_FILE}' was deleted"
         fi
     else
         echo "Desktop file '${CUCKOO_USER_HOME_DESKTOP_DIR}${CUCKOO_DIST_VERSION_DESKTOP_FILE}' does not exist"
@@ -68,9 +68,9 @@ cuckoo_dist_version_desktop_delete_launcher()
         rm -f "${CUCKOO_LAUNCHERS_DESKTOP_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DESKTOP_LAUNCHER_FILE}"
         if [ $? -gt 0 ]
         then
-            cuckoo_message "Launcher file '${CUCKOO_LAUNCHERS_DESKTOP_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DESKTOP_LAUNCHER_FILE}' has not been deleted"
+            cuckoo_message "Launcher file '${CUCKOO_LAUNCHERS_DESKTOP_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DESKTOP_LAUNCHER_FILE}' was not deleted"
         else
-            cuckoo_message "Launcher file '${CUCKOO_LAUNCHERS_DESKTOP_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DESKTOP_LAUNCHER_FILE}' has been deleted"
+            cuckoo_message "Launcher file '${CUCKOO_LAUNCHERS_DESKTOP_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DESKTOP_LAUNCHER_FILE}' was deleted"
         fi
     else
         cuckoo_message "Launcher file '${CUCKOO_LAUNCHERS_DESKTOP_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DESKTOP_LAUNCHER_FILE}' does not exist"

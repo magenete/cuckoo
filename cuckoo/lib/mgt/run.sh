@@ -21,7 +21,7 @@ cuckoo_run_or_install()
         then
             cuckoo_hd_create
         else
-            cuckoo_error "ISO file '${2}' does not exist for installation"
+            cuckoo_error "ISO file '${2}' does not exist, so it can not be used for installation"
         fi
     fi
 }
