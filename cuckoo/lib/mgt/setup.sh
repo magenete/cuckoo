@@ -113,38 +113,9 @@ cuckoo_setup_hd()
 }
 
 
-# QEMU copy
-cuckoo_setup_qemu()
-{
-    QEMU_ENV_NO="yes"
-
-    for qemu_arch in $QEMU_ACTION_ARCH_LIST
-    do
-        for qemu_os in $QEMU_ACTION_OS_LIST
-        do
-            QEMU_OS="$qemu_os"
-            QEMU_ARCH="$qemu_arch"
-
-            . "${QEMU_DIR}lib/var.sh"
-
-            if [ ! -z "$QEMU_BIN_ARCH_OS_DIR" ] && [ -d "$QEMU_BIN_ARCH_OS_DIR" ]
-            then
-                mkdir "${CUCKOO_SETUP_DIR}qemu/bin/${QEMU_ARCH}/"
-                cp -rv "$QEMU_BIN_ARCH_OS_DIR" "${CUCKOO_SETUP_DIR}qemu/bin/${QEMU_ARCH}/"
-
-                echo "      ...from '${QEMU_BIN_ARCH_OS_DIR}'"
-            else
-                echo "WARNING: QEMU not copyed for OS: ${qemu_os}, arch: ${qemu_arch}"
-            fi
-        done
-    done
-}
-
-
 # Cuckoo directory
 cuckoo_setup_cuckoo_dir()
 {
-    # Cuckoo
     echo "  Directory cuckoo/: copying..."
     mkdir "${CUCKOO_SETUP_DIR}cuckoo/"
 
@@ -183,30 +154,6 @@ cuckoo_setup_cuckoo_dir()
 }
 
 
-# QEMU directory
-cuckoo_setup_qemu_dir()
-{
-    echo ""
-    echo "  Directory qemu/: copying..."
-    mkdir "${CUCKOO_SETUP_DIR}qemu/"
-
-    echo ""
-    echo "    Directory lib/: copying..."
-    cp -rv "${QEMU_DIR}lib/" "${CUCKOO_SETUP_DIR}qemu/"
-
-    echo ""
-    echo "    Directory build/: copying..."
-    cp -rv "${QEMU_DIR}build/" "${CUCKOO_SETUP_DIR}qemu/"
-
-    echo ""
-    echo "    Directory bin/: copying..."
-    mkdir "${CUCKOO_SETUP_DIR}qemu/bin/"
-    cuckoo_setup_qemu
-
-    echo ""
-}
-
-
 # Setup
 cuckoo_setup()
 {
@@ -217,18 +164,10 @@ cuckoo_setup()
     echo ""
 
     echo "  Main file: copying..."
-    cp -v "${CUCKOO_DIR}../cuckoo.sh" "$CUCKOO_SETUP_DIR"
-    cp -v "${CUCKOO_DIR}../cuckoo.bat" "$CUCKOO_SETUP_DIR"
     cp -v "${CUCKOO_DIR}../README.md" "$CUCKOO_SETUP_DIR"
     cp -v "${CUCKOO_DIR}../LICENSE" "$CUCKOO_SETUP_DIR"
 
     echo ""
 
-    cuckoo_setup_cuckoo_dir
-
-    cuckoo_setup_qemu_dir
-
-    echo ""
-    echo "Cuckoo was set in '${CUCKOO_SETUP_DIR}'"
-    echo ""
+    cuckoo_message "Cuckoo was set in '${CUCKOO_SETUP_DIR}'"
 }

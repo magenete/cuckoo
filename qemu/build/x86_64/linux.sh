@@ -13,16 +13,17 @@ QEMU_DIR="${QEMU_DIR:=$(realpath "$(readlink -f "$(dirname "$0")")/../..")/}"
 
 if [ -z "$QEMU_BIN_ARCH_OS_DIR" ]
 then
-    . "${QEMU_DIR}lib/var.sh"
+    mgt_lib_list="error const env var"
+
+    QEMU_OS_REAL="yes"
+
+    for mgt_lib_file in $mgt_lib_list
+    do
+        . "${QEMU_DIR}lib/mgt/${mgt_lib_file}.sh"
+    done
+
+    qemu_variables
 fi
-
-
-QEMU_BIN_ARCH_OS_VERSION=""                             # We build all QEMU versions listed
-QEMU_BRANCH="master"                                    # Branch NAME in Git
-QEMU_ARCH_BUILD_TARGET="${QEMU_ARCH_BIN_FILE}-softmmu"  # What to emulate
-QEMU_GIT_URL="https://github.com/qemu/qemu/archive/${QEMU_BRANCH}.tar.gz"
-QEMU_BIN_ARCH_OS_TMP_DIR="${QEMU_BIN_ARCH_OS_DIR}tmp/"  # By default emulators are built in /tmp
-QEMU_BIN_ARCH_OS_TMP_BRANCH_DIR="${QEMU_BIN_ARCH_OS_TMP_DIR}qemu-${QEMU_BRANCH}/"
 
 
 # Preinstall
@@ -30,31 +31,25 @@ rm -rf "$QEMU_BIN_ARCH_OS_TMP_DIR"
 mkdir -p "$QEMU_BIN_ARCH_OS_TMP_DIR"
 
 
-echo ""
-echo "QEMU will be downloaded into '${QEMU_BIN_ARCH_OS_TMP_BRANCH_DIR}' folder ..."
-echo ""
-
-
 # Download
+qemu_message "QEMU will be downloaded into '${QEMU_BIN_ARCH_OS_TMP_BRANCH_DIR}' folder ..."
+
 cd "$QEMU_BIN_ARCH_OS_TMP_DIR"
-curl -SL "$QEMU_GIT_URL" | tar -vxz
+curl -SL "$QEMU_BUILD_SOURCE_URL_FILE" | tar -vxz
 
 
-# QEMU version definition
-QEMU_BIN_ARCH_OS_VERSION="$(cat --squeeze-blank "${QEMU_BIN_ARCH_OS_TMP_BRANCH_DIR}/VERSION")"
+# Version definition
+QEMU_BIN_ARCH_OS_VERSION="$(cat -s "${QEMU_BIN_ARCH_OS_TMP_BRANCH_DIR}/VERSION")"
 QEMU_BIN_ARCH_OS_VERSION_DIR="${QEMU_BIN_ARCH_OS_DIR}${QEMU_BIN_ARCH_OS_VERSION}/"
 
 
-echo ""
-echo "QEMU '${QEMU_BIN_ARCH_OS_VERSION}' will be builded into '${QEMU_BIN_ARCH_OS_VERSION_DIR}' folder ..."
-echo ""
+# Build
+qemu_message "QEMU '${QEMU_BIN_ARCH_OS_VERSION}' will be builded into '${QEMU_BIN_ARCH_OS_VERSION_DIR}' folder ..."
 
-
-# QEMU Build
 cd "${QEMU_BIN_ARCH_OS_TMP_BRANCH_DIR}"
 ./configure \
     --prefix=${QEMU_BIN_ARCH_OS_DIR}${QEMU_BIN_ARCH_OS_VERSION} \
-    --target-list=${QEMU_ARCH_BUILD_TARGET} \
+    --target-list=${QEMU_BUILD_ARCH_TARGET} \
     --python=/usr/bin/python2 \
     --enable-sdl \
     --enable-kvm \

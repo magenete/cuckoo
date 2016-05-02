@@ -20,7 +20,7 @@ Usage: $(basename $0) [actions] [arguments]
     -s, --setup           Set directory with full path and setup Cuckoo.
     -i, --install         Install OS on HD(s) (QEMU image).
     -r, --run             Run VM (by default: QEMU).
-    -b, --qemu-build      Build (only on Linux) QEMU for OS: $(from_arr_to_str "$QEMU_OS_LIST").
+    -b, --qemu-build      Build (only on Linux) QEMU for OS: $(from_arr_to_str "$VIRT_EMULATOR_OS_LIST").
     -q, --qemu-delete     Delete QEMU file(s).
     -d, --iso-download    Download ISO file and setup.
     -p, --iso-import      Copy ISO file locally and setup.
@@ -45,9 +45,9 @@ Usage: $(basename $0) [actions] [arguments]
 
     -Q, --qemu-system     Run system VM (by default: QEMU).
     -A, --qemu-arch       Set QEMU architecture (by default: defined by OS).
-                            QEMU architecture: $(from_arr_to_str "$QEMU_ARCH_LIST").
+                            QEMU architecture: $(from_arr_to_str "$VIRT_EMULATOR_ARCH_LIST").
     -O, --qemu-os-name    Set QEMU OS (by default: defined by OS).
-                            QEMU OS: $(from_arr_to_str "$QEMU_OS_LIST").
+                            QEMU OS: $(from_arr_to_str "$VIRT_EMULATOR_OS_LIST").
     -a, --arch            Set OS architecture (by default: defined by OS).
                             OS architecture: $(from_arr_to_str "$CUCKOO_ARCH_LIST").
     -o, --os-name         Set OS name (by default: ${CUCKOO_OS_DEFAULT}).
@@ -76,6 +76,9 @@ _H_E_L_P
 from_arr_to_str()
 {
     str=""
+    sep=","
+
+    [ ! -z "$2" ] && sep="$2"
 
     for char in $1
     do
@@ -83,7 +86,7 @@ from_arr_to_str()
         then
             str="$char"
         else
-            str="${str}, ${char}"
+            str="${str}${sep} ${char}"
         fi
     done
 

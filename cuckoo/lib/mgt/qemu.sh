@@ -11,7 +11,14 @@
 # Mapping Cuckoo variables for QEMU variables
 cuckoo_qemu_mapping()
 {
+    qemu_env
+
     QEMU_SYSTEM="$VIRT_EMULATOR_SYSTEM"
+    QEMU_ARCH="${VIRT_EMULATOR_ARCH:=$QEMU_ARCH}"
+    QEMU_OS="${VIRT_EMULATOR_OS:=$QEMU_OS}"
+    QEMU_ACTION="$VIRT_EMULATOR_ACTION"
+    QEMU_SETUP_DIR="$VIRT_EMULATOR_SETUP_DIR"
+
     QEMU_HD_TYPE="$CUCKOO_HD_TYPE"
     QEMU_CPU_CORES=$CUCKOO_CPU_CORES
     QEMU_CPU_THREADS=$CUCKOO_CPU_THREADS
@@ -25,162 +32,20 @@ cuckoo_qemu_mapping()
     QEMU_FLOPPY_BOOT_FILE="$CUCKOO_FLOPPY_BOOT_FILE"
     QEMU_CDROM_ADD_FILE="$CUCKOO_CDROM_ADD_FILE"
     QEMU_HD_DIR="${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}"
+
     QEMU_TITLE=" Cuckoo -- ${CUCKOO_OS}[${CUCKOO_ARCH}] on ${QEMU_OS}[${QEMU_ARCH}] "
     QEMU_OPTS_EXT="$CUCKOO_OPTS_EXT"
 }
 
 
-# QEMU build
-qemu_build()
+# Init QEMU
+cuckoo_qemu_init()
 {
-    QEMU_ENV_NO="yes"
+    QEMU_DIR="${CUCKOO_DIR}../qemu"
 
-    for qemu_arch in $QEMU_ACTION_ARCH_LIST
-    do
-        for qemu_os in $QEMU_ACTION_OS_LIST
-        do
-            QEMU_ARCH="$qemu_arch"
-            QEMU_OS="$qemu_os"
-
-            . "${QEMU_DIR}lib/var.sh"
-
-            if [ -f "$QEMU_BUILD_ARCH_OS_FILE" ]
-            then
-                . "$QEMU_BUILD_ARCH_OS_FILE"
-
-                echo ""
-                echo "QEMU has been buit in '${QEMU_BIN_ARCH_OS_VERSION_DIR}'"
-                echo ""
-            else
-                echo ""
-                echo "WARNING: QEMU has not been buit for OS: ${qemu_os}, arch: ${qemu_arch}"
-                echo ""
-            fi
-        done
-    done
-}
+    . "${QEMU_DIR}/lib/mgt.sh"
 
 
-# QEMU delete
-qemu_delete()
-{
-    QEMU_ENV_NO="yes"
-
-    echo ""
-    for qemu_arch in $QEMU_ACTION_ARCH_LIST
-    do
-        for qemu_os in $QEMU_ACTION_OS_LIST
-        do
-            QEMU_ARCH="$qemu_arch"
-            QEMU_OS="$qemu_os"
-
-            . "${QEMU_DIR}lib/var.sh"
-
-            if [ ! -z "$QEMU_BIN_ARCH_OS_VERSION_DIR" ] && [ -d "$QEMU_BIN_ARCH_OS_VERSION_DIR" ]
-            then
-                rm -rf "$QEMU_BIN_ARCH_OS_VERSION_DIR"
-
-                echo "QEMU has been deleted in '${QEMU_BIN_ARCH_OS_DIR}'"
-            else
-                echo "WARNING: QEMU has not been deleted for OS: ${qemu_os}, arch: ${qemu_arch}"
-            fi
-        done
-    done
-    echo ""
-}
-
-
-# QEMU variables check
-qemu_variables_check()
-{
-    [ -z "$QEMU_ACTION" ] && QEMU_ACTION="$QEMU_ACTION_DEFAULT"
-
-    if [ "$QEMU_ACTION" = "build" ] || [ "$QEMU_ACTION" = "delete" ] || [ "$QEMU_ACTION" = "copy" ]
-    then
-        if [ -z "$QEMU_OS" ]
-        then
-            QEMU_ACTION_OS_LIST="$QEMU_OS_LIST"
-        else
-            QEMU_ACTION_OS_LIST="$QEMU_OS"
-        fi
-
-        if [ -z "$QEMU_ARCH" ]
-        then
-            QEMU_ACTION_ARCH_LIST="$QEMU_ARCH_LIST"
-        else
-            QEMU_ACTION_ARCH_LIST="$QEMU_ARCH"
-        fi
-    fi
-}
-
-
-# QEMU actions
-qemu_actions()
-{
-    case "$QEMU_ACTION" in
-        run )
-            QEMU_OS_REAL="yes"
-            . "${QEMU_DIR}lib/env.sh"
-        ;;
-        run-system )
-            VIRT_EMULATOR_SYSTEM="yes"
-        ;;
-        build )
-            QEMU_OS_REAL="yes"
-            . "${QEMU_DIR}lib/env.sh"
-            QEMU_OS_REAL=""
-
-            if [ "$QEMU_OS" != "linux" ]
-            then
-                cuckoo_error "QEMU building done only on GNU/Linux!"
-            else
-                qemu_build
-            fi
-        ;;
-        delete )
-            qemu_delete
-        ;;
-        copy )  # See common method cuckoo_setup()
-        ;;
-        * )
-            cuckoo_error "QEMU action '${QEMU_ACTION}' is not supported"
-        ;;
-    esac
-}
-
-
-# QEMU launch
-cuckoo_qemu_launch()
-{
-    [ "$QEMU_ACTION" = "run-system" ] && QEMU_ENV_NO="yes"
-
-    cuckoo_variables
-
-    [ "$QEMU_OS" != "linux" ] && QEMU_ENABLE_KVM_NO="yes"
-
-    if [ "$CUCKOO_ACTION" = "install" ]
-    then
-        CUCKOO_CDROM_BOOT_FILE="${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}"
-
-        if [ -f "$CUCKOO_CDROM_BOOT_FILE" ]
-        then
-            cuckoo_hd_create
-        else
-            cuckoo_error "ISO file '${2}' does not exist for installation"
-        fi
-    fi
-
-    cuckoo_qemu_mapping
-
-    . "${QEMU_DIR}lib/run.sh"
-}
-
-
-# QEMU run
-qemu_run()
-{
-    if [ "$QEMU_ACTION" = "run" ] || [ "$QEMU_ACTION" = "run-system" ]
-    then
-        cuckoo_qemu_launch
-    fi
+    VIRT_EMULATOR_ARCH_LIST="${QEMU_ARCH_LIST} ${VIRT_EMULATOR_ARCH_LIST}"
+    VIRT_EMULATOR_OS_LIST="${QEMU_OS_LIST} ${VIRT_EMULATOR_OS_LIST}"
 }

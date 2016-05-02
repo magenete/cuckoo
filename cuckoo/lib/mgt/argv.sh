@@ -36,7 +36,8 @@ cuckoo_args()
             if [ -d "$2" ]
             then
                 CUCKOO_SETUP_DIR="${2}/"
-                QEMU_ACTION="copy"
+                VIRT_EMULATOR_SETUP_DIR="${CUCKOO_SETUP_DIR}cuckoo/"
+                VIRT_EMULATOR_ACTION="setup"
             else
                 cuckoo_error "Directory '${2}' does not exist, so it can not be used for setup"
             fi
@@ -51,11 +52,11 @@ cuckoo_args()
             shift 1
         ;;
         --qemu-build | -b )
-            QEMU_ACTION="build"
+            VIRT_EMULATOR_ACTION="build"
             shift 1
         ;;
         --qemu-delete | -q )
-            QEMU_ACTION="delete"
+            VIRT_EMULATOR_ACTION="delete"
             shift 1
         ;;
         --iso-download | -d )
@@ -163,13 +164,13 @@ cuckoo_args()
     # Arguments
 
         --qemu-system | -Q )
-            QEMU_ACTION="run-system"
+            VIRT_EMULATOR_ACTION="run-system"
             shift 1
         ;;
         --qemu-arch | -A )
             case "$2" in
-                x86 | x86_64 )  # See QEMU_ARCH_LIST
-                    QEMU_ARCH="$2"
+                $(from_arr_to_str "$VIRT_EMULATOR_ARCH_LIST" " |") )
+                    VIRT_EMULATOR_ARCH="$2"
                 ;;
                 * )
                     cuckoo_error "QEMU architecture '${2}' is not supported"
@@ -179,8 +180,8 @@ cuckoo_args()
         ;;
         --qemu-os-name | -O )
             case "$2" in
-                linux | macosx | windows )  # See QEMU_OS_LIST
-                    QEMU_OS="$2"
+                $(from_arr_to_str "$VIRT_EMULATOR_OS_LIST" " |") )
+                    VIRT_EMULATOR_OS="$2"
                 ;;
                 * )
                     cuckoo_error "QEMU OS '${2}' is not supported"
@@ -190,7 +191,7 @@ cuckoo_args()
         ;;
         --arch | -a )
             case "$2" in
-                x86 | x86_64 )  # See CUCKOO_ARCH_LIST
+                $(from_arr_to_str "$CUCKOO_ARCH_LIST" " |") )
                     CUCKOO_ARCH="$2"
                 ;;
                 * )
@@ -201,7 +202,7 @@ cuckoo_args()
         ;;
         --os-name | -o )
             case "$2" in
-                linux | netbsd | freebsd | openbsd | macosx | windows )  # See CUCKOO_OS_LIST
+                $(from_arr_to_str "$CUCKOO_OS_LIST" " |") )
                     CUCKOO_OS="$2"
                 ;;
                 * )
@@ -291,7 +292,7 @@ cuckoo_args()
         ;;
         --hd-type | -t )
             case "$2" in
-                ide | scsi | virtio )
+                $(from_arr_to_str "$CUCKOO_HD_TYPE_LIST" " |") )
                     CUCKOO_HD_TYPE="$2"
                 ;;
                 * )

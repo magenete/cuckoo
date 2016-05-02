@@ -9,10 +9,8 @@
 
 
 # Print error message and exit
-cuckoo_error()
+qemu_error()
 {
-    cuckoo_help
-
     echo ""
     echo "ERROR: ${1}"
     [ ! -z "$2" ] && echo "$2"
@@ -23,7 +21,7 @@ cuckoo_error()
 
 
 # Print message
-cuckoo_message()
+qemu_message()
 {
     echo ""
     echo "$1"

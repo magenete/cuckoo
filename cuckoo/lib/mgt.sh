@@ -9,6 +9,11 @@
 
 
 VIRT_EMULATOR_SYSTEM=""
+VIRT_EMULATOR_ACTION=""
+VIRT_EMULATOR_ARCH_LIST=""
+VIRT_EMULATOR_ARCH=""
+VIRT_EMULATOR_OS_LIST=""
+VIRT_EMULATOR_OS=""
 VIRT_EMULATOR=""
 
 
@@ -46,37 +51,39 @@ CUCKOO_DIST_VERSION_CONFIG=""
 CUCKOO_DIST_VERSION_CONFIG_FILE=""
 
 
-QEMU_ACTION=""
-QEMU_ACTION_ARCH_LIST=""
-QEMU_ACTION_OS_LIST=""
-QEMU_DIR="${QEMU_DIR:=${CUCKOO_DIR}../qemu}/"
-QEMU_OS=""
-QEMU_ARCH=""
-
-
-# Load all MGT libs
+# Load all Cuckoo MGT libs
 for mgt_lib_file in $(ls "${CUCKOO_DIR}lib/mgt/"*.sh)
 do
     . "$mgt_lib_file"
 done
 
 
+for vm_lib in $VIRT_EMULATOR_LIST
+do
+    cuckoo_${vm_lib}_init
+done
+
+
 # Cuckoo actions
 cuckoo_actions()
 {
+    [ -z "$VIRT_EMULATOR" ] && VIRT_EMULATOR="$VIRT_EMULATOR_DEFAULT"
+
+    cuckoo_variables_check
+
     case "$CUCKOO_ACTION" in
         run | install )
-            case "$VIRT_EMULATOR" in
-                qemu )
-                    qemu_run
-                ;;
-                * )
-                    cuckoo_error "QEMU action '${QEMU_ACTION}' does not supported"
-                ;;
-            esac
+            cuckoo_${VIRT_EMULATOR}_mapping
+            cuckoo_run_or_install
+
+            cuckoo_${VIRT_EMULATOR}_mapping
+            ${VIRT_EMULATOR}_actions
         ;;
         setup )
             cuckoo_setup
+
+            cuckoo_${VIRT_EMULATOR}_mapping
+            ${VIRT_EMULATOR}_actions
         ;;
         iso-setup )
             cuckoo_iso_import_or_download
@@ -115,25 +122,9 @@ cuckoo_actions()
 }
 
 
-# Cuckoo
-cuckoo()
-{
-    # Options
-    cuckoo_args $@
-
-    # Variables checking
-    [ -z "$VIRT_EMULATOR" ] && VIRT_EMULATOR="$VIRT_EMULATOR_DEFAULT"
-
-    qemu_variables_check
-
-    cuckoo_variables_check
-
-    # Actions running
-    qemu_actions
-
-    cuckoo_actions
-}
+# Options
+cuckoo_args $@
 
 
-# Main
-cuckoo $@
+# Actions
+cuckoo_actions
