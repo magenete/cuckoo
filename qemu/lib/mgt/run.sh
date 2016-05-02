@@ -72,7 +72,7 @@ qemu_run_copy_in_tmp()
 
 
 # Option definition
-qemu_define_options()
+qemu_run_define_options()
 {
     # Bootloading (hd, cdrom, floppy)
     QEMU_OPTS="-boot order="
@@ -166,7 +166,7 @@ qemu_run()
 {
     qemu_run_check_env
     qemu_run_copy_in_tmp
-    qemu_define_options
+    qemu_run_define_options
 
     "${QEMU_RUN_DIR}${QEMU_BIN_FILE}" -name "$QEMU_TITLE" ${QEMU_OPTS}
 }
