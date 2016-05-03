@@ -8,7 +8,7 @@
 #
 
 
-# Delete CUCKOO_ARCH and CUCKOO_OS id empty
+# Delete CUCKOO_ARCH and CUCKOO_OS if empty
 cuckoo_iso_recursive_delete_dir()
 {
     if [ -d "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ] && [ "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" != "$CUCKOO_ISO_ARCH_OS_DIR" ] && [ ! -L "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]

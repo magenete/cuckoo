@@ -8,6 +8,28 @@
 #
 
 
+# Delete CUCKOO_ARCH and CUCKOO_OS if empty
+cuckoo_hd_recursive_delete_dir()
+{
+    if [ -d "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ] && [ "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" != "$CUCKOO_HD_ARCH_OS_DIR" ] && [ ! -L "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
+    then
+        if [ "$(dirname "$CUCKOO_DIST_VERSION_DIR")" != "." ]
+        then
+            CUCKOO_DIST_VERSION_DIR="$(dirname "$CUCKOO_DIST_VERSION_DIR")"
+
+            cuckoo_hd_recursive_delete_dir
+        fi
+    fi
+
+    if [ -z "$(ls "$CUCKOO_HD_ARCH_OS_DIR")" ]
+    then
+        rm -rf "$CUCKOO_HD_ARCH_OS_DIR"
+
+        [ -z "$(ls "$CUCKOO_HD_ARCH_DIR")" ] && rm -rf "$CUCKOO_HD_ARCH_DIR"
+    fi
+}
+
+
 # Export recursive find by directory
 cuckoo_hd_recursive_export_find_files()
 {
@@ -140,7 +162,7 @@ cuckoo_hd_export()
             echo ""
             echo "HD file(s) exported from '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}' to '${CUCKOO_HD_FILE_PATH}'"
         else
-            echo "WARNING: HD file(s) '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}' not exported"
+            echo "WARNING: HD file(s) '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}' not exported"
         fi
     fi
     echo ""
@@ -211,6 +233,8 @@ cuckoo_hd_delete()
                     rm -rf "$CUCKOO_HD_ARCH_OS_DIR"*
 
                     echo "HD deleted in directory '${CUCKOO_HD_ARCH_OS_DIR}'"
+
+                    cuckoo_hd_recursive_delete_dir
                 else
                     echo "WARNING: HD not deleted for OS: ${CUCKOO_OS}, arch: ${CUCKOO_ARCH}"
                 fi
@@ -224,20 +248,14 @@ cuckoo_hd_delete()
 
         if [ -d "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
         then
-            rm -rf "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}"
+            rm -rf "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}"*
             cuckoo_dist_version_config_delete
 
             echo "HD deleted in directory '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}'"
-        else
-            if [ -f "${CUCKOO_HD_ARCH_OS_DIR}" ]
-            then
-                rm -f "${CUCKOO_HD_ARCH_OS_DIR}"
-                cuckoo_dist_version_config_delete
 
-                echo "HD directory '${CUCKOO_HD_ARCH_OS_DIR}' was deleted"
-            else
-                echo "WARNING: HD deleted in directory '${CUCKOO_HD_ARCH_OS_DIR}'"
-            fi
+            cuckoo_hd_recursive_delete_dir
+        else
+            echo "WARNING: HD deleted in directory '${CUCKOO_HD_ARCH_OS_DIR}'"
         fi
     fi
     echo ""
