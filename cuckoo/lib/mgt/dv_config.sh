@@ -85,7 +85,7 @@ cuckoo_dist_version_var_file_name()
     cuckoo_dist_version_tmp=""
     cuckoo_dist_version=""
 
-    while [ "$cuckoo_dist_version_tmp_dir" != "." ] || [ "$cuckoo_dist_version_tmp_dir" != "/" ]
+    while [ "$cuckoo_dist_version_tmp_dir" != "." ] && [ "$cuckoo_dist_version_tmp_dir" != "/" ]
     do
         cuckoo_dist_version_tmp="$(basename "$cuckoo_dist_version_tmp_dir")"
         cuckoo_dist_version_tmp_dir="$(dirname "$cuckoo_dist_version_tmp_dir")"
@@ -93,6 +93,8 @@ cuckoo_dist_version_var_file_name()
         [ ! -z "$cuckoo_dist_version" ] && cuckoo_dist_version="-${cuckoo_dist_version}"
 
         cuckoo_dist_version="${cuckoo_dist_version_tmp}${cuckoo_dist_version}"
+
+        [ "$cuckoo_dist_version_tmp_dir" = "." ] && break
     done
 }
 

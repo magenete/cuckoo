@@ -43,11 +43,14 @@ cuckoo_hd_recursive_export_find_files()
         else
             if [ -f "${1}/${dir_file}" ] && [ "$(basename "$dir_file" .config)" = "$dir_file" ]
             then
-                cuckoo_dist_version_define_by_file_path "$cuckoo_hd_recursive_export_find_dir" "$1"
+                if [ "$cuckoo_hd_recursive_export_find_dir" != "$1" ]
+                then
+                    cuckoo_dist_version_define_by_file_path "$cuckoo_hd_recursive_export_find_dir" "$1"
+                fi
 
                 cuckoo_dist_version_var_file_name
 
-                CUCKOO_HD_DEFINE_FILE="${CUCKOO_OS}-${cuckoo_dist_version_env}-${cuckoo_dist_version}_${CUCKOO_ARCH}.tar.bz2"
+                CUCKOO_HD_DEFINE_FILE="${CUCKOO_OS}-${cuckoo_dist_version}_${CUCKOO_ARCH}.tar.bz2"
 
                 if [ -f "${CUCKOO_HD_FILE_PATH}${CUCKOO_HD_DEFINE_FILE}" ]
                 then
@@ -152,7 +155,7 @@ cuckoo_hd_export()
 
                 if [ -d "$CUCKOO_HD_ARCH_OS_DIR" ]
                 then
-                    cuckoo_hd_recursive_export "${CUCKOO_HD_ARCH_OS_DIR}"
+                    cuckoo_hd_recursive_export "$CUCKOO_HD_ARCH_OS_DIR"
 
                     echo "HD file(s) exported in '${CUCKOO_HD_ARCH_OS_DIR}'"
                 else
@@ -168,8 +171,6 @@ cuckoo_hd_export()
 
         if [ -d "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
         then
-            cuckoo_dist_version_env="$CUCKOO_DIST_VERSION"
-
             cuckoo_hd_recursive_export "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}"
 
             echo ""

@@ -122,7 +122,7 @@ cuckoo_iso_export()
 
                 if [ -d "$CUCKOO_ISO_ARCH_OS_DIR" ]
                 then
-                    cuckoo_iso_recursive_export "${CUCKOO_ISO_ARCH_OS_DIR}"
+                    cuckoo_iso_recursive_export "$CUCKOO_ISO_ARCH_OS_DIR"
 
                     echo "ISO file(s) exported in '${CUCKOO_ISO_ARCH_OS_DIR}'"
                 else
