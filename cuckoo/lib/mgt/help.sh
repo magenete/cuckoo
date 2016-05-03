@@ -65,7 +65,7 @@ Usage: $(basename $0) [actions] [arguments]
     -F, --full-screen     Set full screen mode.
     -N, --no-daemonize    Run without daemonizing.
     -t, --hd-type         Set hard drive type (by default: ${VIRT_EMULATOR_HD_TYPE_DEFAULT}).
-                            HD type: ${VIRT_EMULATOR_HD_TYPE_LIST}.
+                            HD type: $(from_arr_to_str "$VIRT_EMULATOR_HD_TYPE_LIST").
     -R, --opts-add        Append any other QEMU options.
 
 _H_E_L_P

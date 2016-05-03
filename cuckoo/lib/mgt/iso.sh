@@ -13,9 +13,11 @@ cuckoo_iso_recursive_delete_dir()
 {
     if [ -d "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ] && [ "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" != "$CUCKOO_ISO_ARCH_OS_DIR" ] && [ ! -L "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
     then
-        if [ "$(dirname "$CUCKOO_DIST_VERSION_DIR")" != "." ]
+        local dv_dir="$(dirname "$CUCKOO_DIST_VERSION_DIR")"
+
+        if [ "$dv_dir" != "." ] && [ "$dv_dir" != "/" ]
         then
-            CUCKOO_DIST_VERSION_DIR="$(dirname "$CUCKOO_DIST_VERSION_DIR")"
+            CUCKOO_DIST_VERSION_DIR="$dv_dir"
 
             cuckoo_iso_recursive_delete_dir
         fi
@@ -198,9 +200,11 @@ cuckoo_iso_delete()
         then
             rm -f "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}"
 
-            if [ "$(dirname "$CUCKOO_DIST_VERSION_DIR")" != "." ]
+            local dv_dir="$(dirname "$CUCKOO_DIST_VERSION_DIR")"
+
+            if [ "$dv_dir" != "." ] && [ "$dv_dir" != "/" ]
             then
-                CUCKOO_DIST_VERSION_DIR="$(dirname "$CUCKOO_DIST_VERSION_DIR")"
+                CUCKOO_DIST_VERSION_DIR="$dv_dir"
             fi
 
             echo "ISO file '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}' was deleted"

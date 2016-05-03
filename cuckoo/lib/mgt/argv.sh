@@ -204,7 +204,12 @@ cuckoo_args()
             shift 2
         ;;
         --dist-version | -v )
-            CUCKOO_DIST_VERSION="$2"
+            if [ "$(cuckoo_dist_version_value_check "$2")" = ""]
+            then
+                cuckoo_error "Invalid distributive/version '${2}'"
+            else
+                CUCKOO_DIST_VERSION="$2"
+            fi
             shift 2
         ;;
         --memory-size | -m )
@@ -283,14 +288,12 @@ cuckoo_args()
             shift 1
         ;;
         --hd-type | -t )
-            case "$2" in
-                $(from_arr_to_str "$VIRT_EMULATOR_HD_TYPE_LIST" " |") )
-                    CUCKOO_HD_TYPE="$2"
-                ;;
-                * )
-                    cuckoo_error "HD type '${2}' is not supported"
-                ;;
-            esac
+            if [ "$(valid_value_in_arr "$VIRT_EMULATOR_HD_TYPE_LIST" "$2")" = "" ]
+            then
+                cuckoo_error "HD type '${2}' is not supported"
+            else
+                CUCKOO_HD_TYPE="$2"
+            fi
             shift 2
         ;;
         --opts-add | -R )

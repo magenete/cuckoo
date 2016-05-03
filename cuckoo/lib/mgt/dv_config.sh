@@ -8,6 +8,55 @@
 #
 
 
+# Distributive/version value check
+cuckoo_dist_version_value_check()
+{
+    local dist_version="$1"
+    local dist_version_dir="$dist_version"
+    local dist_version_tmp_dir=""
+    local dist_version_tmp_past_dir=""
+
+    while [ "$dist_version_dir" != "" ]
+    do
+        if [ "$(basename "${1%%?}")" = "$(basename "$1")" ]
+        then
+            dist_version=""
+            break
+        fi
+
+        dist_version_tmp_dir="$(basename "$dist_version_dir")"
+
+        if [ "$dist_version_tmp_dir" = "." ] || [ "$dist_version_tmp_dir" = ".." ] || [ "$dist_version_tmp_dir" = "..." ] || [ "$dist_version_tmp_dir" = "...." ]
+        then
+            dist_version=""
+            break
+        fi
+
+        dist_version_tmp_past_dir="$dist_version_dir"
+        dist_version_dir="$(dirname "$dist_version_dir")"
+
+        if [ "$dist_version_dir" = "/" ]
+        then
+            dist_version=""
+            break
+        fi
+
+        if [ "$dist_version_dir" = "." ]
+        then
+            if [ "$(dirname "/${dist_version_tmp_past_dir}")" = "/." ]
+            then
+                dist_version=""
+                break
+            fi
+
+            dist_version_dir=""
+        fi
+    done
+
+    echo "$dist_version"
+}
+
+
 # Define dist/version by file name
 cuckoo_dist_version_define_by_file_path()
 {
@@ -36,7 +85,7 @@ cuckoo_dist_version_var_file_name()
     cuckoo_dist_version_tmp=""
     cuckoo_dist_version=""
 
-    while [ "$cuckoo_dist_version_tmp_dir" != "." ]
+    while [ "$cuckoo_dist_version_tmp_dir" != "." ] || [ "$cuckoo_dist_version_tmp_dir" != "/" ]
     do
         cuckoo_dist_version_tmp="$(basename "$cuckoo_dist_version_tmp_dir")"
         cuckoo_dist_version_tmp_dir="$(dirname "$cuckoo_dist_version_tmp_dir")"

@@ -13,9 +13,11 @@ cuckoo_hd_recursive_delete_dir()
 {
     if [ -d "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ] && [ "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" != "$CUCKOO_HD_ARCH_OS_DIR" ] && [ ! -L "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
     then
-        if [ "$(dirname "$CUCKOO_DIST_VERSION_DIR")" != "." ]
+        local dv_dir="$(dirname "$CUCKOO_DIST_VERSION_DIR")"
+
+        if [ "$dv_dir" != "." ] && [ "$dv_dir" != "/" ]
         then
-            CUCKOO_DIST_VERSION_DIR="$(dirname "$CUCKOO_DIST_VERSION_DIR")"
+            CUCKOO_DIST_VERSION_DIR="$dv_dir"
 
             cuckoo_hd_recursive_delete_dir
         fi
