@@ -8,6 +8,28 @@
 #
 
 
+# Delete CUCKOO_ARCH and CUCKOO_OS id empty
+cuckoo_iso_recursive_delete_dir()
+{
+    if [ -d "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ] && [ "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" != "$CUCKOO_ISO_ARCH_OS_DIR" ] && [ ! -L "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
+    then
+        if [ "$(dirname "$CUCKOO_DIST_VERSION_DIR")" != "." ]
+        then
+            CUCKOO_DIST_VERSION_DIR="$(dirname "$CUCKOO_DIST_VERSION_DIR")"
+
+            cuckoo_iso_recursive_delete_dir
+        fi
+    fi
+
+    if [ -z "$(ls "$CUCKOO_ISO_ARCH_OS_DIR")" ]
+    then
+        rm -rf "$CUCKOO_ISO_ARCH_OS_DIR"
+
+        [ -z "$(ls "$CUCKOO_ISO_ARCH_DIR")" ] && rm -rf "$CUCKOO_ISO_ARCH_DIR"
+    fi
+}
+
+
 # Export recursive find by directory
 cuckoo_iso_recursive_export_find_files()
 {
@@ -159,6 +181,8 @@ cuckoo_iso_delete()
                     rm -rf "$CUCKOO_ISO_ARCH_OS_DIR"*
 
                     echo "ISO file(s) deleted in '${CUCKOO_ISO_ARCH_OS_DIR}'"
+
+                    cuckoo_iso_recursive_delete_dir
                 else
                     echo "WARNING: ISO file(s) not deleted for OS: ${CUCKOO_OS}, arch: ${CUCKOO_ARCH}"
                 fi
@@ -170,19 +194,26 @@ cuckoo_iso_delete()
 
         cuckoo_variables
 
-        if [ -d "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
+        if [ -f "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}" ]
         then
-            rm -rf "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}"
+            rm -f "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}"
 
-            echo "ISO file(s) deleted in '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}'"
-        else
-            if [ -f "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}" ]
+            if [ "$(dirname "$CUCKOO_DIST_VERSION_DIR")" != "." ]
             then
-                rm -f "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}"
+                CUCKOO_DIST_VERSION_DIR="$(dirname "$CUCKOO_DIST_VERSION_DIR")"
+            fi
 
-                echo "ISO file '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}' was deleted"
+            echo "ISO file '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}' was deleted"
+
+            cuckoo_iso_recursive_delete_dir
+        else
+            if [ -d "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
+            then
+                cuckoo_iso_recursive_delete_dir
+
+                echo "ISO file(s) deleted in '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}'"
             else
-                echo "WARNING: ISO file '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}' was not deleted"
+                    echo "WARNING: ISO file '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}' was not deleted"
             fi
         fi
     fi

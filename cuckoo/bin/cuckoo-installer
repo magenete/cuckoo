@@ -155,27 +155,25 @@ cuckoo_cuckoo_install()
     chmod 0700 "${HOME}/${CUCKOO_ETC_DIR}"*
     chmod 0600 "${HOME}/${CUCKOO_ETC_VERSION_FILE}"
 
-    # HD and ISO
-    chmod 0700 "${HOME}/${CUCKOO_ISO_DIR}"*
-    chmod 0700 "${HOME}/${CUCKOO_HD_DIR}"*
+    # ISO
+    mkdir "${HOME}/${CUCKOO_ISO_DIR}"
+    chmod -R 0700 "${HOME}/${CUCKOO_ISO_DIR}"
 
-    for cuckoo_arch in $(ls "${HOME}/${CUCKOO_ISO_DIR}/")
+    # HD
+    chmod -R 0700 "${HOME}/${CUCKOO_HD_DIR}"
+
+    for cuckoo_arch in $(ls "${HOME}/${CUCKOO_HD_DIR}/")
     do
-        chmod 0700 "${HOME}/${CUCKOO_ISO_DIR}${cuckoo_arch}/"*
-        chmod 0700 "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/"*
-
         # HD .clean
         for cuckoo_os in $(ls "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/")
         do
-            chmod 0700 "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/${cuckoo_os}/"
-            chmod 0700 "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/${cuckoo_os}/.clean/"
             chmod 0600 "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/${cuckoo_os}/.clean/"*
         done
     done
 
     # OS
-    chmod 0700 "${HOME}/${CUCKOO_OS_DIR}"*
-    chmod 0700 "${HOME}/${CUCKOO_OS_COMMON_DIR}"*
+    mkdir "${HOME}/${CUCKOO_OS_DIR}"
+    chmod 0700 "${HOME}/${CUCKOO_OS_DIR}"
 
     # Lib
     chmod 0600 "${HOME}/${CUCKOO_LIB_DIR}"*
