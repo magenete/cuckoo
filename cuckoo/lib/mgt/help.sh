@@ -22,6 +22,7 @@ Usage: $(basename $0) [actions] [arguments]
     -r, --run             Run VM (by default: QEMU).
     -b, --qemu-build      Build (only on Linux) QEMU for OS: $(from_arr_to_str "$VIRT_EMULATOR_OS_LIST").
     -I, --qemu-list       List existing QEMU versions.
+    -V, --qemu-version    Set QEMU version.
     -q, --qemu-delete     Delete QEMU file(s).
     -d, --iso-download    Download ISO file and setup.
     -p, --iso-import      Copy ISO file locally and setup.
@@ -39,7 +40,7 @@ Usage: $(basename $0) [actions] [arguments]
     -w, --desktop-create  Create and write desktop file if --dist-version is defined.
     -z, --desktop-delete  Delete desktop file if exists.
 
-    -V, --version         Print the current version.
+        --version         Print the current version.
     -h, --help            Show this message.
 
   Arguments:

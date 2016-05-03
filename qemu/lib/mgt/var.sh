@@ -77,7 +77,7 @@ qemu_variables_check()
 {
     [ -z "$QEMU_ACTION" ] && QEMU_ACTION="$QEMU_ACTION_DEFAULT"
 
-    if [ "$QEMU_ACTION" = "build" ] || [ "$QEMU_ACTION" = "delete" ] || [ "$QEMU_ACTION" = "setup" ]  || [ "$QEMU_ACTION" = "list" ]
+    if [ "$QEMU_ACTION" = "build" ] || [ "$QEMU_ACTION" = "delete" ] || [ "$QEMU_ACTION" = "setup" ]  || [ "$QEMU_ACTION" = "list" ]  || [ "$QEMU_ACTION" = "version" ]
     then
         QEMU_ENV_NO="yes"
 

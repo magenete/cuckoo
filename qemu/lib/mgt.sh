@@ -16,6 +16,7 @@ QEMU_OS=""
 QEMU_ARCH=""
 QEMU_SETUP_DIR=""
 QEMU_HD_TYPE=""
+QEMU_VERSION=""
 
 
 # Load all MGT libs
@@ -62,7 +63,11 @@ qemu_actions()
         ;;
         list )
             qemu_variables
-            qemu_versions_list
+            qemu_version_list
+        ;;
+        version )
+            qemu_variables
+            qemu_version_setup
         ;;
         delete )
             qemu_variables

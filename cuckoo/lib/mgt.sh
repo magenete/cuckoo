@@ -79,8 +79,7 @@ cuckoo_actions()
         run | install )
             cuckoo_${VIRT_EMULATOR}_mapping
             cuckoo_run_or_install
-#QEMU_OS=""
-#QEMU_ARCH=""
+
             cuckoo_${VIRT_EMULATOR}_mapping
             ${VIRT_EMULATOR}_actions
         ;;
