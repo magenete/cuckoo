@@ -28,7 +28,7 @@ Usage: $(basename $0) [actions] [arguments]
     -l, --iso-list        List existing ISO files.
     -x, --iso-delete      Delete ISO file(s).
     -D, --hd-download     Download HD tar (bz2) file and setup.
-    -P, --hd-import       Copy HD tar file locally and setup.
+    -P, --hd-import       Copy HD directory or tar file locally and setup.
     -E, --hd-export       Export HD(s) in directory.
     -L, --hd-list         List existing HD(s) files.
     -X, --hd-delete       Delete HD(s).

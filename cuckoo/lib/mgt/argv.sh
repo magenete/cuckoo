@@ -204,7 +204,7 @@ cuckoo_args()
             shift 2
         ;;
         --dist-version | -v )
-            if [ "$(cuckoo_dist_version_value_check "$2")" = ""]
+            if [ "$(cuckoo_dist_version_value_check "$2")" = "" ]
             then
                 cuckoo_error "Invalid distributive/version '${2}'"
             else

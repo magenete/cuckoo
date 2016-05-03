@@ -115,7 +115,7 @@ cuckoo_hd_import_or_download()
             do
                 if [ -f "${CUCKOO_HD_FILE_PATH}/${hd_file}" ]
                 then
-                    cp -v "${CUCKOO_HD_FILE_PATH}/${hd_file}" "${cuckoo_hd_dir_sys_path}/${hd_file}"
+                    cp -v "${CUCKOO_HD_FILE_PATH}/${hd_file}" "${cuckoo_hd_dir_sys_path}${hd_file}"
                 fi
             done
         fi
@@ -262,7 +262,11 @@ cuckoo_hd_delete()
         if [ -d "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
         then
             rm -rf "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}"*
-            cuckoo_dist_version_config_delete
+
+            if [ -f "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}" ]
+            then
+                cuckoo_dist_version_config_delete
+            fi
 
             echo "HD deleted in directory '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}'"
 
