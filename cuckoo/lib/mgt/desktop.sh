@@ -11,6 +11,8 @@
 # Create desktop
 cuckoo_dist_version_desktop_create_desktop()
 {
+    mkdir -p "$CUCKOO_USER_HOME_DESKTOP_DIR"
+
     cat > "${CUCKOO_USER_HOME_DESKTOP_DIR}${CUCKOO_DIST_VERSION_DESKTOP_FILE}" << _D_E_S_K_T_O_P
 [Desktop Entry]
 Version=1.0
@@ -31,6 +33,8 @@ _D_E_S_K_T_O_P
 # Create launcher
 cuckoo_dist_version_desktop_create_launcher()
 {
+    mkdir -p "$CUCKOO_LAUNCHERS_DESKTOP_ARCH_OS_DIR"
+
     cat > "${CUCKOO_LAUNCHERS_DESKTOP_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DESKTOP_LAUNCHER_FILE}" << _L_A_U_N_C_H_E_R
 
 cuckoo --run --arch ${CUCKOO_ARCH} --os-name ${CUCKOO_OS} --dist-version ${CUCKOO_DIST_VERSION}
@@ -71,6 +75,13 @@ cuckoo_dist_version_desktop_delete_launcher()
             cuckoo_message "Launcher file '${CUCKOO_LAUNCHERS_DESKTOP_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DESKTOP_LAUNCHER_FILE}' was not deleted"
         else
             cuckoo_message "Launcher file '${CUCKOO_LAUNCHERS_DESKTOP_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DESKTOP_LAUNCHER_FILE}' was deleted"
+
+            if [ -z "$(ls "$CUCKOO_LAUNCHERS_DESKTOP_ARCH_OS_DIR")" ]
+            then
+                rm -rf "$CUCKOO_LAUNCHERS_DESKTOP_ARCH_OS_DIR"
+
+                [ -z "$(ls "$CUCKOO_LAUNCHERS_DESKTOP_ARCH_DIR")" ] && rm -rf "$CUCKOO_LAUNCHERS_DESKTOP_ARCH_DIR"
+            fi
         fi
     else
         cuckoo_message "Launcher file '${CUCKOO_LAUNCHERS_DESKTOP_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DESKTOP_LAUNCHER_FILE}' does not exist"

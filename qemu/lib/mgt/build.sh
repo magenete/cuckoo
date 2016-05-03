@@ -70,6 +70,8 @@ qemu_build()
             then
                 qemu_error "QEMU has not been buit for OS: ${qemu_os}, arch: ${qemu_arch}"
             else
+                qemu_variables
+
                 qemu_message "QEMU has been buit in '${QEMU_BIN_ARCH_OS_VERSION_DIR}'"
             fi
         done

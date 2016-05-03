@@ -136,13 +136,8 @@ cuckoo_launchers_install()
     done
 
     # Desktop
-    for cuckoo_arch in $(ls "${HOME}/${CUCKOO_LAUNCHERS_DESKTOP_DIR}/")
-    do
-        for cuckoo_os in $(ls "${HOME}/${CUCKOO_LAUNCHERS_DESKTOP_DIR}${cuckoo_arch}/")
-        do
-            chmod 0600 "${HOME}/${CUCKOO_LAUNCHERS_DESKTOP_DIR}${cuckoo_arch}/${cuckoo_os}/.keep"
-        done
-    done
+    mkdir "${HOME}/${CUCKOO_LAUNCHERS_DESKTOP_DIR}"
+    chmod -R 0700 "${HOME}/${CUCKOO_LAUNCHERS_DESKTOP_DIR}"
 }
 
 
@@ -195,7 +190,8 @@ cuckoo_qemu_install()
     chmod 0700 "${HOME}/${QEMU_DIR}"
 
     # Bin
-    chmod 0700 "${HOME}/${QEMU_BIN_DIR}"
+    mkdir "${HOME}/${QEMU_BIN_DIR}"
+    chmod -R 0700 "${HOME}/${QEMU_BIN_DIR}"
 
     # Lib
     chmod 0700 "${HOME}/${QEMU_LIB_DIR}"
