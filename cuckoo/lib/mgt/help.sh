@@ -44,6 +44,7 @@ Usage: $(basename $0) [actions] [arguments]
   Arguments:
 
     -Q, --qemu-system     Run system VM (by default: QEMU).
+    -B, --qemu-branch     Set QEMU branch for building.
     -A, --qemu-arch       Set QEMU architecture (by default: defined by OS).
                             QEMU architecture: $(from_arr_to_str "$VIRT_EMULATOR_ARCH_LIST").
     -O, --qemu-os-name    Set QEMU OS (by default: defined by OS).

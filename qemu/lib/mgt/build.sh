@@ -63,7 +63,7 @@ qemu_build()
 
             qemu_variables
 
-            mkdir -p "$QEMU_BUILD_ARCH_OS_DIR"
+            mkdir -p "$QEMU_BIN_ARCH_OS_DIR"
 
             qemu_build_launch
             if [ $? -gt 0 ]
