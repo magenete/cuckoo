@@ -52,8 +52,6 @@ qemu_build_launch()
 # Build
 qemu_build()
 {
-    QEMU_ENV_NO="yes"
-
     for qemu_arch in $QEMU_ACTION_ARCH_LIST
     do
         for qemu_os in $QEMU_ACTION_OS_LIST

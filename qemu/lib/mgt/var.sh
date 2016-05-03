@@ -47,7 +47,7 @@ qemu_variables()
         QEMU_BIN_DIR="${QEMU_DIR}bin/"
         QEMU_BIN_ARCH_DIR="${QEMU_BIN_DIR}${QEMU_ARCH}/"
         QEMU_BIN_ARCH_OS_DIR="${QEMU_BIN_ARCH_DIR}${QEMU_OS}/"
-        QEMU_BIN_ARCH_OS_TMP_DIR="${QEMU_BIN_ARCH_OS_DIR}tmp/"
+        QEMU_BIN_ARCH_OS_TMP_DIR="${QEMU_BIN_ARCH_OS_DIR}.tmp/"
         QEMU_BIN_ARCH_OS_TMP_BRANCH_DIR="${QEMU_BIN_ARCH_OS_TMP_DIR}qemu-${QEMU_BUILD_BRANCH}/"
         QEMU_BIN_ARCH_OS_VERSION_FILE="${QEMU_BIN_ARCH_OS_DIR}VERSION"
         QEMU_BIN_ARCH_OS_VERSION="$(cat "$QEMU_BIN_ARCH_OS_VERSION_FILE" 2> /dev/null)"
@@ -77,8 +77,10 @@ qemu_variables_check()
 {
     [ -z "$QEMU_ACTION" ] && QEMU_ACTION="$QEMU_ACTION_DEFAULT"
 
-    if [ "$QEMU_ACTION" = "build" ] || [ "$QEMU_ACTION" = "delete" ] || [ "$QEMU_ACTION" = "setup" ]
+    if [ "$QEMU_ACTION" = "build" ] || [ "$QEMU_ACTION" = "delete" ] || [ "$QEMU_ACTION" = "setup" ]  || [ "$QEMU_ACTION" = "list" ]
     then
+        QEMU_ENV_NO="yes"
+
         if [ -z "$QEMU_OS" ]
         then
             QEMU_ACTION_OS_LIST="$QEMU_OS_LIST"

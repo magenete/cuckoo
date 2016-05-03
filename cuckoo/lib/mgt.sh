@@ -12,8 +12,10 @@ VIRT_EMULATOR_VERSION=""
 VIRT_EMULATOR_SYSTEM=""
 VIRT_EMULATOR_ACTION=""
 VIRT_EMULATOR_ARCH_LIST=""
+VIRT_EMULATOR_ARCH_REAL=""
 VIRT_EMULATOR_ARCH=""
 VIRT_EMULATOR_OS_LIST=""
+VIRT_EMULATOR_OS_REAL=""
 VIRT_EMULATOR_OS=""
 VIRT_EMULATOR=""
 
@@ -77,7 +79,8 @@ cuckoo_actions()
         run | install )
             cuckoo_${VIRT_EMULATOR}_mapping
             cuckoo_run_or_install
-
+#QEMU_OS=""
+#QEMU_ARCH=""
             cuckoo_${VIRT_EMULATOR}_mapping
             ${VIRT_EMULATOR}_actions
         ;;

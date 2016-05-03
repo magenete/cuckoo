@@ -37,8 +37,6 @@ qemu_delete_define_last()
 # Delete
 qemu_delete()
 {
-    QEMU_ENV_NO="yes"
-
     echo ""
     for qemu_arch in $QEMU_ACTION_ARCH_LIST
     do

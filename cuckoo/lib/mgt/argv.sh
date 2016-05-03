@@ -11,8 +11,8 @@
 # Options definition
 cuckoo_args()
 {
-    ARGS_SHORT="s:irbqd:p:e:lxD:P:E:LXWUZwzQB:A:O:a:o:v:m:K:T:S:C:c:f:M:FNt:R:Vh"
-    ARGS_LONG="setup:,install,run,qemu-build,qemu-delete,iso-download:,iso-import:,iso-export:,iso-list,iso-delete,hd-download:,hd-import:,hd-export:,hd-list,hd-delete,config-create,config-update,config-delete,desktop-create,desktop-delete,qemu-system,qemu-branch:,qemu-arch:,qemu-os-name:,arch:,os-name:,dist-version:,memory-size:,cpu-cores:,cpu-threads:,cpu-sockets:,cdrom-add:,cdrom-boot:,floppy-boot:,smb-dir:,full-screen,no-daemonize,hd-type:,opts-add:,version,help"
+    ARGS_SHORT="s:irbIqd:p:e:lxD:P:E:LXWUZwzQB:A:O:a:o:v:m:K:T:S:C:c:f:M:FNt:R:Vh"
+    ARGS_LONG="setup:,install,run,qemu-build,qemu-list,qemu-delete,iso-download:,iso-import:,iso-export:,iso-list,iso-delete,hd-download:,hd-import:,hd-export:,hd-list,hd-delete,config-create,config-update,config-delete,desktop-create,desktop-delete,qemu-system,qemu-branch:,qemu-arch:,qemu-os-name:,arch:,os-name:,dist-version:,memory-size:,cpu-cores:,cpu-threads:,cpu-sockets:,cdrom-add:,cdrom-boot:,floppy-boot:,smb-dir:,full-screen,no-daemonize,hd-type:,opts-add:,version,help"
     OPTS="$(getopt -o "${ARGS_SHORT}" -l "${ARGS_LONG}" -a -- "$@" 2>/dev/null)"
     if [ $? -gt 0 ]
     then
@@ -53,6 +53,10 @@ cuckoo_args()
         ;;
         --qemu-build | -b )
             VIRT_EMULATOR_ACTION="build"
+            shift 1
+        ;;
+        --qemu-list | -I )
+            VIRT_EMULATOR_ACTION="list"
             shift 1
         ;;
         --qemu-delete | -q )

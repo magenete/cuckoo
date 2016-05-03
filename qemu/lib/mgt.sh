@@ -33,9 +33,11 @@ qemu_actions()
     case "$QEMU_ACTION" in
         run )
             QEMU_OS_REAL="yes"
-            [ "$QEMU_OS" != "linux" ] && QEMU_ENABLE_KVM_NO="yes"
 
             qemu_variables
+
+            [ "$QEMU_OS" != "linux" ] && QEMU_ENABLE_KVM_NO="yes"
+
             qemu_run
         ;;
         run-system )
@@ -57,6 +59,10 @@ qemu_actions()
                 qemu_variables
                 qemu_build
             fi
+        ;;
+        list )
+            qemu_variables
+            qemu_versions_list
         ;;
         delete )
             qemu_variables

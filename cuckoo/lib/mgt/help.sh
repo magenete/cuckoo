@@ -21,6 +21,7 @@ Usage: $(basename $0) [actions] [arguments]
     -i, --install         Install OS on HD(s) (QEMU image).
     -r, --run             Run VM (by default: QEMU).
     -b, --qemu-build      Build (only on Linux) QEMU for OS: $(from_arr_to_str "$VIRT_EMULATOR_OS_LIST").
+    -I, --qemu-list       List existing QEMU versions.
     -q, --qemu-delete     Delete QEMU file(s).
     -d, --iso-download    Download ISO file and setup.
     -p, --iso-import      Copy ISO file locally and setup.
