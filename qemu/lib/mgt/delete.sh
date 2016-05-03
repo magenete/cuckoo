@@ -8,6 +8,32 @@
 #
 
 
+# Define last version if exists
+qemu_delete_define_last()
+{
+    local version=""
+
+    if [ -d "$QEMU_BIN_ARCH_OS_DIR" ]
+    then
+        for ver_dir in $(ls "$QEMU_BIN_ARCH_OS_DIR")
+        do
+            [ -d "$QEMU_BIN_ARCH_OS_DIR${ver_dir}" ] && version="$ver_dir"
+        done
+
+        if [ ! -z "$version" ]
+        then
+            printf "$version" > "$QEMU_BIN_ARCH_OS_VERSION_FILE"
+        else
+            rm -rf "$QEMU_BIN_ARCH_OS_DIR"
+
+            [ -z "$(ls "$QEMU_BIN_ARCH_DIR")" ] && rm -rf "$QEMU_BIN_ARCH_DIR"
+        fi
+    else
+        qemu_message "WAGNING: QEMU version does not exist"
+    fi
+}
+
+
 # Delete
 qemu_delete()
 {
@@ -28,6 +54,8 @@ qemu_delete()
                 rm -rf "$QEMU_BIN_ARCH_OS_VERSION_DIR"
 
                 echo "QEMU has been deleted in '${QEMU_BIN_ARCH_OS_VERSION_DIR}'"
+
+                qemu_delete_define_last
             else
                 echo "WARNING: QEMU has not been deleted for OS: ${qemu_os}, arch: ${qemu_arch}"
             fi
