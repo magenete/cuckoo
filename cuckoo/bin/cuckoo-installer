@@ -25,10 +25,10 @@ CUCKOO_OS_COMMON_DIR="${CUCKOO_OS_DIR}common/"
 CUCKOO_HD_DIR="${CUCKOO_DIR}hd/"
 CUCKOO_BIN_DIR="${CUCKOO_DIR}bin/"
 CUCKOO_BIN_FILE="${CUCKOO_BIN_DIR}cuckoo"
-CUCKOO_LAUNCHERS_DIR="${CUCKOO_DIR}../launchers/"
-CUCKOO_LAUNCHERS_INSTALL_DIR="${CUCKOO_LAUNCHERS_DIR}install/"
-CUCKOO_LAUNCHERS_RUN_DIR="${CUCKOO_LAUNCHERS_DIR}run/"
-CUCKOO_LAUNCHERS_DESKTOP_DIR="${CUCKOO_LAUNCHERS_DIR}.desktop/"
+CUCKOO_LAUNCHER_DIR="${CUCKOO_DIR}../launcher/"
+CUCKOO_LAUNCHER_INSTALL_DIR="${CUCKOO_LAUNCHER_DIR}install/"
+CUCKOO_LAUNCHER_RUN_DIR="${CUCKOO_LAUNCHER_DIR}run/"
+CUCKOO_LAUNCHER_DESKTOP_DIR="${CUCKOO_LAUNCHER_DIR}.desktop/"
 
 CUCKOO_USER_HOME_DESKTOP_DIR="${HOME}/.local/share/applications/"
 
@@ -107,7 +107,7 @@ cuckoo_install()
         chmod 0700 "${HOME}/${CUCKOO_INSTALLER_DIR}"
         chmod 0700 "${HOME}/${CUCKOO_DIR}../"
 
-        cuckoo_launchers_install
+        cuckoo_launcher_install
 
         cuckoo_cuckoo_install
 
@@ -120,24 +120,24 @@ cuckoo_install()
 }
 
 
-# Launchers install
-cuckoo_launchers_install()
+# Launcher install
+cuckoo_launcher_install()
 {
-    chmod 0700 -R "${HOME}/${CUCKOO_LAUNCHERS_DIR}"
-    chmod 0600 "${HOME}/${CUCKOO_LAUNCHERS_DIR}"*.bat
+    chmod 0700 -R "${HOME}/${CUCKOO_LAUNCHER_DIR}"
+    chmod 0600 "${HOME}/${CUCKOO_LAUNCHER_DIR}"*.bat
 
     # Run and install
-    for launchers_dir in "${HOME}/${CUCKOO_LAUNCHERS_INSTALL_DIR}" "${HOME}/${CUCKOO_LAUNCHERS_RUN_DIR}"
+    for launcher_dir in "${HOME}/${CUCKOO_LAUNCHER_INSTALL_DIR}" "${HOME}/${CUCKOO_LAUNCHER_RUN_DIR}"
     do
-        for cuckoo_arch in $(ls "$launchers_dir")
+        for cuckoo_arch in $(ls "$launcher_dir")
         do
-            chmod 0600 "${launchers_dir}${cuckoo_arch}/"*.bat
+            chmod 0600 "${launcher_dir}${cuckoo_arch}/"*.bat
         done
     done
 
     # Desktop
-    mkdir "${HOME}/${CUCKOO_LAUNCHERS_DESKTOP_DIR}"
-    chmod -R 0700 "${HOME}/${CUCKOO_LAUNCHERS_DESKTOP_DIR}"
+    mkdir "${HOME}/${CUCKOO_LAUNCHER_DESKTOP_DIR}"
+    chmod -R 0700 "${HOME}/${CUCKOO_LAUNCHER_DESKTOP_DIR}"
 }
 
 
