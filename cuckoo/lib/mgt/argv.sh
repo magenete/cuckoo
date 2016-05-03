@@ -168,47 +168,39 @@ cuckoo_args()
             shift 1
         ;;
         --qemu-arch | -A )
-            case "$2" in
-                $(from_arr_to_str "$VIRT_EMULATOR_ARCH_LIST" " |") )
-                    VIRT_EMULATOR_ARCH="$2"
-                ;;
-                * )
-                    cuckoo_error "QEMU architecture '${2}' is not supported"
-                ;;
-            esac
+            if [ "$(valid_value_in_arr "$VIRT_EMULATOR_ARCH_LIST" "$2")" = "" ]
+            then
+                cuckoo_error "QEMU architecture '${2}' is not supported"
+            else
+                VIRT_EMULATOR_ARCH="$2"
+            fi
             shift 2
         ;;
         --qemu-os-name | -O )
-            case "$2" in
-                $(from_arr_to_str "$VIRT_EMULATOR_OS_LIST" " |") )
-                    VIRT_EMULATOR_OS="$2"
-                ;;
-                * )
-                    cuckoo_error "QEMU OS '${2}' is not supported"
-                ;;
-            esac
+            if [ "$(valid_value_in_arr "$VIRT_EMULATOR_OS_LIST" "$2")" = "" ]
+            then
+                cuckoo_error "QEMU OS '${2}' is not supported"
+            else
+                VIRT_EMULATOR_OS="$2"
+            fi
             shift 2
         ;;
         --arch | -a )
-            case "$2" in
-                $(from_arr_to_str "$CUCKOO_ARCH_LIST" " |") )
-                    CUCKOO_ARCH="$2"
-                ;;
-                * )
-                    cuckoo_error "OS architecture '${2}' is not supported"
-                ;;
-            esac
+            if [ "$(valid_value_in_arr "$CUCKOO_ARCH_LIST" "$2")" = "" ]
+            then
+                cuckoo_error "OS architecture '${2}' is not supported"
+            else
+                CUCKOO_ARCH="$2"
+            fi
             shift 2
         ;;
         --os-name | -o )
-            case "$2" in
-                $(from_arr_to_str "$CUCKOO_OS_LIST" " |") )
-                    CUCKOO_OS="$2"
-                ;;
-                * )
-                    cuckoo_error "OS '${2}' is not supported"
-                ;;
-            esac
+            if [ "$(valid_value_in_arr "$CUCKOO_OS_LIST" "$2")" = "" ]
+            then
+                cuckoo_error "OS '${2}' is not supported"
+            else
+                CUCKOO_OS="$2"
+            fi
             shift 2
         ;;
         --dist-version | -v )

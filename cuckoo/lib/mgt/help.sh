@@ -75,8 +75,8 @@ _H_E_L_P
 # Convert from Array to String
 from_arr_to_str()
 {
-    str=""
-    sep=","
+    local str=""
+    local sep=","
 
     [ ! -z "$2" ] && sep="$2"
 
@@ -91,4 +91,22 @@ from_arr_to_str()
     done
 
     echo "$str"
+}
+
+
+# Valid value in array:
+#   - return value if valid
+#   - returm epty string if not valid
+valid_value_in_arr()
+{
+    for value in $1
+    do
+        if [ "$value" = "$2" ]
+        then
+            echo "$value"
+            break
+        fi
+    done
+
+    echo ""
 }

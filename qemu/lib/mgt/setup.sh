@@ -24,7 +24,7 @@ qemu_setup()
 
             if [ -d "$QEMU_BIN_ARCH_OS_DIR" ]
             then
-                mkdir "${QEMU_SETUP_DIR}qemu/bin/${QEMU_ARCH}/"
+                mkdir -p "${QEMU_SETUP_DIR}qemu/bin/${QEMU_ARCH}/${QEMU_OS}/"
                 cp -rv "$QEMU_BIN_ARCH_OS_DIR" "${QEMU_SETUP_DIR}qemu/bin/${QEMU_ARCH}/"
 
                 echo "      ...from '${QEMU_BIN_ARCH_OS_DIR}'"
@@ -48,10 +48,6 @@ qemu_setup_dir()
     echo ""
     echo "    Directory lib/: copying..."
     cp -rv "${QEMU_DIR}lib/" "${QEMU_SETUP_DIR}qemu/"
-
-    echo ""
-    echo "    Directory build/: copying..."
-    cp -rv "${QEMU_DIR}build/" "${QEMU_SETUP_DIR}qemu/"
 
     echo ""
     echo "    Directory bin/: copying..."

@@ -36,7 +36,6 @@ CUCKOO_USER_HOME_DESKTOP_DIR="${HOME}/.local/share/applications/"
 QEMU_DIR="${CUCKOO_DIR}../qemu/"
 QEMU_LIB_DIR="${QEMU_DIR}lib/"
 QEMU_BIN_DIR="${QEMU_DIR}bin/"
-QEMU_BUILD_DIR="${QEMU_DIR}build/"
 
 HOME_SHELL_PROFILE_FILES=".bash_profile .bashrc .mkshrc .profile .zlogin .zshrc"
 
@@ -197,14 +196,12 @@ cuckoo_qemu_install()
 
     # Bin
     chmod 0700 "${HOME}/${QEMU_BIN_DIR}"
-    chmod 0700 "${HOME}/${QEMU_BIN_DIR}"*
 
     # Lib
     chmod 0700 "${HOME}/${QEMU_LIB_DIR}"
     chmod 0600 "${HOME}/${QEMU_LIB_DIR}"*
-
-    # Build
-    chmod 0700 -R "${HOME}/${QEMU_BUILD_DIR}"
+    chmod 0700 "${HOME}/${QEMU_LIB_DIR}mgt/"
+    chmod 0600 "${HOME}/${QEMU_LIB_DIR}mgt/"*
 }
 
 
