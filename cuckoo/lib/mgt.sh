@@ -58,6 +58,7 @@ do
 done
 
 
+# Initialize all VM libs
 for vm_lib in $VIRT_EMULATOR_LIST
 do
     cuckoo_${vm_lib}_init

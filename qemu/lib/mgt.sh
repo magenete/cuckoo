@@ -15,6 +15,7 @@ QEMU_DIR="${QEMU_DIR:=$(cd "$(dirname "$0")/.." && pwd -P)}/"
 QEMU_OS=""
 QEMU_ARCH=""
 QEMU_SETUP_DIR=""
+QEMU_HD_TYPE=""
 
 
 # Load all MGT libs

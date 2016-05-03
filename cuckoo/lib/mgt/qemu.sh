@@ -38,7 +38,7 @@ cuckoo_qemu_mapping()
 }
 
 
-# Init QEMU
+# QEMU initialize, libs load and mapping contstants
 cuckoo_qemu_init()
 {
     QEMU_DIR="${CUCKOO_DIR}../qemu"
@@ -48,4 +48,7 @@ cuckoo_qemu_init()
 
     VIRT_EMULATOR_ARCH_LIST="${QEMU_ARCH_LIST} ${VIRT_EMULATOR_ARCH_LIST}"
     VIRT_EMULATOR_OS_LIST="${QEMU_OS_LIST} ${VIRT_EMULATOR_OS_LIST}"
+
+    VIRT_EMULATOR_HD_TYPE_LIST="$QEMU_HD_TYPE_LIST"
+    VIRT_EMULATOR_HD_TYPE_DEFAULT="$QEMU_HD_TYPE_DEFAULT"
 }

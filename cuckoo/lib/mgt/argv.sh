@@ -284,7 +284,7 @@ cuckoo_args()
         ;;
         --hd-type | -t )
             case "$2" in
-                $(from_arr_to_str "$CUCKOO_HD_TYPE_LIST" " |") )
+                $(from_arr_to_str "$VIRT_EMULATOR_HD_TYPE_LIST" " |") )
                     CUCKOO_HD_TYPE="$2"
                 ;;
                 * )

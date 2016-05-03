@@ -58,14 +58,14 @@ Usage: $(basename $0) [actions] [arguments]
     -T, --cpu-threads     Set CPU threads (by default: ${CUCKOO_CPU_THREADS_DEFAULT}, min: ${CUCKOO_CPU_MIN}, max: ${CUCKOO_CPU_THREADS_MAX}).
     -S, --cpu-sockets     Set CPU sockets (by default: ${CUCKOO_CPU_SOCKETS_DEFAULT}, min: ${CUCKOO_CPU_MIN}, max: ${CUCKOO_CPU_SOCKETS_MAX}).
     -C, --cdrom-add       Set file with full path for non-bootable CDROM
-                            to add drivers, packages, etc. (by default: ${CUCKOO_HD_TYPE_DEFAULT}).
+                            to add drivers, packages, etc. (by default: ${VIRT_EMULATOR_HD_TYPE_DEFAULT}).
     -c, --cdrom-boot      Set file with full path for CDROM to boot from (IDE device).
     -f, --floppy-boot     Set file with full path for Floppy Disk.
     -M, --smb-dir         Set directory with full path for SMB share.
     -F, --full-screen     Set full screen mode.
     -N, --no-daemonize    Run without daemonizing.
-    -t, --hd-type         Set hard drive type (by default: ${CUCKOO_HD_TYPE_DEFAULT}).
-                            HD type: ${CUCKOO_HD_TYPE_LIST}.
+    -t, --hd-type         Set hard drive type (by default: ${VIRT_EMULATOR_HD_TYPE_DEFAULT}).
+                            HD type: ${VIRT_EMULATOR_HD_TYPE_LIST}.
     -R, --opts-add        Append any other QEMU options.
 
 _H_E_L_P
