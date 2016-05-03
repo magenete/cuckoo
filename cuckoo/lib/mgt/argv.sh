@@ -106,12 +106,12 @@ cuckoo_args()
         --hd-import | -P )
             CUCKOO_ACTION="hd-setup"
 
-            if [ -f "$2" ]
+            if [ -f "$2" ] || [ -d "$2" ]
             then
                 CUCKOO_HD_FILE_PATH="$2"
                 CUCKOO_HD_FILE_NET=""
             else
-                cuckoo_error "HD file '${2}' does not exist"
+                cuckoo_error "HD directory or file '${2}' does not exist"
             fi
             shift 2
         ;;

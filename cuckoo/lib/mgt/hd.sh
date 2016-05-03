@@ -101,24 +101,35 @@ cuckoo_hd_import_or_download()
 
     cuckoo_variables
 
-    CUCKOO_HD_DIR_SYS_PATH="${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}"
+    local cuckoo_hd_dir_sys_path="${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}"
 
-    mkdir -p "${CUCKOO_HD_DIR_SYS_PATH}"
+    mkdir -p "$cuckoo_hd_dir_sys_path"
 
     if [ -z "$CUCKOO_HD_FILE_NET" ]
     then
-        tar -jvx -f "$CUCKOO_HD_FILE_PATH" -C "$CUCKOO_HD_DIR_SYS_PATH"
+        if [ -f "$CUCKOO_HD_FILE_PATH" ]
+        then
+            tar -jvx -f "$CUCKOO_HD_FILE_PATH" -C "$cuckoo_hd_dir_sys_path"
+        else
+            for hd_file in $(ls "$CUCKOO_HD_FILE_PATH")
+            do
+                if [ -f "${CUCKOO_HD_FILE_PATH}/${hd_file}" ]
+                then
+                    cp -v "${CUCKOO_HD_FILE_PATH}/${hd_file}" "${cuckoo_hd_dir_sys_path}/${hd_file}"
+                fi
+            done
+        fi
     else
-        curl -SL "$CUCKOO_HD_FILE_PATH" | tar -jvx -C "$CUCKOO_HD_DIR_SYS_PATH"
+        curl -SL "$CUCKOO_HD_FILE_PATH" | tar -jvx -C "$cuckoo_hd_dir_sys_path"
     fi
     if [ $? -gt 0 ]
     then
-        cuckoo_error "HD file was not set from '$CUCKOO_HD_FILE_PATH' to '${CUCKOO_HD_DIR_SYS_PATH}'"
+        cuckoo_error "HD file was not set from '$CUCKOO_HD_FILE_PATH' to '${cuckoo_hd_dir_sys_path}'"
     fi
 
-    chmod 0600 "$CUCKOO_HD_DIR_SYS_PATH"*
+    chmod 0600 "$cuckoo_hd_dir_sys_path"*
 
-    cuckoo_message "HD tar file was set in '${CUCKOO_HD_DIR_SYS_PATH}'"
+    cuckoo_message "HD tar file was set in '${cuckoo_hd_dir_sys_path}'"
 }
 
 
