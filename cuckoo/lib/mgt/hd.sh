@@ -84,10 +84,15 @@ cuckoo_hd_create()
             then
                 mkdir -p "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}"
 
-                cp "${CUCKOO_HD_ARCH_OS_CLEAN_DIR}${hd_file}" "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}${hd_file}"
-                if [ $? -gt 0 ]
+                if [ -e "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}${hd_file}" ]
                 then
-                    cuckoo_error "HD file was not created from '${CUCKOO_HD_ARCH_OS_CLEAN_DIR}${hd_file}' to '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}${hd_file}'"
+                    cuckoo_message "HD file '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}${hd_file}' already exists"
+                else
+                    cp -v "${CUCKOO_HD_ARCH_OS_CLEAN_DIR}${hd_file}" "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}${hd_file}"
+                    if [ $? -gt 0 ]
+                    then
+                        cuckoo_error "HD file was not created from '${CUCKOO_HD_ARCH_OS_CLEAN_DIR}${hd_file}' to '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}${hd_file}'"
+                    fi
                 fi
             fi
         done
