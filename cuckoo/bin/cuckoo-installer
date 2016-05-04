@@ -29,6 +29,7 @@ CUCKOO_LAUNCHER_DIR="${CUCKOO_DIR}../launcher/"
 CUCKOO_LAUNCHER_INSTALL_DIR="${CUCKOO_LAUNCHER_DIR}install/"
 CUCKOO_LAUNCHER_RUN_DIR="${CUCKOO_LAUNCHER_DIR}run/"
 CUCKOO_LAUNCHER_DESKTOP_DIR="${CUCKOO_LAUNCHER_DIR}.desktop/"
+CUCKOO_VERBOSE=""
 
 CUCKOO_USER_HOME_DESKTOP_DIR="${HOME}/.local/share/applications/"
 
@@ -51,8 +52,9 @@ Cuckoo install/uninstall script.
 
   -i, --install    Install Cuckoo (by default).
   -u, --uninstall  Uninstall Cuckoo.
+  -v, --verbose    Print log messages.
 
-  -v, --version    Print the current version.
+      --version    Print the current version.
   -h, --help       Show this message.
 
 _H_E_L_P
@@ -85,27 +87,27 @@ cuckoo_message()
 cuckoo_install()
 {
     # Make project directory and download source from Git
-    mkdir -p "${HOME}/${CUCKOO_INSTALLER_DIR}" && cd "${HOME}/${CUCKOO_INSTALLER_DIR}"
+    mkdir $CUCKOO_VERBOSE -p "${HOME}/${CUCKOO_INSTALLER_DIR}" && cd "${HOME}/${CUCKOO_INSTALLER_DIR}"
     if [ $? -gt 0 ]
     then
         cuckoo_error "Could not create directory '${HOME}/${CUCKOO_INSTALLER_DIR}'"
     else
-        cuckoo_message "Directory '${HOME}/${CUCKOO_INSTALLER_DIR}' was created"
+        [ "$CUCKOO_VERBOSE" != "" ] && cuckoo_message "Directory '${HOME}/${CUCKOO_INSTALLER_DIR}' was created"
 
-        curl -SL "$CUCKOO_GIT_URL" | tar -vxz
+        curl -$([ "$CUCKOO_VERBOSE" = "" ] && echo "s" || echo "")SL "$CUCKOO_GIT_URL" | tar -xz $CUCKOO_VERBOSE
         if [ $? -gt 0 ]
         then
             cuckoo_error "Could not download file '$CUCKOO_GIT_URL'"
         else
-            cuckoo_message "Source code was downloaded from '$CUCKOO_GIT_URL'"
+            [ "$CUCKOO_VERBOSE" != "" ] && cuckoo_message "Source code was downloaded from '$CUCKOO_GIT_URL'"
         fi
     fi
 
     if [ -e "${HOME}/${CUCKOO_BIN_FILE}" ] && [ -f "${HOME}/${CUCKOO_BIN_FILE}" ]
     then
         # Common
-        chmod 0700 "${HOME}/${CUCKOO_INSTALLER_DIR}"
-        chmod 0700 "${HOME}/${CUCKOO_DIR}../"
+        chmod $CUCKOO_VERBOSE 0700 "${HOME}/${CUCKOO_INSTALLER_DIR}"
+        chmod $CUCKOO_VERBOSE 0700 "${HOME}/${CUCKOO_DIR}../"
 
         cuckoo_launcher_install
 
@@ -123,86 +125,91 @@ cuckoo_install()
 # Launcher install
 cuckoo_launcher_install()
 {
-    chmod 0700 -R "${HOME}/${CUCKOO_LAUNCHER_DIR}"
-    chmod 0600 "${HOME}/${CUCKOO_LAUNCHER_DIR}"*.bat
+    chmod $CUCKOO_VERBOSE 0700 -R "${HOME}/${CUCKOO_LAUNCHER_DIR}"
+    chmod $CUCKOO_VERBOSE 0600 "${HOME}/${CUCKOO_LAUNCHER_DIR}"*.bat
 
     # Run and install
     for launcher_dir in "${HOME}/${CUCKOO_LAUNCHER_INSTALL_DIR}" "${HOME}/${CUCKOO_LAUNCHER_RUN_DIR}"
     do
         for cuckoo_arch in $(ls "$launcher_dir")
         do
-            chmod 0600 "${launcher_dir}${cuckoo_arch}/"*.bat
+            chmod $CUCKOO_VERBOSE 0600 "${launcher_dir}${cuckoo_arch}/"*.bat
         done
     done
 
     # Desktop
-    mkdir "${HOME}/${CUCKOO_LAUNCHER_DESKTOP_DIR}"
-    chmod -R 0700 "${HOME}/${CUCKOO_LAUNCHER_DESKTOP_DIR}"
+    mkdir $CUCKOO_VERBOSE "${HOME}/${CUCKOO_LAUNCHER_DESKTOP_DIR}"
+    chmod $CUCKOO_VERBOSE -R 0700 "${HOME}/${CUCKOO_LAUNCHER_DESKTOP_DIR}"
 }
 
 
 # Cuckoo install
 cuckoo_cuckoo_install()
 {
-    chmod 0700 "${HOME}/${CUCKOO_DIR}"
-    chmod 0700 "${HOME}/${CUCKOO_DIR}"*
+    chmod $CUCKOO_VERBOSE 0700 "${HOME}/${CUCKOO_DIR}"
+    chmod $CUCKOO_VERBOSE 0700 "${HOME}/${CUCKOO_DIR}"*
 
     # Bin
-    chmod 0700 "${HOME}/${CUCKOO_BIN_DIR}"*
-    chmod 0600 "${HOME}/${CUCKOO_BIN_DIR}"*.bat
+    chmod $CUCKOO_VERBOSE 0700 "${HOME}/${CUCKOO_BIN_DIR}"*
+    chmod $CUCKOO_VERBOSE 0600 "${HOME}/${CUCKOO_BIN_DIR}"*.bat
 
     # Etc
-    chmod 0700 "${HOME}/${CUCKOO_ETC_DIR}"*
-    chmod 0600 "${HOME}/${CUCKOO_ETC_VERSION_FILE}"
+    chmod $CUCKOO_VERBOSE 0700 "${HOME}/${CUCKOO_ETC_DIR}"*
+    chmod $CUCKOO_VERBOSE 0600 "${HOME}/${CUCKOO_ETC_VERSION_FILE}"
 
     # ISO
     mkdir "${HOME}/${CUCKOO_ISO_DIR}"
-    chmod -R 0700 "${HOME}/${CUCKOO_ISO_DIR}"
+    chmod $CUCKOO_VERBOSE -R 0700 "${HOME}/${CUCKOO_ISO_DIR}"
 
     # HD
-    chmod -R 0700 "${HOME}/${CUCKOO_HD_DIR}"
+    chmod $CUCKOO_VERBOSE -R 0700 "${HOME}/${CUCKOO_HD_DIR}"
 
     for cuckoo_arch in $(ls "${HOME}/${CUCKOO_HD_DIR}/")
     do
         # HD .clean
         for cuckoo_os in $(ls "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/")
         do
-            chmod 0600 "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/${cuckoo_os}/.clean/"*
+            chmod $CUCKOO_VERBOSE 0600 "${HOME}/${CUCKOO_HD_DIR}${cuckoo_arch}/${cuckoo_os}/.clean/"*
         done
     done
 
     # OS
-    chmod 0700 "${HOME}/${CUCKOO_OS_DIR}"
-    chmod 0700 "${HOME}/${CUCKOO_OS_DIR}"*
+    chmod $CUCKOO_VERBOSE 0700 "${HOME}/${CUCKOO_OS_COMMON_DIR}"
+    chmod $CUCKOO_VERBOSE 0700 "${HOME}/${CUCKOO_OS_COMMON_DIR}"*
 
     # Lib
-    chmod 0600 "${HOME}/${CUCKOO_LIB_DIR}"*
-    chmod 0700 "${HOME}/${CUCKOO_LIB_DIR}mgt/"
-    chmod 0600 "${HOME}/${CUCKOO_LIB_DIR}mgt/"*
+    chmod $CUCKOO_VERBOSE 0600 "${HOME}/${CUCKOO_LIB_DIR}"*
+    chmod $CUCKOO_VERBOSE 0700 "${HOME}/${CUCKOO_LIB_DIR}mgt/"
+    chmod $CUCKOO_VERBOSE 0600 "${HOME}/${CUCKOO_LIB_DIR}mgt/"*
 }
 
 
 # QEMU install
 cuckoo_qemu_install()
 {
-    chmod 0700 "${HOME}/${QEMU_DIR}"
+    chmod $CUCKOO_VERBOSE 0700 "${HOME}/${QEMU_DIR}"
 
     # Bin
     mkdir "${HOME}/${QEMU_BIN_DIR}"
-    chmod -R 0700 "${HOME}/${QEMU_BIN_DIR}"
+    chmod $CUCKOO_VERBOSE -R 0700 "${HOME}/${QEMU_BIN_DIR}"
 
     # Lib
-    chmod 0700 "${HOME}/${QEMU_LIB_DIR}"
-    chmod 0600 "${HOME}/${QEMU_LIB_DIR}"*
-    chmod 0700 "${HOME}/${QEMU_LIB_DIR}mgt/"
-    chmod 0600 "${HOME}/${QEMU_LIB_DIR}mgt/"*
+    chmod $CUCKOO_VERBOSE 0700 "${HOME}/${QEMU_LIB_DIR}"
+    chmod $CUCKOO_VERBOSE 0600 "${HOME}/${QEMU_LIB_DIR}"*
+    chmod $CUCKOO_VERBOSE 0700 "${HOME}/${QEMU_LIB_DIR}mgt/"
+    chmod $CUCKOO_VERBOSE 0600 "${HOME}/${QEMU_LIB_DIR}mgt/"*
 }
 
 
 # Add Cuckoo bin path in PATH
 cuckoo_add_bin_path()
 {
-    echo "Cuckoo bin path was added in PATH in the following file(s):"
+    if [ "$CUCKOO_VERBOSE" != "" ]
+    then
+        echo ""
+        echo "Cuckoo bin path was added in PATH in the following file(s):"
+    fi
+
     for shell_profile_file in $HOME_SHELL_PROFILE_FILES
     do
         if [ -e "${HOME}/${shell_profile_file}" ] && [ -f "${HOME}/${shell_profile_file}" ]
@@ -210,10 +217,11 @@ cuckoo_add_bin_path()
             echo "" >> "${HOME}/${shell_profile_file}"
             echo "export PATH=\"\${PATH}:\${HOME}/${CUCKOO_BIN_DIR}\"  # Add Cuckoo to PATH for scripting" >> "${HOME}/${shell_profile_file}"
 
-            echo "    '${HOME}/${shell_profile_file}'"
+            [ "$CUCKOO_VERBOSE" != "" ] && echo "    '${HOME}/${shell_profile_file}'"
         fi
     done
-    echo ""
+
+    [ "$CUCKOO_VERBOSE" != "" ] && echo ""
 
     # Export new PATH
     export PATH="${PATH}:${HOME}/${CUCKOO_BIN_DIR}"
@@ -228,7 +236,7 @@ cuckoo_uninstall_answer()
 
     case $uninstall_answer in
         Y | y | Yes | yes )
-            rm -rf "${HOME}/${CUCKOO_INSTALLER_DIR}"
+            rm $CUCKOO_VERBOSE -rf "${HOME}/${CUCKOO_INSTALLER_DIR}"
 
             cuckoo_message "Directory '${HOME}/${CUCKOO_INSTALLER_DIR}' deleted"
         ;;
@@ -250,6 +258,7 @@ cuckoo_uninstall()
     # Information about Cuckoo bin path deleting in profile files
     echo ""
     echo "Please delete Cuckoo bin path from PATH in the following files:"
+
     for shell_profile_file in $HOME_SHELL_PROFILE_FILES
     do
         if [ -e "${HOME}/${shell_profile_file}" ] && [ -f "${HOME}/${shell_profile_file}" ]
@@ -259,7 +268,7 @@ cuckoo_uninstall()
     done
 
     # Desktop launcher
-    rm -f "${CUCKOO_USER_HOME_DESKTOP_DIR}cuckoo"*
+    rm $CUCKOO_VERBOSE -f "${CUCKOO_USER_HOME_DESKTOP_DIR}cuckoo"*
     echo ""
     echo "Desktop file(s) deleted in '${CUCKOO_USER_HOME_DESKTOP_DIR}'"
 
@@ -276,7 +285,7 @@ cuckoo_uninstall()
 
 
 # Options definition
-OPTS="$(getopt -o "iuvh" -l "install,uninstall,version,help" -a -- "$@" 2>/dev/null)"
+OPTS="$(getopt -o "iuvh" -l "install,uninstall,verbose,version,help" -a -- "$@" 2>/dev/null)"
 if [ $? -gt 0 ]
 then
     cuckoo_error "Invalid option(s) value"
@@ -299,8 +308,12 @@ do
             CUCKOO_ACTION="uninstall"
             shift 1
         ;;
-        --version | -v )
-            echo "Cuckoo version: 0.1.3"
+        --verbose | -v )
+            CUCKOO_VERBOSE="-v"
+            shift 1
+        ;;
+        --version )
+            echo "Cuckoo version: 0.1.4"
             exit 0
         ;;
         --help | -h )
