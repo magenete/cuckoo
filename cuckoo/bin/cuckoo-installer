@@ -172,8 +172,8 @@ cuckoo_cuckoo_install()
     done
 
     # OS
-    mkdir "${HOME}/${CUCKOO_OS_DIR}"
     chmod 0700 "${HOME}/${CUCKOO_OS_DIR}"
+    chmod 0700 "${HOME}/${CUCKOO_OS_DIR}"*
 
     # Lib
     chmod 0600 "${HOME}/${CUCKOO_LIB_DIR}"*
