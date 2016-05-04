@@ -36,8 +36,8 @@ cuckoo_args()
             if [ -d "$2" ]
             then
                 CUCKOO_SETUP_DIR="${2}/"
-                VIRT_EMULATOR_SETUP_DIR="${CUCKOO_SETUP_DIR}cuckoo/"
-                VIRT_EMULATOR_ACTION="setup"
+                CUCKOO_EMULATOR_SETUP_DIR="${CUCKOO_SETUP_DIR}cuckoo/"
+                CUCKOO_EMULATOR_ACTION="setup"
             else
                 cuckoo_error "Directory '${2}' does not exist, so it can not be used for setup"
             fi
@@ -52,20 +52,20 @@ cuckoo_args()
             shift 1
         ;;
         --qemu-build | -b )
-            VIRT_EMULATOR_ACTION="build"
+            CUCKOO_EMULATOR_ACTION="build"
             shift 1
         ;;
         --qemu-list | -I )
-            VIRT_EMULATOR_ACTION="list"
+            CUCKOO_EMULATOR_ACTION="list"
             shift 1
         ;;
         --qemu-version | -V )
-            VIRT_EMULATOR_ACTION="version"
-            VIRT_EMULATOR_VERSION="$2"
+            CUCKOO_EMULATOR_ACTION="version"
+            CUCKOO_EMULATOR_VERSION="$2"
             shift 2
         ;;
         --qemu-delete | -q )
-            VIRT_EMULATOR_ACTION="delete"
+            CUCKOO_EMULATOR_ACTION="delete"
             shift 1
         ;;
         --iso-download | -d )
@@ -173,28 +173,28 @@ cuckoo_args()
     # Arguments
 
         --qemu-system | -Q )
-            VIRT_EMULATOR_ACTION="run-system"
+            CUCKOO_EMULATOR_ACTION="run-system"
             shift 1
         ;;
         --qemu-branch | -B )
-            VIRT_EMULATOR_VERSION="$2"
+            CUCKOO_EMULATOR_VERSION="$2"
             shift 2
         ;;
         --qemu-arch | -A )
-            if [ "$(valid_value_in_arr "$VIRT_EMULATOR_ARCH_LIST" "$2")" = "" ]
+            if [ "$(valid_value_in_arr "$CUCKOO_EMULATOR_ARCH_LIST" "$2")" = "" ]
             then
                 cuckoo_error "QEMU architecture '${2}' is not supported"
             else
-                VIRT_EMULATOR_ARCH="$2"
+                CUCKOO_EMULATOR_ARCH="$2"
             fi
             shift 2
         ;;
         --qemu-os-name | -O )
-            if [ "$(valid_value_in_arr "$VIRT_EMULATOR_OS_LIST" "$2")" = "" ]
+            if [ "$(valid_value_in_arr "$CUCKOO_EMULATOR_OS_LIST" "$2")" = "" ]
             then
                 cuckoo_error "QEMU OS '${2}' is not supported"
             else
-                VIRT_EMULATOR_OS="$2"
+                CUCKOO_EMULATOR_OS="$2"
             fi
             shift 2
         ;;
@@ -301,7 +301,7 @@ cuckoo_args()
             shift 1
         ;;
         --hd-type | -t )
-            if [ "$(valid_value_in_arr "$VIRT_EMULATOR_HD_TYPE_LIST" "$2")" = "" ]
+            if [ "$(valid_value_in_arr "$CUCKOO_EMULATOR_HD_TYPE_LIST" "$2")" = "" ]
             then
                 cuckoo_error "HD type '${2}' is not supported"
             else

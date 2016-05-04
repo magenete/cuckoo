@@ -20,7 +20,7 @@ Usage: $(basename $0) [actions] [arguments]
     -s, --setup           Set directory with full path and setup Cuckoo.
     -i, --install         Install OS on HD(s) (QEMU image).
     -r, --run             Run VM (by default: QEMU).
-    -b, --qemu-build      Build (only on Linux) QEMU for OS: $(from_arr_to_str "$VIRT_EMULATOR_OS_LIST").
+    -b, --qemu-build      Build (only on Linux) QEMU for OS: $(from_arr_to_str "$CUCKOO_EMULATOR_OS_LIST").
     -I, --qemu-list       List existing QEMU versions.
     -V, --qemu-version    Set QEMU version.
     -q, --qemu-delete     Delete QEMU file(s).
@@ -48,9 +48,9 @@ Usage: $(basename $0) [actions] [arguments]
     -Q, --qemu-system     Run system VM (by default: QEMU).
     -B, --qemu-branch     Set QEMU branch for building.
     -A, --qemu-arch       Set QEMU architecture (by default: defined by OS).
-                            QEMU architecture: $(from_arr_to_str "$VIRT_EMULATOR_ARCH_LIST").
+                            QEMU architecture: $(from_arr_to_str "$CUCKOO_EMULATOR_ARCH_LIST").
     -O, --qemu-os-name    Set QEMU OS (by default: defined by OS).
-                            QEMU OS: $(from_arr_to_str "$VIRT_EMULATOR_OS_LIST").
+                            QEMU OS: $(from_arr_to_str "$CUCKOO_EMULATOR_OS_LIST").
     -a, --arch            Set OS architecture (by default: defined by OS).
                             OS architecture: $(from_arr_to_str "$CUCKOO_ARCH_LIST").
     -o, --os-name         Set OS name (by default: ${CUCKOO_OS_DEFAULT}).
@@ -61,14 +61,14 @@ Usage: $(basename $0) [actions] [arguments]
     -T, --cpu-threads     Set CPU threads (by default: ${CUCKOO_CPU_THREADS_DEFAULT}, min: ${CUCKOO_CPU_MIN}, max: ${CUCKOO_CPU_THREADS_MAX}).
     -S, --cpu-sockets     Set CPU sockets (by default: ${CUCKOO_CPU_SOCKETS_DEFAULT}, min: ${CUCKOO_CPU_MIN}, max: ${CUCKOO_CPU_SOCKETS_MAX}).
     -C, --cdrom-add       Set file with full path for non-bootable CDROM
-                            to add drivers, packages, etc. (by default: ${VIRT_EMULATOR_HD_TYPE_DEFAULT}).
+                            to add drivers, packages, etc. (by default: ${CUCKOO_EMULATOR_HD_TYPE_DEFAULT}).
     -c, --cdrom-boot      Set file with full path for CDROM to boot from (IDE device).
     -f, --floppy-boot     Set file with full path for Floppy Disk.
     -M, --smb-dir         Set directory with full path for SMB share.
     -F, --full-screen     Set full screen mode.
     -N, --no-daemonize    Run without daemonizing.
-    -t, --hd-type         Set hard drive type (by default: ${VIRT_EMULATOR_HD_TYPE_DEFAULT}).
-                            HD type: $(from_arr_to_str "$VIRT_EMULATOR_HD_TYPE_LIST").
+    -t, --hd-type         Set hard drive type (by default: ${CUCKOO_EMULATOR_HD_TYPE_DEFAULT}).
+                            HD type: $(from_arr_to_str "$CUCKOO_EMULATOR_HD_TYPE_LIST").
     -R, --opts-add        Append any other QEMU options.
 
 _H_E_L_P

@@ -8,10 +8,8 @@
 #
 
 
-VIRT_EMULATOR_LIST="qemu"
-VIRT_EMULATOR_DEFAULT="qemu"
-
-
+CUCKOO_EMULATOR_LIST="qemu"
+CUCKOO_EMULATOR_DEFAULT="qemu"
 CUCKOO_ACTION_DEFAULT="run"
 CUCKOO_OS_LIST="linux netbsd freebsd openbsd macosx windows"
 CUCKOO_OS_DEFAULT="linux"

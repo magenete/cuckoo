@@ -8,22 +8,20 @@
 #
 
 
-VIRT_EMULATOR_VERSION=""
-VIRT_EMULATOR_SYSTEM=""
-VIRT_EMULATOR_ACTION=""
-VIRT_EMULATOR_ARCH_LIST=""
-VIRT_EMULATOR_ARCH_REAL=""
-VIRT_EMULATOR_ARCH=""
-VIRT_EMULATOR_OS_LIST=""
-VIRT_EMULATOR_OS_REAL=""
-VIRT_EMULATOR_OS=""
-VIRT_EMULATOR=""
-
-
+CUCKOO_DIR="${CUCKOO_DIR:=$(cd "$(dirname "$0")/.." && pwd -P)}/"
+CUCKOO_EMULATOR_VERSION=""
+CUCKOO_EMULATOR_SYSTEM=""
+CUCKOO_EMULATOR_ACTION=""
+CUCKOO_EMULATOR_ARCH_LIST=""
+CUCKOO_EMULATOR_ARCH_REAL=""
+CUCKOO_EMULATOR_ARCH=""
+CUCKOO_EMULATOR_OS_LIST=""
+CUCKOO_EMULATOR_OS_REAL=""
+CUCKOO_EMULATOR_OS=""
+CUCKOO_EMULATOR=""
 CUCKOO_ACTION=""
 CUCKOO_ACTION_ARCH_LIST=""
 CUCKOO_ACTION_OS_LIST=""
-CUCKOO_DIR="${CUCKOO_DIR:=$(cd "$(dirname "$0")/.." && pwd -P)}/"
 CUCKOO_OS=""
 CUCKOO_OS_NAME=""
 CUCKOO_OS_SUB_NAME=""
@@ -62,32 +60,30 @@ done
 
 
 # Initialize all VM libs
-for vm_lib in $VIRT_EMULATOR_LIST
+for emulator_lib in $CUCKOO_EMULATOR_LIST
 do
-    cuckoo_${vm_lib}_init
+    cuckoo_${emulator_lib}_init
 done
 
 
 # Cuckoo actions
 cuckoo_actions()
 {
-    [ -z "$VIRT_EMULATOR" ] && VIRT_EMULATOR="$VIRT_EMULATOR_DEFAULT"
-
     cuckoo_variables_check
 
     case "$CUCKOO_ACTION" in
         run | install )
-            cuckoo_${VIRT_EMULATOR}_mapping
+            cuckoo_${CUCKOO_EMULATOR}_mapping
             cuckoo_run_or_install
 
-            cuckoo_${VIRT_EMULATOR}_mapping
-            ${VIRT_EMULATOR}_actions
+            cuckoo_${CUCKOO_EMULATOR}_mapping
+            ${CUCKOO_EMULATOR}_actions
         ;;
         setup )
             cuckoo_setup
 
-            cuckoo_${VIRT_EMULATOR}_mapping
-            ${VIRT_EMULATOR}_actions
+            cuckoo_${CUCKOO_EMULATOR}_mapping
+            ${CUCKOO_EMULATOR}_actions
         ;;
         iso-setup )
             cuckoo_iso_import_or_download

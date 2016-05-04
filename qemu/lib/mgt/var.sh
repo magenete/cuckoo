@@ -13,8 +13,6 @@ qemu_variables()
 {
     [ -z "$QEMU_ENV_NO" ] && qemu_env
 
-    QEMU_OS="${QEMU_OS:=$QEMU_OS_DEFAULT}"
-    QEMU_ARCH="${QEMU_ARCH:=$QEMU_ARCH_DEFAULT}"
     QEMU_HD_TYPE="${QEMU_HD_TYPE:=$QEMU_HD_TYPE_DEFAULT}"
     QEMU_CPU_CORES=${QEMU_CPU_CORES:=$QEMU_CPU_CORES_DEFAULT}
     QEMU_CPU_THREADS=${QEMU_CPU_THREADS:=$QEMU_CPU_THREADS_DEFAULT}
@@ -40,9 +38,12 @@ qemu_variables()
     QEMU_BUILD_BRANCH="${QEMU_BUILD_BRANCH:=$QEMU_BUILD_BRANCH_DEFAULT}"
     QEMU_BUILD_ARCH_TARGET="${QEMU_ARCH_BIN_FILE}-softmmu"
     QEMU_BUILD_SOURCE_URL_FILE="${QEMU_BUILD_SOURCE_URL_DIR}${QEMU_BUILD_BRANCH}.tar.gz"
-    QEMU_BIN_FILE="bin/qemu-system-${QEMU_ARCH_BIN_FILE}"
+
     QEMU_TMP_DIR="${TMPDIR:=/tmp}/qemu/"
+
     QEMU_LIB_DIR="${QEMU_DIR}lib/"
+
+    QEMU_BIN_FILE="bin/qemu-system-${QEMU_ARCH_BIN_FILE}"
     if [ -z "$QEMU_SYSTEM" ]
     then
         QEMU_BIN_DIR="${QEMU_DIR}bin/"
@@ -68,6 +69,7 @@ qemu_variables()
         QEMU_BIN_ARCH_OS_VERSION="$("${QEMU_BIN_DIR}${QEMU_BIN_FILE}" -version 2> /dev/null)"
         QEMU_BIN_ARCH_OS_VERSION_DIR=""
     fi
+
     QEMU_OPTS_EXT="${QEMU_OPTS_EXT:=}"
     QEMU_TITLE="${QEMU_TITLE:=$QEMU_BIN_ARCH_OS_VERSION}"
 }
@@ -76,24 +78,30 @@ qemu_variables()
 # Variables check
 qemu_variables_check()
 {
-    [ -z "$QEMU_ACTION" ] && QEMU_ACTION="$QEMU_ACTION_DEFAULT"
+    QEMU_ACTION="${QEMU_ACTION:=$QEMU_ACTION_DEFAULT}"
 
-    if [ "$QEMU_ACTION" = "build" ] || [ "$QEMU_ACTION" = "delete" ] || [ "$QEMU_ACTION" = "setup" ]  || [ "$QEMU_ACTION" = "list" ]  || [ "$QEMU_ACTION" = "version" ]
-    then
-        QEMU_ENV_NO="yes"
+    case "$QEMU_ACTION" in
+        build | delete | setup | list | version )
 
-        if [ -z "$QEMU_OS" ]
-        then
-            QEMU_ACTION_OS_LIST="$QEMU_OS_LIST"
-        else
-            QEMU_ACTION_OS_LIST="$QEMU_OS"
-        fi
+            QEMU_ENV_NO="yes"
 
-        if [ -z "$QEMU_ARCH" ]
-        then
-            QEMU_ACTION_ARCH_LIST="$QEMU_ARCH_LIST"
-        else
-            QEMU_ACTION_ARCH_LIST="$QEMU_ARCH"
-        fi
-    fi
+            if [ -z "$QEMU_OS" ]
+            then
+                QEMU_ACTION_OS_LIST="$QEMU_OS_LIST"
+            else
+                QEMU_ACTION_OS_LIST="$QEMU_OS"
+            fi
+
+            if [ -z "$QEMU_ARCH" ]
+            then
+                QEMU_ACTION_ARCH_LIST="$QEMU_ARCH_LIST"
+            else
+                QEMU_ACTION_ARCH_LIST="$QEMU_ARCH"
+            fi
+        ;;
+        * )
+            QEMU_OS="${QEMU_OS:=$QEMU_OS_DEFAULT}"
+            QEMU_ARCH="${QEMU_ARCH:=$QEMU_ARCH_DEFAULT}"
+        ;;
+    esac
 }
