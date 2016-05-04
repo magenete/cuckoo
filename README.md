@@ -1,5 +1,5 @@
 Cuckoo
-=========
+======
 
 A desktop-oriented virtual machines (based on QEMU) management system written in Shell.
 
@@ -21,7 +21,7 @@ Locally:
 
 
 Running
-------------
+-------
 
     cuckoo -h
 
