@@ -3,9 +3,9 @@ Cuckoo
 
 A desktop-oriented virtual machines (based on QEMU) management system written in Shell.
 
-Uses Shell (not Bash) and only following system commands:
+Uses Shell (not Bash) and only following system utilities:
 
-    echo, printf, ls, cat, cp, rm, mkdir, chmod, getopt
+    echo, printf, ls, cat, cp, rm, mkdir, chmod, getopt, cd, pwd, uname, curl, tar
 
 
 Installation
