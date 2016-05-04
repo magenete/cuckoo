@@ -8,10 +8,10 @@
 #
 
 
+QEMU_DIR="${QEMU_DIR:=$(cd "$(dirname "$0")/.." && pwd -P)}/"
 QEMU_ACTION=""
 QEMU_ACTION_ARCH_LIST=""
 QEMU_ACTION_OS_LIST=""
-QEMU_DIR="${QEMU_DIR:=$(cd "$(dirname "$0")/.." && pwd -P)}/"
 
 QEMU_SYSTEM=""
 QEMU_ARCH=""

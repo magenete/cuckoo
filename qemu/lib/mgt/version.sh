@@ -12,6 +12,7 @@
 qemu_version_list()
 {
     echo ""
+
     for qemu_arch in $QEMU_ACTION_ARCH_LIST
     do
         for qemu_os in $QEMU_ACTION_OS_LIST
@@ -43,6 +44,7 @@ qemu_version_list()
             fi
         done
     done
+
     echo ""
 }
 
@@ -53,6 +55,7 @@ qemu_version_setup()
     local qemu_version_defined=""
 
     echo ""
+
     for qemu_arch in $QEMU_ACTION_ARCH_LIST
     do
         for qemu_os in $QEMU_ACTION_OS_LIST
@@ -90,5 +93,6 @@ qemu_version_setup()
             fi
         done
     done
+
     echo ""
 }

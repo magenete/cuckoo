@@ -38,6 +38,7 @@ qemu_delete_define_last()
 qemu_delete()
 {
     echo ""
+
     for qemu_arch in $QEMU_ACTION_ARCH_LIST
     do
         for qemu_os in $QEMU_ACTION_OS_LIST
@@ -59,5 +60,6 @@ qemu_delete()
             fi
         done
     done
+
     echo ""
 }

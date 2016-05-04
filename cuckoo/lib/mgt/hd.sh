@@ -159,6 +159,7 @@ cuckoo_hd_export()
     CUCKOO_ENV_NO="yes"
 
     echo ""
+
     if [ -z "$CUCKOO_DIST_VERSION" ]
     then
         for cuckoo_arch in $CUCKOO_ACTION_ARCH_LIST
@@ -198,6 +199,7 @@ cuckoo_hd_export()
             echo "WARNING: HD file(s) '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}' not exported"
         fi
     fi
+
     echo ""
 }
 
@@ -208,6 +210,7 @@ cuckoo_hd_list()
     CUCKOO_ENV_NO="yes"
 
     echo ""
+
     for cuckoo_arch in $CUCKOO_ACTION_ARCH_LIST
     do
         for cuckoo_os in $CUCKOO_ACTION_OS_LIST
@@ -250,6 +253,7 @@ cuckoo_hd_delete()
     CUCKOO_ENV_NO="yes"
 
     echo ""
+
     if [ -z "$CUCKOO_DIST_VERSION" ]
     then
         for cuckoo_arch in $CUCKOO_ACTION_ARCH_LIST
@@ -295,5 +299,6 @@ cuckoo_hd_delete()
             echo "WARNING: HD deleted in directory '${CUCKOO_HD_ARCH_OS_DIR}'"
         fi
     fi
+
     echo ""
 }

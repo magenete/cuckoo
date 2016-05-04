@@ -8,7 +8,7 @@
 #
 
 
-# Build launch
+# Launch
 qemu_build_launch()
 (
     # Preinstall

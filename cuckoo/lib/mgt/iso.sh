@@ -109,6 +109,7 @@ cuckoo_iso_export()
     CUCKOO_ENV_NO="yes"
 
     echo ""
+
     if [ -z "$CUCKOO_DIST_VERSION" ]
     then
         for cuckoo_arch in $CUCKOO_ACTION_ARCH_LIST
@@ -157,6 +158,7 @@ cuckoo_iso_export()
             fi
         fi
     fi
+
     echo ""
 }
 
@@ -167,6 +169,7 @@ cuckoo_iso_delete()
     CUCKOO_ENV_NO="yes"
 
     echo ""
+
     if [ -z "$CUCKOO_DIST_VERSION" ]
     then
         for cuckoo_arch in $CUCKOO_ACTION_ARCH_LIST
@@ -221,6 +224,7 @@ cuckoo_iso_delete()
             fi
         fi
     fi
+
     echo ""
 }
 
@@ -231,6 +235,7 @@ cuckoo_iso_list()
     CUCKOO_ENV_NO="yes"
 
     echo ""
+
     for cuckoo_arch in $CUCKOO_ACTION_ARCH_LIST
     do
         for cuckoo_os in $CUCKOO_ACTION_OS_LIST
