@@ -15,7 +15,7 @@ Network-based install:
 
     curl -sSL https://raw.githubusercontent.com/magenete/cuckoo/master/cuckoo/bin/cuckoo-installer | sh
 
-Local install (e.g. after cloning git repo, etc.):
+Local install (e.g. after cloning git repo, etc.) in verbose mode:
 
     cuckoo-installer -i -v
 
