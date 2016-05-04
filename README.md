@@ -11,11 +11,11 @@ Uses Shell (not Bash) with following system utilities:
 Installation
 ------------
 
-Network-based install:
+Quick network-based install:
 
     curl -sSL https://raw.githubusercontent.com/magenete/cuckoo/master/cuckoo/bin/cuckoo-installer | sh
 
-Local install (e.g. after cloning git repo, etc.) in verbose mode:
+Alternative local install (e.g. after cloning git repo, etc.) in verbose mode:
 
     cuckoo-installer -i -v
 
