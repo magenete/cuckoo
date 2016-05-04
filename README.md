@@ -1,9 +1,9 @@
 Cuckoo
 ======
 
-A desktop-oriented virtual machines (based on QEMU) management system written in Shell.
+A management system for desktop-oriented virtual machines (based on QEMU) written in pure Shell.
 
-Uses Shell (not Bash) and only following system utilities:
+Uses Shell (not Bash) with following system utilities:
 
     dirname, basename, echo, printf, ls, cat, cp, rm, mkdir, chmod, getopt, cd, pwd, uname, curl, tar
 
@@ -11,11 +11,11 @@ Uses Shell (not Bash) and only following system utilities:
 Installation
 ------------
 
-By network:
+Network-based install:
 
     curl -sSL https://raw.githubusercontent.com/magenete/cuckoo/master/cuckoo/bin/cuckoo-installer | sh
 
-Locally:
+Local install (e.g. after cloning git repo, etc.):
 
     cuckoo-installer -i -v
 
