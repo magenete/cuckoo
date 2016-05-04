@@ -5,7 +5,7 @@ A desktop-oriented virtual machines (based on QEMU) management system written in
 
 Uses Shell (not Bash) and only following system utilities:
 
-    echo, printf, ls, cat, cp, rm, mkdir, chmod, getopt, cd, pwd, uname, curl, tar
+    dirname, basename, echo, printf, ls, cat, cp, rm, mkdir, chmod, getopt, cd, pwd, uname, curl, tar
 
 
 Installation

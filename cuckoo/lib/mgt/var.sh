@@ -13,9 +13,20 @@ cuckoo_variables()
 {
     [ -z "$CUCKOO_ENV_NO" ] && cuckoo_env
 
-    CUCKOO_OS="${CUCKOO_OS:=linux}"
-    CUCKOO_ARCH="${CUCKOO_ARCH:=x86_64}"
-    CUCKOO_DIST_VERSION="${CUCKOO_DIST_VERSION:=debian/8.4}"
+    if [ -z "$CUCKOO_CPU_CORES" ]
+    then
+        if [ "$CUCKOO_ARCH" = "x86" ]
+        then
+            CUCKOO_CPU_CORES=$((CUCKOO_CPU_CORES_DEFAULT/2))
+        else
+            CUCKOO_CPU_CORES=$CUCKOO_CPU_CORES_DEFAULT
+        fi
+    fi
+    CUCKOO_CPU_THREADS=${CUCKOO_CPU_THREADS:=CUCKOO_CPU_THREADS_DEFAULT}
+    CUCKOO_CPU_SOCKETS=$CUCKOO_CPU_SOCKETS_DEFAULT}
+    CUCKOO_HD_TYPE="${CUCKOO_HD_TYPE:=VIRT_EMULATOR_HD_TYPE_DEFAULT}"
+    CUCKOO_MEMORY_SIZE="${CUCKOO_MEMORY_SIZE:=CUCKOO_MEMORY_SIZE_DEFAULT}"
+
     if [ -z "$CUCKOO_DIST_VERSION" ]
     then
         CUCKOO_ISO_FILE=""
@@ -73,21 +84,6 @@ cuckoo_variables_check()
             cuckoo_env
             CUCKOO_ARCH="$CUCKOO_ARCH"
         fi
-
-        if [ -z "$CUCKOO_CPU_CORES" ]
-        then
-            if [ "$CUCKOO_ARCH" = "x86" ]
-            then
-                CUCKOO_CPU_CORES=$((CUCKOO_CPU_CORES_DEFAULT/2))
-            else
-                CUCKOO_CPU_CORES=$CUCKOO_CPU_CORES_DEFAULT
-            fi
-        fi
-
-        [ -z "$CUCKOO_CPU_THREADS" ] && CUCKOO_CPU_THREADS=$CUCKOO_CPU_THREADS_DEFAULT
-        [ -z "$CUCKOO_CPU_SOCKETS" ] && CUCKOO_CPU_SOCKETS=$CUCKOO_CPU_SOCKETS_DEFAULT
-        [ -z "$CUCKOO_HD_TYPE" ] && CUCKOO_HD_TYPE="$VIRT_EMULATOR_HD_TYPE_DEFAULT"
-        [ -z "$CUCKOO_MEMORY_SIZE" ] && CUCKOO_MEMORY_SIZE="$CUCKOO_MEMORY_SIZE_DEFAULT"
     else
         if [ -z "$CUCKOO_OS" ]
         then
