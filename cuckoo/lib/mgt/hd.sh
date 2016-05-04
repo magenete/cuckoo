@@ -86,7 +86,7 @@ cuckoo_hd_create()
 
                 if [ -e "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}${hd_file}" ]
                 then
-                    cuckoo_message "HD file '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}${hd_file}' already exists"
+                    cuckoo_message "WARNING: HD file '${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}${hd_file}' already exists"
                 else
                     cp -v "${CUCKOO_HD_ARCH_OS_CLEAN_DIR}${hd_file}" "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}${hd_file}"
                     if [ $? -gt 0 ]
