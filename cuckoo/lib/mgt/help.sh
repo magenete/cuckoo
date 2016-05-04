@@ -11,6 +11,9 @@
 # Help message
 cuckoo_help()
 {
+    CUCKOO_EMULATOR_NAME="${CUCKOO_EMULATOR_NAME:=$CUCKOO_EMULATOR_NAME_DEFAULT}"
+    CUCKOO_EMULATOR="${CUCKOO_EMULATOR:=$CUCKOO_EMULATOR_DEFAULT}"
+
     cat << _H_E_L_P
 
 Usage: $(basename $0) [actions] [arguments]
@@ -18,12 +21,12 @@ Usage: $(basename $0) [actions] [arguments]
   Actions:
 
     -s, --setup           Set directory with full path and setup Cuckoo.
-    -i, --install         Install OS on HD(s) (QEMU image).
-    -r, --run             Run VM (by default: QEMU).
-    -b, --qemu-build      Build (only on Linux) QEMU for OS: $(from_arr_to_str "$CUCKOO_EMULATOR_OS_LIST").
-    -I, --qemu-list       List existing QEMU versions.
-    -V, --qemu-version    Set QEMU version.
-    -q, --qemu-delete     Delete QEMU file(s).
+    -i, --install         Install OS on HD(s) (${CUCKOO_EMULATOR_NAME} image).
+    -r, --run             Run emularot (by default: ${CUCKOO_EMULATOR_NAME_DEFAULT}).
+    -b, --qemu-build      Build (only on Linux) ${CUCKOO_EMULATOR_NAME} for OS: $(from_arr_to_str "$CUCKOO_EMULATOR_OS_LIST").
+    -I, --qemu-list       List existing ${CUCKOO_EMULATOR_NAME} versions.
+    -V, --qemu-version    Set ${CUCKOO_EMULATOR_NAME} version.
+    -q, --qemu-delete     Delete ${CUCKOO_EMULATOR_NAME} file(s).
     -d, --iso-download    Download ISO file and setup.
     -p, --iso-import      Copy ISO file locally and setup.
     -e, --iso-export      Export ISO file(s) in directory.
@@ -45,12 +48,12 @@ Usage: $(basename $0) [actions] [arguments]
 
   Arguments:
 
-    -Q, --qemu-system     Run system VM (by default: QEMU).
-    -B, --qemu-branch     Set QEMU branch for building.
-    -A, --qemu-arch       Set QEMU architecture (by default: defined by OS).
-                            QEMU architecture: $(from_arr_to_str "$CUCKOO_EMULATOR_ARCH_LIST").
-    -O, --qemu-os-name    Set QEMU OS (by default: defined by OS).
-                            QEMU OS: $(from_arr_to_str "$CUCKOO_EMULATOR_OS_LIST").
+    -Q, --qemu-system     Run system emulator (by default: ${CUCKOO_EMULATOR_DEFAULT}).
+    -B, --qemu-branch     Set ${CUCKOO_EMULATOR_NAME} branch for building.
+    -A, --qemu-arch       Set ${CUCKOO_EMULATOR_NAME} architecture (by default: defined by OS).
+                            ${CUCKOO_EMULATOR_NAME} architecture: $(from_arr_to_str "$CUCKOO_EMULATOR_ARCH_LIST").
+    -O, --qemu-os-name    Set ${CUCKOO_EMULATOR_NAME} OS (by default: defined by OS).
+                            ${CUCKOO_EMULATOR_NAME} OS: $(from_arr_to_str "$CUCKOO_EMULATOR_OS_LIST").
     -a, --arch            Set OS architecture (by default: defined by OS).
                             OS architecture: $(from_arr_to_str "$CUCKOO_ARCH_LIST").
     -o, --os-name         Set OS name (by default: ${CUCKOO_OS_DEFAULT}).
@@ -69,7 +72,7 @@ Usage: $(basename $0) [actions] [arguments]
     -N, --no-daemonize    Run without daemonizing.
     -t, --hd-type         Set hard drive type (by default: ${CUCKOO_EMULATOR_HD_TYPE_DEFAULT}).
                             HD type: $(from_arr_to_str "$CUCKOO_EMULATOR_HD_TYPE_LIST").
-    -R, --opts-add        Append any other QEMU options.
+    -R, --opts-add        Append any other ${CUCKOO_EMULATOR_NAME} options.
 
 _H_E_L_P
 }

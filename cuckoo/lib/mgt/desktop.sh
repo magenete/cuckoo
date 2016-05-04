@@ -23,7 +23,7 @@ Exec=${CUCKOO_LAUNCHER_DESKTOP_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DESKTOP_LAUNCHE
 Keywords=virtualization;
 Icon=${CUCKOO_DIST_VERSION_DESKTOP_ICON_FILE}
 Categories=Emulator;System;
-Comment=Run ${CUCKOO_OS} inside of QEMU-based virtualization system
+Comment=Run ${CUCKOO_OS} inside of ${CUCKOO_EMULATOR_NAME}-based virtualization system
 _D_E_S_K_T_O_P
 
     echo "Desktop file '${CUCKOO_USER_HOME_DESKTOP_DIR}${CUCKOO_DIST_VERSION_DESKTOP_FILE}' was created"

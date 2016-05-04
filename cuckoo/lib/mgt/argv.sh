@@ -183,7 +183,7 @@ cuckoo_args()
         --qemu-arch | -A )
             if [ "$(valid_value_in_arr "$CUCKOO_EMULATOR_ARCH_LIST" "$2")" = "" ]
             then
-                cuckoo_error "QEMU architecture '${2}' is not supported"
+                cuckoo_error "${CUCKOO_EMULATOR_NAME} architecture '${2}' is not supported"
             else
                 CUCKOO_EMULATOR_ARCH="$2"
             fi
@@ -192,7 +192,7 @@ cuckoo_args()
         --qemu-os-name | -O )
             if [ "$(valid_value_in_arr "$CUCKOO_EMULATOR_OS_LIST" "$2")" = "" ]
             then
-                cuckoo_error "QEMU OS '${2}' is not supported"
+                cuckoo_error "${CUCKOO_EMULATOR_NAME} OS '${2}' is not supported"
             else
                 CUCKOO_EMULATOR_OS="$2"
             fi
