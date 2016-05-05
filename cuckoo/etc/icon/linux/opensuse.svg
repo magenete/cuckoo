@@ -358,7 +358,7 @@
      inkscape:groupmode="layer"
      inkscape:label="ink_ext_XXXXXX"
      transform="matrix(1.25,0,0,-1.25,0,-368.61218)"><g
-       id="g3095"><path
+       id="g3069"><path
          transform="matrix(1.0877698,0,0,-1.008,253.29496,-743.26973)"
          d="m -34.285713,-337.67856 a 99.285713,107.14286 0 1 1 -198.571427,0 99.285713,107.14286 0 1 1 198.571427,0 z"
          sodipodi:ry="107.14286"
@@ -395,7 +395,7 @@
          id="path3806"
          style="fill:url(#linearGradient3089);fill-opacity:1;fill-rule:evenodd;stroke:none"
          sodipodi:type="arc" /><g
-         transform="matrix(0.94118201,0,0,0.94117893,-1429.6221,-783.24701)"
+         transform="matrix(0.94118201,0,0,0.94117893,-1429.6221,-780.84701)"
          id="g4068"><path
            style="fill:#73ba25"
            inkscape:connector-curvature="0"
