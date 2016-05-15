@@ -192,7 +192,7 @@ do
 done
 
 
-# Run
+# Run"
 cuckoo_packages
 
 case "$CUCKOO_PACKAGES_ACTION" in
@@ -202,6 +202,8 @@ case "$CUCKOO_PACKAGES_ACTION" in
         if [ "$CUCKOO_PACKAGES_SUPERUSER_COMMAND" = "sudo" ]
         then
             $CUCKOO_PACKAGES_SUPERUSER_COMMAND $CUCKOO_PACKAGES_COMMAND
+        elif [ -z "$CUCKOO_PACKAGES_SUPERUSER_COMMAND" ]
+            $CUCKOO_PACKAGES_COMMAND
         else
             $CUCKOO_PACKAGES_SUPERUSER_COMMAND --command "$CUCKOO_PACKAGES_COMMAND"
         fi
