@@ -103,7 +103,7 @@ cuckoo_install()
         fi
     fi
 
-    if [ -e "${HOME}/${CUCKOO_BIN_FILE}" ] && [ -f "${HOME}/${CUCKOO_BIN_FILE}" ]
+    if [ -f "${HOME}/${CUCKOO_BIN_FILE}" ]
     then
         # Common
         chmod $CUCKOO_VERBOSE 0700 "${HOME}/${CUCKOO_INSTALLER_DIR}"
@@ -212,7 +212,7 @@ cuckoo_add_bin_path()
 
     for shell_profile_file in $HOME_SHELL_PROFILE_FILES
     do
-        if [ -e "${HOME}/${shell_profile_file}" ] && [ -f "${HOME}/${shell_profile_file}" ]
+        if [ -f "${HOME}/${shell_profile_file}" ]
         then
             echo "" >> "${HOME}/${shell_profile_file}"
             echo "export PATH=\"\${PATH}:\${HOME}/${CUCKOO_BIN_DIR}\"  # Add Cuckoo to PATH for scripting" >> "${HOME}/${shell_profile_file}"
@@ -261,7 +261,7 @@ cuckoo_uninstall()
 
     for shell_profile_file in $HOME_SHELL_PROFILE_FILES
     do
-        if [ -e "${HOME}/${shell_profile_file}" ] && [ -f "${HOME}/${shell_profile_file}" ]
+        if [ -f "${HOME}/${shell_profile_file}" ]
         then
             echo "    ${HOME}/${shell_profile_file}"
         fi
@@ -273,7 +273,7 @@ cuckoo_uninstall()
     echo "Desktop file(s) deleted in '${CUCKOO_USER_HOME_DESKTOP_DIR}'"
 
     # Directory delete after getting an answer
-    if [ -e "${HOME}/${CUCKOO_INSTALLER_DIR}" ] && [ -d "${HOME}/${CUCKOO_INSTALLER_DIR}" ]
+    if [ -d "${HOME}/${CUCKOO_INSTALLER_DIR}" ]
     then
         cuckoo_message "Everything will be deleted in '${HOME}/${CUCKOO_INSTALLER_DIR}'!"
 
