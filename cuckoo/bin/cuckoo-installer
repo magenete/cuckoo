@@ -308,7 +308,7 @@ case "$1" in
     ;;
 esac
 
-if [ ! -z "$1" ]
+if [ ! -z "$1" ] && [ ! -z "$2" ]
 then
     case "$2" in
         install | i )
