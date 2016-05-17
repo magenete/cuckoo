@@ -13,7 +13,7 @@ Installation
 
 Quick network-based install:
 
-    curl -sSL https://raw.githubusercontent.com/magenete/cuckoo/master/cuckoo/bin/cuckoo-installer | sh -s verbose
+    curl -SL https://raw.githubusercontent.com/magenete/cuckoo/master/cuckoo/bin/cuckoo-installer | sh -s verbose
 
 Alternative local install (e.g. after cloning git repo, etc.) in verbose mode:
 
