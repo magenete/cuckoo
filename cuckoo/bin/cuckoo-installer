@@ -286,7 +286,7 @@ cuckoo_uninstall()
 
 # Options definition
 case "$1" in
-    install | i | "" )
+    install | i )
         CUCKOO_ACTION="install"
     ;;
     uninstall | u )
@@ -311,7 +311,7 @@ esac
 if [ ! -z "$1" ]
 then
     case "$2" in
-        install | i | "" )
+        install | i )
             CUCKOO_ACTION="install"
         ;;
         uninstall | u )
