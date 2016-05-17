@@ -15,7 +15,8 @@ CUCKOO_GIT_URL="https://github.com/magenete/cuckoo/archive/${CUCKOO_GIT_BRANCH}.
 CUCKOO_ACTION=""
 CUCKOO_ACTION_DEFAULT="install"
 CUCKOO_INSTALLER_DIR=".cuckoo/"
-CUCKOO_DIR="${CUCKOO_INSTALLER_DIR}cuckoo-${CUCKOO_GIT_BRANCH}/cuckoo/"
+CUCKOO_BRANCH_DIR="${CUCKOO_INSTALLER_DIR}cuckoo-${CUCKOO_GIT_BRANCH}/"
+CUCKOO_DIR="${CUCKOO_BRANCH_DIR}/cuckoo/"
 CUCKOO_LIB_DIR="${CUCKOO_DIR}lib/"
 CUCKOO_ISO_DIR="${CUCKOO_DIR}iso/"
 CUCKOO_ETC_DIR="${CUCKOO_DIR}etc/"
@@ -236,12 +237,12 @@ cuckoo_uninstall_answer()
 
     case $uninstall_answer in
         Y | y | Yes | yes )
-            rm $CUCKOO_VERBOSE -rf "${HOME}/${CUCKOO_INSTALLER_DIR}"
+            rm $CUCKOO_VERBOSE -rf "${HOME}/${CUCKOO_BRANCH_DIR}"
 
-            cuckoo_message "Directory '${HOME}/${CUCKOO_INSTALLER_DIR}' deleted"
+            cuckoo_message "Directory '${HOME}/${CUCKOO_BRANCH_DIR}' deleted"
         ;;
         "" | N | n | No | no )
-            cuckoo_message "Directory '${HOME}/${CUCKOO_INSTALLER_DIR}' not deleted"
+            cuckoo_message "Directory '${HOME}/${CUCKOO_BRANCH_DIR}' not deleted"
         ;;
         * )
             cuckoo_message "Please use Y|y|Yes|yes|N|n|No|no or just enter (by default No)."
@@ -273,13 +274,15 @@ cuckoo_uninstall()
     echo "Desktop file(s) deleted in '${CUCKOO_USER_HOME_DESKTOP_DIR}'"
 
     # Directory delete after getting an answer
-    if [ -d "${HOME}/${CUCKOO_INSTALLER_DIR}" ]
+    if [ -d "${HOME}/${CUCKOO_BRANCH_DIR}" ]
     then
-        cuckoo_message "Everything will be deleted in '${HOME}/${CUCKOO_INSTALLER_DIR}'!"
+        cuckoo_message "Everything will be deleted in '${HOME}/${CUCKOO_BRANCH_DIR}'!"
 
         cuckoo_uninstall_answer
+
+        [ -z "$(ls "${HOME}/${CUCKOO_INSTALLER_DIR}")" ] && rm -rf "${HOME}/${CUCKOO_INSTALLER_DIR}"
     else
-        cuckoo_error "Directory '${HOME}/${CUCKOO_INSTALLER_DIR}' does not exist"
+        cuckoo_error "Directory '${HOME}/${CUCKOO_BRANCH_DIR}' does not exist"
     fi
 }
 
