@@ -50,12 +50,12 @@ Usage: $(basename $0) [arguments]
 
 Cuckoo install/uninstall script.
 
-  -i, --install    Install Cuckoo (by default).
-  -u, --uninstall  Uninstall Cuckoo.
-  -v, --verbose    Print log messages.
+  i, install    Install Cuckoo (by default).
+  u, uninstall  Uninstall Cuckoo.
+  v, verbose    Print log messages.
 
-      --version    Print the current version.
-  -h, --help       Show this message.
+     version    Print the current version.
+  h, help       Show this message.
 
 _H_E_L_P
 }
@@ -285,46 +285,53 @@ cuckoo_uninstall()
 
 
 # Options definition
-OPTS="$(getopt -o "iuvh" -l "install,uninstall,verbose,version,help" -a -- "$@" 2>/dev/null)"
-if [ $? -gt 0 ]
+case "$1" in
+    install | i )
+        CUCKOO_ACTION="install"
+    ;;
+    uninstall | u )
+        CUCKOO_ACTION="uninstall"
+    ;;
+    verbose | v )
+        CUCKOO_VERBOSE="-v"
+    ;;
+    version )
+        echo "Cuckoo version: 0.2.0"
+        exit 0
+    ;;
+    help | h )
+        cuckoo_help
+        exit 0
+    ;;
+    * )
+        cuckoo_error "Invalid option '${1}'"
+    ;;
+esac
+
+if [ ! -z "$1" ]
 then
-    cuckoo_error "Invalid option(s) value"
-fi
-
-eval set -- "$OPTS"
-
-# Options parsing
-while [ $# -gt 0 ]
-do
-    case $1 in
-        -- )
-            shift 1
-        ;;
-        --install | -i )
+    case "$2" in
+        install | i )
             CUCKOO_ACTION="install"
-            shift 1
         ;;
-        --uninstall | -u )
+        uninstall | u )
             CUCKOO_ACTION="uninstall"
-            shift 1
         ;;
-        --verbose | -v )
-            CUCKOO_VERBOSE="-v"
-            shift 1
-        ;;
-        --version )
-            echo "Cuckoo version: 0.1.4"
-            exit 0
-        ;;
-        --help | -h )
-            cuckoo_help
-            exit 0
+        verbose | v )
+            case "$1" in
+                verbose | v )
+                    cuckoo_error "Invalid option '${2}'"
+                ;;
+                * )
+                    CUCKOO_VERBOSE="-v"
+                ;;
+            esac
         ;;
         * )
-            cuckoo_error "Invalid option '${1}'"
+            cuckoo_error "Invalid option '${2}'"
         ;;
     esac
-done
+fi
 
 
 # Launch
