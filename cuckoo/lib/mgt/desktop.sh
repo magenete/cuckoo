@@ -99,13 +99,13 @@ cuckoo_dist_version_desktop()
     CUCKOO_DIST_VERSION_DESKTOP_FILE="cuckoo-${CUCKOO_OS}-${cuckoo_dist_version}_${CUCKOO_ARCH}.desktop"
     CUCKOO_DIST_VERSION_DESKTOP_LAUNCHER_FILE="${cuckoo_dist_version}.sh"
 
-    if [ -f "${CUCKOO_ETC_ICON_DIR}${CUCKOO_OS}/${cuckoo_dist_version_tmp}.svg" ]
+    if [ -f "${CUCKOO_ETC_ICON_DIR}${CUCKOO_DIST_VERSION_DESKTOP_STYLE}/${CUCKOO_OS}/${cuckoo_dist_version_tmp}.svg" ]
     then
-        CUCKOO_DIST_VERSION_DESKTOP_ICON_FILE="${CUCKOO_ETC_ICON_DIR}${CUCKOO_OS}/${cuckoo_dist_version_tmp}.svg"
+        CUCKOO_DIST_VERSION_DESKTOP_ICON_FILE="${CUCKOO_ETC_ICON_DIR}${CUCKOO_DIST_VERSION_DESKTOP_STYLE}/${CUCKOO_OS}/${cuckoo_dist_version_tmp}.svg"
         CUCKOO_OS_SUB_NAME="$(cat "${CUCKOO_ETC_OS_DIR}${CUCKOO_OS}/${cuckoo_dist_version_tmp}.name" 2> /dev/null)"
-    elif [ -f "${CUCKOO_ETC_ICON_DIR}${CUCKOO_OS}.svg" ]
+    elif [ -f "${CUCKOO_ETC_ICON_DIR}${CUCKOO_DIST_VERSION_DESKTOP_STYLE}/${CUCKOO_OS}.svg" ]
     then
-        CUCKOO_DIST_VERSION_DESKTOP_ICON_FILE="${CUCKOO_ETC_ICON_DIR}${CUCKOO_OS}.svg"
+        CUCKOO_DIST_VERSION_DESKTOP_ICON_FILE="${CUCKOO_ETC_ICON_DIR}${CUCKOO_DIST_VERSION_DESKTOP_STYLE}/${CUCKOO_OS}.svg"
         CUCKOO_OS_SUB_NAME="$cuckoo_dist_version_tmp"
     else
         CUCKOO_DIST_VERSION_DESKTOP_ICON_FILE="$CUCKOO_OS"

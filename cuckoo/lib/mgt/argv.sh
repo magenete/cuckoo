@@ -11,8 +11,8 @@
 # Options definition
 cuckoo_args()
 {
-    ARGS_SHORT="s:irbIV:qd:p:e:lxD:P:E:LXWUZwzQB:A:O:a:o:v:m:K:T:S:C:c:f:M:FNt:R:h"
-    ARGS_LONG="setup:,install,run,qemu-build,qemu-list,qemu-version:,qemu-delete,iso-download:,iso-import:,iso-export:,iso-list,iso-delete,hd-download:,hd-import:,hd-export:,hd-list,hd-delete,config-create,config-update,config-delete,desktop-create,desktop-delete,qemu-system,qemu-branch:,qemu-arch:,qemu-os-name:,arch:,os-name:,dist-version:,memory-size:,cpu-cores:,cpu-threads:,cpu-sockets:,cdrom-add:,cdrom-boot:,floppy-boot:,smb-dir:,full-screen,no-daemonize,hd-type:,opts-add:,version,help"
+    ARGS_SHORT="s:irbIV:qd:p:e:lxD:P:E:LXWUZw:zQB:A:O:a:o:v:m:K:T:S:C:c:f:M:FNt:R:h"
+    ARGS_LONG="setup:,install,run,qemu-build,qemu-list,qemu-version:,qemu-delete,iso-download:,iso-import:,iso-export:,iso-list,iso-delete,hd-download:,hd-import:,hd-export:,hd-list,hd-delete,config-create,config-update,config-delete,desktop-create:,desktop-delete,qemu-system,qemu-branch:,qemu-arch:,qemu-os-name:,arch:,os-name:,dist-version:,memory-size:,cpu-cores:,cpu-threads:,cpu-sockets:,cdrom-add:,cdrom-boot:,floppy-boot:,smb-dir:,full-screen,no-daemonize,hd-type:,opts-add:,version,help"
     OPTS="$(getopt -o "${ARGS_SHORT}" -l "${ARGS_LONG}" -a -- "$@" 2>/dev/null)"
     if [ $? -gt 0 ]
     then
@@ -162,7 +162,14 @@ cuckoo_args()
         --desktop-create | -w )
             CUCKOO_ACTION="desktop"
             CUCKOO_DIST_VERSION_DESKTOP="create"
-            shift 1
+            CUCKOO_DIST_VERSION_DESKTOP_STYLE="$2"
+            if [ "$(valid_value_in_arr "$CUCKOO_DIST_VERSION_DESKTOP_STYLE_LIST" "$2")" = "" ]
+            then
+                cuckoo_error "Desktop style '${2}' is not supported"
+            else
+                CUCKOO_DIST_VERSION_DESKTOP_STYLE="$2"
+            fi
+            shift 2
         ;;
         --desktop-delete | -z )
             CUCKOO_ACTION="desktop"
@@ -183,6 +190,7 @@ cuckoo_args()
         --qemu-arch | -A )
             if [ "$(valid_value_in_arr "$CUCKOO_EMULATOR_ARCH_LIST" "$2")" = "" ]
             then
+                CUCKOO_EMULATOR_NAME="${CUCKOO_EMULATOR_NAME:=$CUCKOO_EMULATOR_NAME_DEFAULT}"
                 cuckoo_error "${CUCKOO_EMULATOR_NAME} architecture '${2}' is not supported"
             else
                 CUCKOO_EMULATOR_ARCH="$2"
@@ -192,6 +200,7 @@ cuckoo_args()
         --qemu-os-name | -O )
             if [ "$(valid_value_in_arr "$CUCKOO_EMULATOR_OS_LIST" "$2")" = "" ]
             then
+                CUCKOO_EMULATOR_NAME="${CUCKOO_EMULATOR_NAME:=$CUCKOO_EMULATOR_NAME_DEFAULT}"
                 cuckoo_error "${CUCKOO_EMULATOR_NAME} OS '${2}' is not supported"
             else
                 CUCKOO_EMULATOR_OS="$2"

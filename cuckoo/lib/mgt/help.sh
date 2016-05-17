@@ -41,6 +41,7 @@ Usage: $(basename $0) [actions] [arguments]
     -U, --config-update   Update config file if exists.
     -Z, --config-delete   Delete config file if exists.
     -w, --desktop-create  Create and write desktop file if --dist-version is defined.
+                            Style names: $(from_arr_to_str "$CUCKOO_DIST_VERSION_DESKTOP_STYLE_LIST").
     -z, --desktop-delete  Delete desktop file if exists.
 
         --version         Print the current version.
