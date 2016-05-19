@@ -84,7 +84,7 @@ qemu_version_setup()
                     fi
                 done
 
-                if [ "$qemu_version_defined" = "" ]
+                if [ -z "$qemu_version_defined" ]
                 then
                     echo "WARNING: QEMU version '${QEMU_VERSION}' not found for OS: ${qemu_os}, arch: ${qemu_arch}"
                 fi

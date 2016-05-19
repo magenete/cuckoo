@@ -35,7 +35,7 @@ using native package manager of the host system.
   -U, --su-user    Run from some different user, using su.
   -S, --sudo       Run using sudo.
 
-  -v, --version    Print the current version.
+  -V, --version    Print the current version.
   -h, --help       Show this message.
 
 _H_E_L_P
@@ -138,7 +138,7 @@ fi
 
 
 # Options definition
-OPTS="$(getopt -o "sU:Siulvh" -l "su,su-user:,sudo,install,uninstall,list,version,help" -a -- "$@" 2>/dev/null)"
+OPTS="$(getopt -o "sU:SiulVh" -l "su,su-user:,sudo,install,uninstall,list,version,help" -a -- "$@" 2>/dev/null)"
 if [ $? -gt 0 ]
 then
     cuckoo_error "Invalid option(s) value"
@@ -177,7 +177,7 @@ do
         CUCKOO_PACKAGES_ACTION="list"
         shift 1
     ;;
-    --version | -v )
+    --version | -V )
         echo "Cuckoo version: $(cat "$(realpath "$(readlink -f "$(dirname "$0")")/..")/etc/VERSION")"
         exit 0
     ;;

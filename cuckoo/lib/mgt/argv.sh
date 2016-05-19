@@ -163,7 +163,7 @@ cuckoo_args()
             CUCKOO_ACTION="desktop"
             CUCKOO_DIST_VERSION_DESKTOP="create"
             CUCKOO_DIST_VERSION_DESKTOP_STYLE="$2"
-            if [ "$(valid_value_in_arr "$CUCKOO_DIST_VERSION_DESKTOP_STYLE_LIST" "$2")" = "" ]
+            if [ -z "$(valid_value_in_arr "$CUCKOO_DIST_VERSION_DESKTOP_STYLE_LIST" "$2")" ]
             then
                 cuckoo_error "Desktop style '${2}' is not supported"
             else
@@ -188,7 +188,7 @@ cuckoo_args()
             shift 2
         ;;
         --qemu-arch | -A )
-            if [ "$(valid_value_in_arr "$CUCKOO_EMULATOR_ARCH_LIST" "$2")" = "" ]
+            if [ -z "$(valid_value_in_arr "$CUCKOO_EMULATOR_ARCH_LIST" "$2")" ]
             then
                 CUCKOO_EMULATOR_NAME="${CUCKOO_EMULATOR_NAME:=$CUCKOO_EMULATOR_NAME_DEFAULT}"
                 cuckoo_error "${CUCKOO_EMULATOR_NAME} architecture '${2}' is not supported"
@@ -198,7 +198,7 @@ cuckoo_args()
             shift 2
         ;;
         --qemu-os-name | -O )
-            if [ "$(valid_value_in_arr "$CUCKOO_EMULATOR_OS_LIST" "$2")" = "" ]
+            if [ -z "$(valid_value_in_arr "$CUCKOO_EMULATOR_OS_LIST" "$2")" ]
             then
                 CUCKOO_EMULATOR_NAME="${CUCKOO_EMULATOR_NAME:=$CUCKOO_EMULATOR_NAME_DEFAULT}"
                 cuckoo_error "${CUCKOO_EMULATOR_NAME} OS '${2}' is not supported"
@@ -208,7 +208,7 @@ cuckoo_args()
             shift 2
         ;;
         --arch | -a )
-            if [ "$(valid_value_in_arr "$CUCKOO_ARCH_LIST" "$2")" = "" ]
+            if [ -z "$(valid_value_in_arr "$CUCKOO_ARCH_LIST" "$2")" ]
             then
                 cuckoo_error "OS architecture '${2}' is not supported"
             else
@@ -217,7 +217,7 @@ cuckoo_args()
             shift 2
         ;;
         --os-name | -o )
-            if [ "$(valid_value_in_arr "$CUCKOO_OS_LIST" "$2")" = "" ]
+            if [ -z "$(valid_value_in_arr "$CUCKOO_OS_LIST" "$2")" ]
             then
                 cuckoo_error "OS '${2}' is not supported"
             else
@@ -226,7 +226,7 @@ cuckoo_args()
             shift 2
         ;;
         --dist-version | -v )
-            if [ "$(cuckoo_dist_version_value_check "$2")" = "" ]
+            if [ -z "$(cuckoo_dist_version_value_check "$2")" ]
             then
                 cuckoo_error "Invalid distributive/version '${2}'"
             else
@@ -310,7 +310,7 @@ cuckoo_args()
             shift 1
         ;;
         --hd-type | -t )
-            if [ "$(valid_value_in_arr "$CUCKOO_EMULATOR_HD_TYPE_LIST" "$2")" = "" ]
+            if [ -z "$(valid_value_in_arr "$CUCKOO_EMULATOR_HD_TYPE_LIST" "$2")" ]
             then
                 cuckoo_error "HD type '${2}' is not supported"
             else
