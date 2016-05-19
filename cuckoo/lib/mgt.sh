@@ -9,6 +9,7 @@
 
 
 CUCKOO_DIR="${CUCKOO_DIR:=$(cd "$(dirname "$0")/.." && pwd -P)}/"
+
 CUCKOO_EMULATOR_VERSION=""
 CUCKOO_EMULATOR_SYSTEM=""
 CUCKOO_EMULATOR_ACTION=""
