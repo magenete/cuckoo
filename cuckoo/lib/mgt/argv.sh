@@ -36,7 +36,7 @@ cuckoo_args()
             if [ -d "$2" ]
             then
                 CUCKOO_SETUP_DIR="${2}/"
-                CUCKOO_EMULATOR_SETUP_DIR="${CUCKOO_SETUP_DIR}cuckoo/"
+                CUCKOO_EMULATOR_SETUP_DIR="${CUCKOO_SETUP_DIR}${CUCKOO}/"
                 CUCKOO_EMULATOR_ACTION="setup"
             else
                 cuckoo_error "Directory '${2}' does not exist, so it can not be used for setup"

@@ -26,8 +26,8 @@ cuckoo_setup_iso()
 
                 if [ -d "$CUCKOO_ISO_ARCH_OS_DIR" ]
                 then
-                    mkdir -p "${CUCKOO_SETUP_DIR}cuckoo/iso/${CUCKOO_ARCH}/"
-                    cp -rv "$CUCKOO_ISO_ARCH_OS_DIR" "${CUCKOO_SETUP_DIR}cuckoo/iso/${CUCKOO_ARCH}/"
+                    mkdir -p "${CUCKOO_SETUP_DIR}${CUCKOO}/iso/${CUCKOO_ARCH}/"
+                    cp -rv "$CUCKOO_ISO_ARCH_OS_DIR" "${CUCKOO_SETUP_DIR}${CUCKOO}/iso/${CUCKOO_ARCH}/"
 
                     echo "      ...from '${CUCKOO_ISO_ARCH_OS_DIR}'"
                 else
@@ -43,15 +43,15 @@ cuckoo_setup_iso()
 
         if [ -d "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
         then
-            mkdir -p "${CUCKOO_SETUP_DIR}cuckoo/iso/${CUCKOO_ARCH}/${CUCKOO_OS}/"
-            cp -rv "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" "${CUCKOO_SETUP_DIR}cuckoo/iso/${CUCKOO_ARCH}/${CUCKOO_OS}/${CUCKOO_DIST_VERSION_DIR}"
+            mkdir -p "${CUCKOO_SETUP_DIR}${CUCKOO}/iso/${CUCKOO_ARCH}/${CUCKOO_OS}/"
+            cp -rv "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" "${CUCKOO_SETUP_DIR}${CUCKOO}/iso/${CUCKOO_ARCH}/${CUCKOO_OS}/${CUCKOO_DIST_VERSION_DIR}"
 
             echo "      ...from '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}'"
         else
             if [ -f "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}" ]
             then
-                mkdir -p "${CUCKOO_SETUP_DIR}cuckoo/iso/${CUCKOO_ARCH}/${CUCKOO_OS}/${CUCKOO_DIST_VERSION_DIR}"
-                cp -v "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}" "${CUCKOO_SETUP_DIR}cuckoo/iso/${CUCKOO_ARCH}/${CUCKOO_OS}/${CUCKOO_ISO_FILE}"
+                mkdir -p "${CUCKOO_SETUP_DIR}${CUCKOO}/iso/${CUCKOO_ARCH}/${CUCKOO_OS}/${CUCKOO_DIST_VERSION_DIR}"
+                cp -v "${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}" "${CUCKOO_SETUP_DIR}${CUCKOO}/iso/${CUCKOO_ARCH}/${CUCKOO_OS}/${CUCKOO_ISO_FILE}"
 
                 echo "      ...from '${CUCKOO_ISO_ARCH_OS_DIR}${CUCKOO_ISO_FILE}'"
             else
@@ -80,8 +80,8 @@ cuckoo_setup_hd()
 
                 if [ -d "$CUCKOO_HD_ARCH_OS_DIR" ]
                 then
-                    mkdir -p "${CUCKOO_SETUP_DIR}cuckoo/hd/${CUCKOO_ARCH}/"
-                    cp -rv "$CUCKOO_HD_ARCH_OS_DIR" "${CUCKOO_SETUP_DIR}cuckoo/hd/${CUCKOO_ARCH}/"
+                    mkdir -p "${CUCKOO_SETUP_DIR}${CUCKOO}/hd/${CUCKOO_ARCH}/"
+                    cp -rv "$CUCKOO_HD_ARCH_OS_DIR" "${CUCKOO_SETUP_DIR}${CUCKOO}/hd/${CUCKOO_ARCH}/"
 
                     echo "      ...from '${CUCKOO_HD_ARCH_OS_DIR}'"
                 else
@@ -97,8 +97,8 @@ cuckoo_setup_hd()
 
         if [ -d "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" ]
         then
-            mkdir -p "${CUCKOO_SETUP_DIR}cuckoo/hd/${CUCKOO_ARCH}/${CUCKOO_OS}/${CUCKOO_DIST_VERSION_DIR}"
-            cp -rv "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" "${CUCKOO_SETUP_DIR}cuckoo/hd/${CUCKOO_ARCH}/${CUCKOO_OS}/$(dirname ${CUCKOO_DIST_VERSION_DIR})"
+            mkdir -p "${CUCKOO_SETUP_DIR}${CUCKOO}/hd/${CUCKOO_ARCH}/${CUCKOO_OS}/${CUCKOO_DIST_VERSION_DIR}"
+            cp -rv "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DIR}" "${CUCKOO_SETUP_DIR}${CUCKOO}/hd/${CUCKOO_ARCH}/${CUCKOO_OS}/$(dirname ${CUCKOO_DIST_VERSION_DIR})"
 
             if [ -f "${CUCKOO_HD_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_CONFIG_FILE}" ]
             then
@@ -117,38 +117,34 @@ cuckoo_setup_hd()
 cuckoo_setup_cuckoo_dir()
 {
     echo "  Directory cuckoo/: copying..."
-    mkdir "${CUCKOO_SETUP_DIR}cuckoo/"
+    mkdir "${CUCKOO_SETUP_DIR}${CUCKOO}/"
 
     echo ""
     echo "    Directory bin/: copying..."
-    cp -rv "${CUCKOO_DIR}bin/" "${CUCKOO_SETUP_DIR}cuckoo/"
+    cp -rv "${CUCKOO_DIR}bin/" "${CUCKOO_SETUP_DIR}${CUCKOO}/"
 
     echo ""
     echo "    Directory etc/: copying..."
-    cp -rv "${CUCKOO_DIR}etc/" "${CUCKOO_SETUP_DIR}cuckoo/"
+    cp -rv "${CUCKOO_DIR}etc/" "${CUCKOO_SETUP_DIR}${CUCKOO}/"
 
     echo ""
     echo "    Directory lib/: copying..."
-    cp -rv "${CUCKOO_DIR}lib/" "${CUCKOO_SETUP_DIR}cuckoo/"
-
-    echo ""
-    echo "    Directory os/: copying..."
-    cp -rv "${CUCKOO_DIR}os/" "${CUCKOO_SETUP_DIR}cuckoo/"
+    cp -rv "${CUCKOO_DIR}lib/" "${CUCKOO_SETUP_DIR}${CUCKOO}/"
 
     echo ""
     echo "    ISO structure from iso/: copying..."
-    mkdir "${CUCKOO_SETUP_DIR}cuckoo/iso/"
+    mkdir "${CUCKOO_SETUP_DIR}${CUCKOO}/iso/"
     cuckoo_setup_iso
 
     echo ""
     echo "    HD(s) structure from hd/: copying..."
-    mkdir "${CUCKOO_SETUP_DIR}cuckoo/hd/"
+    mkdir "${CUCKOO_SETUP_DIR}${CUCKOO}/hd/"
     cuckoo_setup_hd
 
     echo ""
     echo "    Management and installation files: copying..."
-    cp -v $(ls "${CUCKOO_DIR}"*.bat) "${CUCKOO_SETUP_DIR}cuckoo/"
-    cp -v $(ls "${CUCKOO_DIR}"*.sh) "${CUCKOO_SETUP_DIR}cuckoo/"
+    cp -v $(ls "${CUCKOO_DIR}"*.bat) "${CUCKOO_SETUP_DIR}${CUCKOO}/"
+    cp -v $(ls "${CUCKOO_DIR}"*.sh) "${CUCKOO_SETUP_DIR}${CUCKOO}/"
 
     echo ""
 }
@@ -157,7 +153,7 @@ cuckoo_setup_cuckoo_dir()
 # Setup
 cuckoo_setup()
 {
-    CUCKOO_SETUP_DIR="${CUCKOO_SETUP_DIR}cuckoo/"
+    CUCKOO_SETUP_DIR="${CUCKOO_SETUP_DIR}${CUCKOO}/"
     CUCKOO_ENV_NO="yes"
 
     mkdir -p "$CUCKOO_SETUP_DIR"

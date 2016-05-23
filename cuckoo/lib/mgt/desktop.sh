@@ -16,8 +16,8 @@ cuckoo_dist_version_desktop_create_desktop()
     cat > "${CUCKOO_USER_HOME_DESKTOP_DIR}${CUCKOO_DIST_VERSION_DESKTOP_FILE}" << _D_E_S_K_T_O_P
 [Desktop Entry]
 Version=1.0
-Name=${CUCKOO_OS} ${CUCKOO_DIST_VERSION} ${CUCKOO_ARCH} launcher
-GenericName=Cuckoo - ${CUCKOO_OS_NAME} ${CUCKOO_OS_SUB_NAME} ${CUCKOO_ARCH}
+Name=Cuckoo - ${CUCKOO_OS_NAME} ${CUCKOO_OS_SUB_NAME} ${CUCKOO_ARCH}
+GenericName=${CUCKOO_OS} ${CUCKOO_DIST_VERSION} ${CUCKOO_ARCH} launcher
 Type=Application
 Exec=${CUCKOO_LAUNCHER_DESKTOP_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DESKTOP_LAUNCHER_FILE}
 Keywords=virtualization;
@@ -37,7 +37,7 @@ cuckoo_dist_version_desktop_create_launcher()
 
     cat > "${CUCKOO_LAUNCHER_DESKTOP_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DESKTOP_LAUNCHER_FILE}" << _L_A_U_N_C_H_E_R
 
-cuckoo --run --arch ${CUCKOO_ARCH} --os-name ${CUCKOO_OS} --dist-version ${CUCKOO_DIST_VERSION}
+${CUCKOO} --run --arch ${CUCKOO_ARCH} --os-name ${CUCKOO_OS} --dist-version ${CUCKOO_DIST_VERSION}
 _L_A_U_N_C_H_E_R
 
     chmod 0700 "${CUCKOO_LAUNCHER_DESKTOP_ARCH_OS_DIR}${CUCKOO_DIST_VERSION_DESKTOP_LAUNCHER_FILE}"
@@ -96,7 +96,7 @@ cuckoo_dist_version_desktop()
 
     cuckoo_dist_version_var_file_name
 
-    CUCKOO_DIST_VERSION_DESKTOP_FILE="cuckoo-${CUCKOO_OS}-${cuckoo_dist_version}_${CUCKOO_ARCH}.desktop"
+    CUCKOO_DIST_VERSION_DESKTOP_FILE="${CUCKOO}-${CUCKOO_OS}-${cuckoo_dist_version}_${CUCKOO_ARCH}.desktop"
     CUCKOO_DIST_VERSION_DESKTOP_LAUNCHER_FILE="${cuckoo_dist_version}.sh"
 
     if [ -f "${CUCKOO_ETC_ICON_DIR}${CUCKOO_DIST_VERSION_DESKTOP_STYLE}/${CUCKOO_OS}/${cuckoo_dist_version_tmp}.svg" ]
