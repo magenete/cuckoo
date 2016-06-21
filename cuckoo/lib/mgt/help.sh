@@ -22,7 +22,7 @@ Usage: $(basename $0) [actions] [arguments]
 
     -s, --setup           Set directory with full path and setup Cuckoo.
     -i, --install         Install OS on HD(s) (${CUCKOO_EMULATOR_NAME} image).
-    -r, --run             Run emularot (by default: ${CUCKOO_EMULATOR_NAME_DEFAULT}).
+    -r, --run             Run emulator (by default: ${CUCKOO_EMULATOR_NAME_DEFAULT}).
     -b, --qemu-build      Build (only on Linux) ${CUCKOO_EMULATOR_NAME} for OS: $(from_arr_to_str "$CUCKOO_EMULATOR_OS_LIST").
     -I, --qemu-list       List existing ${CUCKOO_EMULATOR_NAME} versions.
     -V, --qemu-version    Set ${CUCKOO_EMULATOR_NAME} version.
